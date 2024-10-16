@@ -14,8 +14,21 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
 
 @TeleOp
-class CraneTele : LinearOpMode(){
+class CraneTele : LinearOpMode() {
     private var extendSpeed = 0.1
+
+    data object Config {
+        const val MOTOR_RF = "motorRF"
+        const val MOTOR_RB = "motorRB"
+        const val MOTOR_LF = "motorLF"
+        const val MOTOR_LB = "motorLB"
+
+        const val MOTOR_LIFT_LEFT = "liftLeft"
+        const val MOTOR_LIFT_RIGHT = "liftRight"
+
+        const val SERVO_EXTEND_LEFT = "extendLeft"
+        const val SERVO_EXTEND_RIGHT = "extendRight"
+    }
 
     private lateinit var motorRF: DcMotorEx
     private lateinit var motorRB: DcMotorEx
@@ -28,14 +41,14 @@ class CraneTele : LinearOpMode(){
     private lateinit var servoExtendLeft: Servo
     private lateinit var servoExtendRight: Servo
 
-    private var liftPower
+    private inline var liftPower
         get() = motorLiftLeft.power
         set(value) {
             motorLiftLeft.power = value
             motorLiftRight.power = value
         }
 
-    private var extendPosition
+    private inline var extendPosition
         get() = servoExtendLeft.position
         set(value) {
             servoExtendLeft.position = value
@@ -58,7 +71,6 @@ class CraneTele : LinearOpMode(){
         resetDeltaTime()
 
         while (opModeIsActive()) {
-
             resetDeltaTime()
 
             drive(
@@ -87,15 +99,15 @@ class CraneTele : LinearOpMode(){
     }
 
     private fun initExtend() {
-        servoExtendLeft = hardwareMap.get(Servo::class.java, "extendLeft")
-        servoExtendRight = hardwareMap.get(Servo::class.java, "extendRight")
+        servoExtendLeft = hardwareMap.get(Servo::class.java, Config.SERVO_EXTEND_LEFT)
+        servoExtendRight = hardwareMap.get(Servo::class.java, Config.SERVO_EXTEND_RIGHT)
 
         servoExtendRight.direction = Servo.Direction.REVERSE
     }
 
     private fun initLift() {
-        motorLiftLeft = hardwareMap.get(DcMotorEx::class.java, "liftLeft")
-        motorLiftRight = hardwareMap.get(DcMotorEx::class.java, "liftRight")
+        motorLiftLeft = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_LIFT_LEFT)
+        motorLiftRight = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_LIFT_RIGHT)
 
         motorLiftLeft.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motorLiftRight.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
@@ -110,10 +122,10 @@ class CraneTele : LinearOpMode(){
     }
 
     private fun initDrive() {
-        motorRF = hardwareMap.get(DcMotorEx::class.java, "motorRF")
-        motorRB = hardwareMap.get(DcMotorEx::class.java, "motorRB")
-        motorLF = hardwareMap.get(DcMotorEx::class.java, "motorLF")
-        motorLB = hardwareMap.get(DcMotorEx::class.java, "motorLB")
+        motorRF = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_RF)
+        motorRB = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_RB)
+        motorLF = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_LF)
+        motorLB = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_LB)
 
         motorRF.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motorRB.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
