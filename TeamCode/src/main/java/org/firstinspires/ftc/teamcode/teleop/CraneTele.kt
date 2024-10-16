@@ -13,6 +13,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
 
+typealias MotorDirection = DcMotorSimple.Direction
+typealias ServoDirection = Servo.Direction
+
 @TeleOp
 class CraneTele : LinearOpMode() {
     private var extendSpeed = 0.0001
@@ -28,6 +31,19 @@ class CraneTele : LinearOpMode() {
 
         const val SERVO_EXTEND_LEFT = "extendLeft"
         const val SERVO_EXTEND_RIGHT = "extendRight"
+    }
+
+    data object Direction {
+        val MOTOR_RF = MotorDirection.FORWARD
+        val MOTOR_RB = MotorDirection.FORWARD
+        val MOTOR_LF = MotorDirection.REVERSE
+        val MOTOR_LB = MotorDirection.REVERSE
+
+        val MOTOR_LIFT_LEFT = MotorDirection.FORWARD
+        val MOTOR_LIFT_RIGHT = MotorDirection.REVERSE
+
+        val SERVO_EXTEND_LEFT = ServoDirection.REVERSE
+        val SERVO_EXTEND_RIGHT = ServoDirection.FORWARD
     }
 
     private lateinit var motorRF: DcMotorEx
@@ -82,7 +98,7 @@ class CraneTele : LinearOpMode() {
                 -gamepad1.right_stick_x.toDouble()
             )
 
-            liftPower = -gamepad2.left_stick_y.toDouble()
+            liftPower = -gamepad2.right_stick_y.toDouble()
 
             if (gamepad2.dpad_up) {
                 extendPosition += extendSpeed * deltaTime
@@ -107,7 +123,8 @@ class CraneTele : LinearOpMode() {
         servoExtendLeft = hardwareMap.get(Servo::class.java, Config.SERVO_EXTEND_LEFT)
         servoExtendRight = hardwareMap.get(Servo::class.java, Config.SERVO_EXTEND_RIGHT)
 
-        servoExtendLeft.direction = Servo.Direction.REVERSE
+        servoExtendLeft.direction = Direction.SERVO_EXTEND_LEFT
+        servoExtendRight.direction = Direction.SERVO_EXTEND_RIGHT
     }
 
     private fun initLift() {
@@ -123,7 +140,8 @@ class CraneTele : LinearOpMode() {
         motorLiftLeft.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         motorLiftRight.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
-        motorLiftRight.direction = DcMotorSimple.Direction.REVERSE
+        motorLiftRight.direction = Direction.MOTOR_LIFT_RIGHT
+        motorLiftLeft.direction = Direction.MOTOR_LIFT_LEFT
     }
 
     private fun initDrive() {
@@ -147,8 +165,10 @@ class CraneTele : LinearOpMode() {
         motorLF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         motorLB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
-        motorLF.direction = DcMotorSimple.Direction.REVERSE
-        motorLB.direction = DcMotorSimple.Direction.REVERSE
+        motorRF.direction = Direction.MOTOR_RF
+        motorRB.direction = Direction.MOTOR_RB
+        motorLF.direction = Direction.MOTOR_LF
+        motorLB.direction = Direction.MOTOR_LB
     }
 
     private fun drive(forward: Double, left: Double, rotate: Double) {
