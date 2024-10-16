@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo
 
 @TeleOp
 class CraneTele : LinearOpMode() {
-    private var extendSpeed = 0.1
+    private var extendSpeed = 0.0001
 
     data object Config {
         const val MOTOR_RF = "motorRF"
@@ -55,9 +55,9 @@ class CraneTele : LinearOpMode() {
             servoExtendRight.position = value
         }
 
-    private var previousTime = now() / 100
-    private var currentTime = now() / 100
-    private val deltaTime = currentTime - previousTime
+    private var previousTime = now()
+    private var currentTime = now()
+    private inline val deltaTime get() = (currentTime - previousTime) * 1000
 
     private val mecanumKinematics = MecanumKinematics(1.0)
 
@@ -67,6 +67,9 @@ class CraneTele : LinearOpMode() {
         initExtend()
 
         waitForStart()
+
+        extendPosition = 0.5
+        liftPower = 0.0
 
         resetDeltaTime()
 
@@ -89,20 +92,22 @@ class CraneTele : LinearOpMode() {
 
             telemetry.addData("extend pos", extendPosition)
             telemetry.addData("lift power", liftPower)
+            telemetry.addData("delta time ms", deltaTime)
+            telemetry.addData("fps", 1000.0 / deltaTime)
             telemetry.update()
         }
     }
 
     private fun resetDeltaTime() {
         previousTime = currentTime
-        currentTime = now() / 100
+        currentTime = now()
     }
 
     private fun initExtend() {
         servoExtendLeft = hardwareMap.get(Servo::class.java, Config.SERVO_EXTEND_LEFT)
         servoExtendRight = hardwareMap.get(Servo::class.java, Config.SERVO_EXTEND_RIGHT)
 
-        servoExtendRight.direction = Servo.Direction.REVERSE
+        servoExtendLeft.direction = Servo.Direction.REVERSE
     }
 
     private fun initLift() {
