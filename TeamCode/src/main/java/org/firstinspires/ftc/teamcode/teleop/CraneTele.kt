@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
+import kotlin.math.absoluteValue
 
 typealias MotorDirection = DcMotorSimple.Direction
 typealias ServoDirection = Servo.Direction
@@ -84,7 +85,7 @@ class CraneTele : LinearOpMode() {
 
         waitForStart()
 
-        extendPosition = 0.5
+        extendPosition = 0.7
         liftPower = 0.0
 
         resetDeltaTime()
@@ -185,11 +186,11 @@ class CraneTele : LinearOpMode() {
 
         val powers = mecanumKinematics.inverse(driveVec)
 
-        val maxPower = powers.all().maxOfOrNull { it.value() } ?: 1.0
+        val maxMag = powers.all().map { it.value().absoluteValue }.plusElement(1.0).max()
 
-        motorRF.power = powers.rightFront.value() / maxPower
-        motorRB.power = powers.rightBack.value() / maxPower
-        motorLF.power = powers.leftFront.value() / maxPower
-        motorLB.power = powers.leftBack.value() / maxPower
+        motorRF.power = powers.rightFront.value() / maxMag
+        motorRB.power = powers.rightBack.value() / maxMag
+        motorLF.power = powers.leftFront.value() / maxMag
+        motorLB.power = powers.leftBack.value() / maxMag
     }
 }
