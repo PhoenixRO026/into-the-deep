@@ -1,15 +1,9 @@
 package org.firstinspires.ftc.teamcode.teleop
 
-import com.acmerobotics.roadrunner.MecanumKinematics
-import com.acmerobotics.roadrunner.PoseVelocity2d
-import com.acmerobotics.roadrunner.PoseVelocity2dDual
-import com.acmerobotics.roadrunner.Time
-import com.acmerobotics.roadrunner.Vector2d
 import com.acmerobotics.roadrunner.now
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.robot.Robot
-import kotlin.math.absoluteValue
 
 @TeleOp
 class CraneTele : LinearOpMode() {
@@ -18,8 +12,6 @@ class CraneTele : LinearOpMode() {
     private var previousTime = now()
     private var currentTime = now()
     private inline val deltaTime get() = (currentTime - previousTime) * 1000
-
-    private val mecanumKinematics = MecanumKinematics(1.0)
 
     private val robot = Robot(robotConfigGherla)
 
@@ -36,7 +28,7 @@ class CraneTele : LinearOpMode() {
         while (opModeIsActive()) {
             resetDeltaTime()
 
-            drive(
+            robot.drive(
                 -gamepad1.left_stick_y.toDouble(),
                 -gamepad1.left_stick_x.toDouble(),
                 -gamepad1.right_stick_x.toDouble()
@@ -61,27 +53,5 @@ class CraneTele : LinearOpMode() {
     private fun resetDeltaTime() {
         previousTime = currentTime
         currentTime = now()
-    }
-
-    private fun drive(forward: Double, left: Double, rotate: Double) {
-        val driveVec = PoseVelocity2dDual.constant<Time>(
-            PoseVelocity2d(
-                Vector2d(
-                    forward,
-                    left
-                ),
-                rotate
-            ),
-            1
-        )
-
-        val powers = mecanumKinematics.inverse(driveVec)
-
-        val maxMag = powers.all().map { it.value().absoluteValue }.plusElement(1.0).max()
-
-        robot.motorRF.power = powers.rightFront.value() / maxMag
-        robot.motorRB.power = powers.rightBack.value() / maxMag
-        robot.motorLF.power = powers.leftFront.value() / maxMag
-        robot.motorLB.power = powers.leftBack.value() / maxMag
     }
 }
