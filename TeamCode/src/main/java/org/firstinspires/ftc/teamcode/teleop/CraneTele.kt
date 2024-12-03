@@ -8,43 +8,71 @@ import com.acmerobotics.roadrunner.Vector2d
 import com.acmerobotics.roadrunner.now
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.teamcode.library.config.MotorConfig
+import org.firstinspires.ftc.teamcode.library.config.ServoConfig
+import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
+import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
 import kotlin.math.absoluteValue
-
-typealias MotorDirection = DcMotorSimple.Direction
-typealias ServoDirection = Servo.Direction
 
 @TeleOp
 class CraneTele : LinearOpMode() {
     private var extendSpeed = 0.0001
 
     data object Config {
-        const val MOTOR_RF = "motorRF"
-        const val MOTOR_RB = "motorRB"
-        const val MOTOR_LF = "motorLF"
-        const val MOTOR_LB = "motorLB"
+        val motorRF = MotorConfig(
+            deviceName = "motorRF",
+            direction = MotorConfig.Direction.FORWARD,
+            runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
+            zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
+            resetEncoder = true
+        )
+        val motorRB = MotorConfig(
+            deviceName = "motorRB",
+            direction = MotorConfig.Direction.FORWARD,
+            runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
+            zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
+            resetEncoder = true
+        )
+        val motorLF = MotorConfig(
+            deviceName = "motorLF",
+            direction = MotorConfig.Direction.REVERSE,
+            runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
+            zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
+            resetEncoder = true
+        )
+        val motorLB = MotorConfig(
+            deviceName = "motorLB",
+            direction = MotorConfig.Direction.REVERSE,
+            runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
+            zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
+            resetEncoder = true
+        )
 
-        const val MOTOR_LIFT_LEFT = "liftLeft"
-        const val MOTOR_LIFT_RIGHT = "liftRight"
+        val motorLiftLeft = MotorConfig(
+            deviceName = "liftLeft",
+            direction = MotorConfig.Direction.FORWARD,
+            runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
+            zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
+            resetEncoder = true
+        )
+        val motorLiftRight = MotorConfig(
+            deviceName = "liftRight",
+            direction = MotorConfig.Direction.REVERSE,
+            runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
+            zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
+            resetEncoder = true
+        )
 
-        const val SERVO_EXTEND_LEFT = "extendLeft"
-        const val SERVO_EXTEND_RIGHT = "extendRight"
-    }
-
-    data object Direction {
-        val MOTOR_RF = MotorDirection.FORWARD
-        val MOTOR_RB = MotorDirection.FORWARD
-        val MOTOR_LF = MotorDirection.REVERSE
-        val MOTOR_LB = MotorDirection.REVERSE
-
-        val MOTOR_LIFT_LEFT = MotorDirection.FORWARD
-        val MOTOR_LIFT_RIGHT = MotorDirection.REVERSE
-
-        val SERVO_EXTEND_LEFT = ServoDirection.REVERSE
-        val SERVO_EXTEND_RIGHT = ServoDirection.FORWARD
+        val servoExtendLeft = ServoConfig(
+            deviceName = "extendLeft",
+            direction = ServoConfig.Direction.REVERSE
+        )
+        val servoExtendRight = ServoConfig(
+            deviceName = "extendRight",
+            direction = ServoConfig.Direction.FORWARD
+        )
     }
 
     private lateinit var motorRF: DcMotorEx
@@ -121,55 +149,21 @@ class CraneTele : LinearOpMode() {
     }
 
     private fun initExtend() {
-        servoExtendLeft = hardwareMap.get(Servo::class.java, Config.SERVO_EXTEND_LEFT)
-        servoExtendRight = hardwareMap.get(Servo::class.java, Config.SERVO_EXTEND_RIGHT)
-
-        servoExtendLeft.direction = Direction.SERVO_EXTEND_LEFT
-        servoExtendRight.direction = Direction.SERVO_EXTEND_RIGHT
+        servoExtendLeft = hardwareMap.createServoWithConfig(Config.servoExtendLeft)
+        servoExtendRight = hardwareMap.createServoWithConfig(Config.servoExtendRight)
     }
 
     private fun initLift() {
-        motorLiftLeft = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_LIFT_LEFT)
-        motorLiftRight = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_LIFT_RIGHT)
+        motorLiftLeft = hardwareMap.createMotorUsingConfig(Config.motorLiftLeft)
+        motorLiftRight = hardwareMap.createMotorUsingConfig(Config.motorLiftRight)
 
-        motorLiftLeft.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motorLiftRight.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-
-        motorLiftLeft.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        motorLiftRight.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-
-        motorLiftLeft.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        motorLiftRight.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-
-        motorLiftRight.direction = Direction.MOTOR_LIFT_RIGHT
-        motorLiftLeft.direction = Direction.MOTOR_LIFT_LEFT
     }
 
     private fun initDrive() {
-        motorRF = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_RF)
-        motorRB = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_RB)
-        motorLF = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_LF)
-        motorLB = hardwareMap.get(DcMotorEx::class.java, Config.MOTOR_LB)
-
-        motorRF.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motorRB.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motorLF.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motorLB.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-
-        motorRF.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        motorRB.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        motorLF.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        motorLB.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-
-        motorRF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        motorRB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        motorLF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        motorLB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-
-        motorRF.direction = Direction.MOTOR_RF
-        motorRB.direction = Direction.MOTOR_RB
-        motorLF.direction = Direction.MOTOR_LF
-        motorLB.direction = Direction.MOTOR_LB
+        motorRF = hardwareMap.createMotorUsingConfig(Config.motorRF)
+        motorRB = hardwareMap.createMotorUsingConfig(Config.motorRB)
+        motorLF = hardwareMap.createMotorUsingConfig(Config.motorLF)
+        motorLB = hardwareMap.createMotorUsingConfig(Config.motorLB)
     }
 
     private fun drive(forward: Double, left: Double, rotate: Double) {
