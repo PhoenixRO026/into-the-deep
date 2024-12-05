@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.robot.Robot
 import org.firstinspires.ftc.teamcode.teleop.config.robotConfigGherla
+import kotlin.math.PI
 
 @TeleOp
 class CraneTele : LinearOpMode() {
@@ -39,6 +40,7 @@ class CraneTele : LinearOpMode() {
 
             telemetry.addData("extend pos", robot.extendPosition)
             telemetry.addData("lift power", robot.liftPower)
+            telemetry.addData("robot yaw degrees", robot.yaw / PI * 180)
             telemetry.addData("delta time ms", timeKeep.deltaTime)
             telemetry.addData("fps", 1000.0 / timeKeep.deltaTime)
             telemetry.update()
