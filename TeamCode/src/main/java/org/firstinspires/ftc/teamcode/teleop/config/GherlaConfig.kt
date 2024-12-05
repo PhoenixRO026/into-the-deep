@@ -57,10 +57,12 @@ val robotConfigGherla = RobotConfig(
     ),
     servoExtendLeft = ServoConfig(
         deviceName = "extendLeft",
-        direction = ServoConfig.Direction.REVERSE
+        direction = ServoConfig.Direction.REVERSE,
+        range = ServoConfig.Range.DEFAULT
     ),
     servoExtendRight = ServoConfig(
         deviceName = "extendRight",
-        direction = ServoConfig.Direction.FORWARD
+        direction = ServoConfig.Direction.FORWARD,
+        range = ServoConfig.Range.DEFAULT
     )
 )

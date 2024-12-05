@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.teleop.config.robotConfigGherla
 import kotlin.math.PI
 
 @TeleOp
-class CraneTele : LinearOpMode() {
+class CraneDrive : LinearOpMode() {
     private var extendSpeed = 0.0001
     private val timeKeep = TimeKeep()
     private val robot = Robot(robotConfigGherla)
