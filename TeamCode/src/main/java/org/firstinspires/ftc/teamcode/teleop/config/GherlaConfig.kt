@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop
+package org.firstinspires.ftc.teamcode.teleop.config
 
 import org.firstinspires.ftc.teamcode.library.config.MotorConfig
 import org.firstinspires.ftc.teamcode.library.config.ServoConfig

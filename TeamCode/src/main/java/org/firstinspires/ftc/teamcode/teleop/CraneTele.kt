@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.robot.Robot
+import org.firstinspires.ftc.teamcode.teleop.config.robotConfigGherla
 
 @TeleOp
 class CraneTele : LinearOpMode() {
