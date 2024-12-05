@@ -10,12 +10,12 @@ class DriveDirectionTest : LinearOpMode() {
     override fun runOpMode() {
         val config = robotConfigGherla
 
-        val motorRF = hardwareMap.createMotorUsingConfig(config.motorRF)
-        val motorRB = hardwareMap.createMotorUsingConfig(config.motorRB)
-        val motorLF = hardwareMap.createMotorUsingConfig(config.motorLF)
-        val motorLB = hardwareMap.createMotorUsingConfig(config.motorLB)
+        val motorRF = hardwareMap.createMotorUsingConfig(config.drive.motorRF)
+        val motorRB = hardwareMap.createMotorUsingConfig(config.drive.motorRB)
+        val motorLF = hardwareMap.createMotorUsingConfig(config.drive.motorLF)
+        val motorLB = hardwareMap.createMotorUsingConfig(config.drive.motorLB)
 
-        telemetry.addData("Config name", config.configName)
+        telemetry.addData("Config name", config.name)
         telemetry.update()
 
         waitForStart()
@@ -31,7 +31,7 @@ class DriveDirectionTest : LinearOpMode() {
             motorLF.power = lf
             motorLB.power = lb
 
-            telemetry.addData("Config name", config.configName)
+            telemetry.addData("Config name", config.name)
             telemetry.addData("motorRF power", motorRF.power)
             telemetry.addData("motorRB power", motorRB.power)
             telemetry.addData("motorLF power", motorLF.power)
