@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.library.config.ServoConfig
 import org.firstinspires.ftc.teamcode.robot.RobotConfig
 
 val robotConfigGherla = RobotConfig(
+    configName = "Config Gherla",
     motorRF = MotorConfig(
         deviceName = "motorRF",
         direction = MotorConfig.Direction.FORWARD,

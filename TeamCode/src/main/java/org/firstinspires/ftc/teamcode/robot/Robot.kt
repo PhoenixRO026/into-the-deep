@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
 import kotlin.math.absoluteValue
 
 class Robot(
-    val config: RobotConfig
+    private val config: RobotConfig
 ) {
     private val mecanumKinematics = MecanumKinematics(1.0)
 
@@ -22,20 +22,20 @@ class Robot(
     private lateinit var motorLF: DcMotorEx
     private lateinit var motorLB: DcMotorEx
 
-    lateinit var motorLiftLeft: DcMotorEx
-    lateinit var motorLiftRight: DcMotorEx
+    private lateinit var motorLiftLeft: DcMotorEx
+    private lateinit var motorLiftRight: DcMotorEx
 
-    lateinit var servoExtendLeft: Servo
-    lateinit var servoExtendRight: Servo
+    private lateinit var servoExtendLeft: Servo
+    private lateinit var servoExtendRight: Servo
 
-    inline var liftPower
+    var liftPower
         get() = motorLiftLeft.power
         set(value) {
             motorLiftLeft.power = value
             motorLiftRight.power = value
         }
 
-    inline var extendPosition
+    var extendPosition
         get() = servoExtendLeft.position
         set(value) {
             servoExtendLeft.position = value

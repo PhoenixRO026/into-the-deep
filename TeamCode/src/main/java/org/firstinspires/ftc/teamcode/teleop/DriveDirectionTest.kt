@@ -2,24 +2,19 @@ package org.firstinspires.ftc.teamcode.teleop
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
+import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
 
 @TeleOp(group = "test")
 class DriveDirectionTest : LinearOpMode() {
     override fun runOpMode() {
-        val motorRF = hardwareMap.get(DcMotorEx::class.java, "motorRF")
-        val motorRB = hardwareMap.get(DcMotorEx::class.java, "motorRB")
-        val motorLF = hardwareMap.get(DcMotorEx::class.java, "motorLF")
-        val motorLB = hardwareMap.get(DcMotorEx::class.java, "motorLB")
+        val config = robotConfigGherla
 
-        motorLF.direction = DcMotorSimple.Direction.REVERSE
-        motorLB.direction = DcMotorSimple.Direction.REVERSE
+        val motorRF = hardwareMap.createMotorUsingConfig(config.motorRF)
+        val motorRB = hardwareMap.createMotorUsingConfig(config.motorRB)
+        val motorLF = hardwareMap.createMotorUsingConfig(config.motorLF)
+        val motorLB = hardwareMap.createMotorUsingConfig(config.motorLB)
 
-        telemetry.addData("motorRF direction", motorRF.direction)
-        telemetry.addData("motorRB direction", motorRB.direction)
-        telemetry.addData("motorLF direction", motorLF.direction)
-        telemetry.addData("motorLB direction", motorLB.direction)
+        telemetry.addData("Config name", config.configName)
         telemetry.update()
 
         waitForStart()
@@ -35,6 +30,7 @@ class DriveDirectionTest : LinearOpMode() {
             motorLF.power = lf
             motorLB.power = lb
 
+            telemetry.addData("Config name", config.configName)
             telemetry.addData("motorRF power", motorRF.power)
             telemetry.addData("motorRB power", motorRB.power)
             telemetry.addData("motorLF power", motorLF.power)

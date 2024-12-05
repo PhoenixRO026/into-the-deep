@@ -4,6 +4,8 @@ import org.firstinspires.ftc.teamcode.library.config.MotorConfig
 import org.firstinspires.ftc.teamcode.library.config.ServoConfig
 
 data class RobotConfig(
+    val configName: String,
+
     val motorRF: MotorConfig,
     val motorRB: MotorConfig,
     val motorLF: MotorConfig,
