@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.teleop
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.IMU
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.robot.Robot
 import org.firstinspires.ftc.teamcode.teleop.config.robotConfigGherla
@@ -14,6 +16,19 @@ class CraneTele : LinearOpMode() {
 
     override fun runOpMode() {
         robot.init(hardwareMap)
+
+        val imu = hardwareMap.get(IMU::class.java, "imu")
+
+        val logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP
+        val usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT
+
+        val orientation = RevHubOrientationOnRobot(logoDirection, usbDirection)
+
+        val parameters = IMU.Parameters(orientation)
+
+        imu.initialize(parameters)
+
+        imu.resetYaw()
 
         waitForStart()
 

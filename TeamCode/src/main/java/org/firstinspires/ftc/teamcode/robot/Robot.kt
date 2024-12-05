@@ -7,9 +7,12 @@ import com.acmerobotics.roadrunner.Time
 import com.acmerobotics.roadrunner.Vector2d
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.IMU
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.teamcode.library.config.createIMUUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
+import org.firstinspires.ftc.teamcode.library.roadrunnerext.rotate
 import kotlin.math.absoluteValue
 
 class Robot(
@@ -17,6 +20,7 @@ class Robot(
 ) {
     private val mecanumKinematics = MecanumKinematics(1.0)
 
+    private lateinit var imu: IMU
     private lateinit var motorRF: DcMotorEx
     private lateinit var motorRB: DcMotorEx
     private lateinit var motorLF: DcMotorEx
@@ -42,7 +46,12 @@ class Robot(
             servoExtendRight.position = value
         }
 
+    val yaw
+        get() = imu.robotYawPitchRollAngles.yaw
+
     fun init(hardwareMap: HardwareMap) {
+        imu = hardwareMap.createIMUUsingConfig(config.imu)
+
         motorRF = hardwareMap.createMotorUsingConfig(config.motorRF)
         motorRB = hardwareMap.createMotorUsingConfig(config.motorRB)
         motorLF = hardwareMap.createMotorUsingConfig(config.motorLF)
@@ -61,7 +70,7 @@ class Robot(
                 Vector2d(
                     forward,
                     left
-                ),
+                ).rotate(-yaw),
                 rotate
             ),
             1

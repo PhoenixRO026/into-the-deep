@@ -1,11 +1,18 @@
 package org.firstinspires.ftc.teamcode.teleop.config
 
+import org.firstinspires.ftc.teamcode.library.config.IMUConfig
 import org.firstinspires.ftc.teamcode.library.config.MotorConfig
 import org.firstinspires.ftc.teamcode.library.config.ServoConfig
 import org.firstinspires.ftc.teamcode.robot.RobotConfig
 
 val robotConfigGherla = RobotConfig(
     configName = "Config Gherla",
+    imu = IMUConfig(
+        deviceName = "imu",
+        logoDirection = IMUConfig.LogoDirection.LEFT,
+        usbDirection = IMUConfig.USBDirection.UP,
+        resetYaw = true
+    ),
     motorRF = MotorConfig(
         deviceName = "motorRF",
         direction = MotorConfig.Direction.FORWARD,
