@@ -42,7 +42,7 @@ class Drive(
                 Vector2d(
                     forward,
                     left
-                ).rotate(-yaw),
+                ),
                 rotate
             ),
             1

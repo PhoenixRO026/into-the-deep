@@ -43,7 +43,7 @@ val robotConfigGherla = RobotConfig(
             zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
             resetEncoder = true
         )
-    ),
+    ),/*
     motorLiftLeft = MotorConfig(
         deviceName = "liftLeft",
         direction = MotorConfig.Direction.FORWARD,
@@ -58,16 +58,11 @@ val robotConfigGherla = RobotConfig(
         zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
         resetEncoder = true
     ),
-    servoExtendLeft = ServoConfig(
-        deviceName = "extendLeft",
-        direction = ServoConfig.Direction.REVERSE,
-        range = ServoConfig.Range.DEFAULT
-    ),
-    servoExtendRight = ServoConfig(
-        deviceName = "extendRight",
+    servoExtend = ServoConfig(
+        deviceName = "extend",
         direction = ServoConfig.Direction.FORWARD,
         range = ServoConfig.Range.DEFAULT
-    ),
+    ),*/
     servoArmLeft = ServoConfig(
         deviceName = "armLeft",
         direction = ServoConfig.Direction.REVERSE,

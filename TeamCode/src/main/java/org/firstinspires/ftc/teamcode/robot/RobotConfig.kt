@@ -8,12 +8,12 @@ data class RobotConfig(
 
     val drive: DriveConfig,
 
-    val motorLiftLeft: MotorConfig,
-    val motorLiftRight: MotorConfig,
+    //val motorLiftLeft: MotorConfig,
+    //val motorLiftRight: MotorConfig,
 
-    val servoExtendLeft: ServoConfig,
-    val servoExtendRight: ServoConfig,
+    //val servoExtend: ServoConfig,
 
     val servoArmLeft: ServoConfig,
+
     val servoArmRight: ServoConfig
 )
