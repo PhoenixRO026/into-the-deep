@@ -33,10 +33,10 @@ class Claw (hardwareMap: HardwareMap) {
         const val clawAngL = 0.5
         const val clawAngR = 0.5
         const val clawAngB = 0.5
-        //yes
+
         const val clawUp = 0.5
         const val clawDown = 0.0
-        //yes
+
 
         val tiltWait = 0.8
         val fingerWait = 0.5

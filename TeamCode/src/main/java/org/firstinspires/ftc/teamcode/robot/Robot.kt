@@ -20,7 +20,7 @@ class Robot(
 
 
     val drive = Drive(config.drive)
-}
+
     /*
     var liftPower
         get() = motorLiftLeft.power
@@ -37,7 +37,7 @@ class Robot(
             servoExtend.position = value.scaleTo(0.0..1.0)
         }
 
-    */
+
     private val armOffset = 0.01
 
     var armPosition
@@ -59,5 +59,5 @@ class Robot(
 
         servoArmLeft = hardwareMap.createServoWithConfig(config.servoArmLeft)
         servoArmRight = hardwareMap.createServoWithConfig(config.servoArmRight)
-    }
+    }*/
 }

@@ -15,7 +15,7 @@ class CraneDrive : LinearOpMode() {
     private val robot = Robot(robotConfigGherla)
 
     override fun runOpMode() {
-        robot.init(hardwareMap)
+        //robot.init(hardwareMap)
 
         waitForStart()
 
@@ -33,7 +33,7 @@ class CraneDrive : LinearOpMode() {
                 -gamepad1.right_stick_x.toDouble()
             )
 
-            robot.liftPower = -gamepad2.right_stick_y.toDouble()
+            //robot.liftPower = -gamepad2.right_stick_y.toDouble()
 
             //robot.extendPosition = gamepad2.left_stick_y.toDouble()
 
@@ -74,7 +74,7 @@ class CraneDrive : LinearOpMode() {
                 claw.rotateToDown()
             }
             //telemetry.addData("extend pos", robot.extendPosition)
-            telemetry.addData("lift power", robot.liftPower)
+            //telemetry.addData("lift power", robot.liftPower)
             telemetry.addData("robot yaw degrees", robot.drive.yaw / PI * 180)
             telemetry.addData("delta time ms", timeKeep.deltaTime)
             telemetry.addData("fps", 1000.0 / timeKeep.deltaTime)
