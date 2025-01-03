@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.TwoDeadWheelLocalizer;
 public final class ManualFeedbackTuner extends LinearOpMode {
     public static double DISTANCE = 64;
 
+    /** @noinspection RedundantThrows, ExtractMethodRecommender */
     @Override
     public void runOpMode() throws InterruptedException {
         if (TuningOpModes.DRIVE_CLASS.equals(MecanumDrive.class)) {

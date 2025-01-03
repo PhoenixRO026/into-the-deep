@@ -169,6 +169,7 @@ public final class TankDrive {
 
         @Override
         public PoseVelocity2d update() {
+            //noinspection unused
             Twist2dDual<Time> delta;
 
             List<PositionVelocityPair> leftReadings = new ArrayList<>(), rightReadings = new ArrayList<>();
@@ -235,7 +236,9 @@ public final class TankDrive {
         // TODO: make sure your config has motors with these names (or change them)
         //   add additional motors on each side if you have them
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
+        //noinspection ArraysAsListWithZeroOrOneArgument
         leftMotors = Arrays.asList(hardwareMap.get(DcMotorEx.class, "left"));
+        //noinspection ArraysAsListWithZeroOrOneArgument
         rightMotors = Arrays.asList(hardwareMap.get(DcMotorEx.class, "right"));
 
         for (DcMotorEx m : leftMotors) {

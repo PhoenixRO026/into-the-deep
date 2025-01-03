@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
  * Interface for localization methods.
  */
 public interface Localizer {
+    /** @noinspection unused*/
     void setPose(Pose2d pose);
 
     /**

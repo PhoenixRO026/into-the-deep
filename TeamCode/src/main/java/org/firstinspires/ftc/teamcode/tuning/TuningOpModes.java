@@ -48,6 +48,7 @@ public final class TuningOpModes {
                 .build();
     }
 
+    /** @noinspection unused*/
     @OpModeRegistrar
     public static void register(OpModeManager manager) {
         if (DISABLED) return;

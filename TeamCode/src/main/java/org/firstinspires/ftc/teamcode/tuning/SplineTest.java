@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.TankDrive;
 
 public final class SplineTest extends LinearOpMode {
+    /** @noinspection RedundantThrows*/
     @Override
     public void runOpMode() throws InterruptedException {
         Pose2d beginPose = new Pose2d(0, 0, 0);
