@@ -2,6 +2,9 @@
 package com.lib
 
 import com.acmerobotics.roadrunner.Pose2d
+import com.lib.roadrunner_ext.ex
+import com.lib.units.deg
+import com.lib.units.inch
 import com.noahbres.meepmeep.MeepMeep
 import com.noahbres.meepmeep.MeepMeep.Background
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder
@@ -18,15 +21,15 @@ fun main() {
             .build()
 
     myBot.runAction(
-        myBot.drive.actionBuilder(Pose2d(0.0, 0.0, 0.0))
-            .lineToX(30.0)
-            .turn(Math.toRadians(90.0))
-            .lineToY(30.0)
-            .turn(Math.toRadians(90.0))
-            .lineToX(0.0)
-            .turn(Math.toRadians(90.0))
-            .lineToY(0.0)
-            .turn(Math.toRadians(90.0))
+        myBot.drive.actionBuilder(Pose2d(0.0, 0.0, 0.0)).ex()
+            .lineToX(30.0.inch)
+            .turn(90.0.deg)
+            .lineToY(30.0.inch)
+            .turn(90.0.deg)
+            .lineToX(0.0.inch)
+            .turn(90.0.deg)
+            .lineToY(0.0.inch)
+            .turn(90.0.deg)
             .build()
     )
 
