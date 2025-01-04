@@ -27,6 +27,7 @@ class ExtendByServo(hardwareMap: HardwareMap) {
             field = clippedValue
         }
 
+
     fun extendToPos(newExtend : Double) = SequentialAction(
         InstantAction { extend = newExtend},
         SleepAction(extendWait)

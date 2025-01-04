@@ -1,24 +1,19 @@
 package org.firstinspires.ftc.teamcode.robot
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.SleepAction
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
-import org.firstinspires.ftc.teamcode.robot.Arm.Companion
+import org.firstinspires.ftc.teamcode.lib.units.SleepAction
+import org.firstinspires.ftc.teamcode.lib.units.s
+import org.firstinspires.ftc.teamcode.robot.Lift.Mode
+import kotlin.math.abs
 
 class Intake(hardwareMap: HardwareMap) {
-    val motor = hardwareMap.get(DcMotor::class.java, "iMotor")
-    private val tiltIntakeServo = hardwareMap.get(Servo::class.java, "iTilt")
-    private val tiltBoxServo = hardwareMap.get(Servo::class.java, "iTilt2")
-    private val extendIntakeMotor : DcMotor = hardwareMap.get(DcMotor::class.java, "iExt")
-
-    init {
-        tiltBoxServo.position = 0.5
-        tiltIntakeServo.position = 0.5
-    }
-
     companion object{
         const val intakeUp = 0.5
         const val intakeDown = 0.5
@@ -33,12 +28,85 @@ class Intake(hardwareMap: HardwareMap) {
         val tiltWait = 0.8
         val boxWait = 0.5
         val extendWait = 0.5
+
+        val controller = PIDController(
+            kP = 0.008,
+            kI = 0.005,
+            kD = 0.0008
+        )
+        val toleranceTicks = 16
+        val kF = 0.16
+    }
+
+    private val tiltIntakeServo = hardwareMap.get(Servo::class.java, "iTilt")
+    private val tiltBoxServo = hardwareMap.get(Servo::class.java, "iTilt2")
+    private val extendIntakeMotor : DcMotor = hardwareMap.get(DcMotor::class.java, "iExt")
+    private val powerIntakeMotor : DcMotor = hardwareMap.get(DcMotor::class.java, "iPower")
+
+    enum class Mode {
+        POWER,
+        TARGET
+    }
+
+    private var mode = Mode.POWER
+    private var targetPositionTicks = 0
+
+    init {
+        tiltBoxServo.position = 0.5
+        tiltIntakeServo.position = 0.5
+
+        extendIntakeMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        powerIntakeMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+
+        extendIntakeMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        powerIntakeMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+
+        extendIntakeMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        powerIntakeMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+    }
+
+    fun liftGoToPos(newPos: Int) = SequentialAction(
+        object: Action {
+            var init = true
+            override fun run(p: TelemetryPacket): Boolean {
+                if (init) {
+                    init = false
+
+                    targetPositionTicks = newPos
+
+                    mode = Mode.TARGET
+                }
+
+                return busyExtend
+            }
+        },
+        SleepAction(0.1.s)
+    )
+
+    val busyExtend get() = abs(extendIntakeMotor.currentPosition - targetPositionTicks) > Extend.toleranceTicks
+
+    var extend : Double = 0.0
+        get() = extendIntakeMotor.power
+        set(value) {
+            val clippedValue = value.coerceIn(0.0, 1.0)
+            extendIntakeMotor.power = value.toDouble()
+            field = clippedValue
+        }
+
+    fun updateExtend() {
+        val feedback = controller.calculate(extendIntakeMotor.currentPosition.toDouble(), targetPositionTicks.toDouble()) + org.firstinspires.ftc.teamcode.robot.Extend.kF
+
+        if (mode == Mode.TARGET) {
+            extendIntakeMotor.power = feedback
+            extendIntakeMotor.power = feedback
+        }
     }
 
     var power : Double
-        get() = motor.power
+        get() = powerIntakeMotor.power
         set(value) {
-            motor.power = value.toDouble()
+            if (mode != Mode.POWER) return
+            powerIntakeMotor.power = value.toDouble()
         }
 
     var tiltIntake : Double = intakeUp

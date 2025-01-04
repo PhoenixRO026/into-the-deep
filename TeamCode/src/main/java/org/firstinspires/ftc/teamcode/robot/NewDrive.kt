@@ -23,6 +23,7 @@ class NewDrive (hardwareMap: HardwareMap, startPose: Pose2d, side: Side){
 
     var speed = 1.0
 
+    /// this drives the robot in field centric
     fun drive(forward : Double, strafe : Double, rotate : Double) {
         mechanumDrive.updatePoseEstimate()
 

@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
+import org.firstinspires.ftc.teamcode.library.reverseScale
 import org.firstinspires.ftc.teamcode.library.scaleTo
 
-class Robot(
-    private val config: RobotConfig
-) {
+class Robot(private val config: RobotConfig) {
+
     private lateinit var motorLiftLeft: DcMotorEx
     private lateinit var motorLiftRight: DcMotorEx
 
@@ -30,7 +30,7 @@ class Robot(
         }
 
     private val extendOffset = 0.01
-
+    */
     var extendPosition
         get() = servoExtend.position.scaleTo(0.0..1.0)
         set(value) {
@@ -59,5 +59,5 @@ class Robot(
 
         servoArmLeft = hardwareMap.createServoWithConfig(config.servoArmLeft)
         servoArmRight = hardwareMap.createServoWithConfig(config.servoArmRight)
-    }*/
+    }
 }

@@ -16,29 +16,22 @@ class ServoTest : LinearOpMode() {
         val servo2 = hardwareMap.get(Servo::class.java, "servoL")
         val servorotate = hardwareMap.get(CRServo::class.java, "rotatie")*/
 
-        val clawRotationServo = hardwareMap.get(Servo::class.java, "clawRotationServo")
-        val fingerServo = hardwareMap.get(Servo::class.java, "fingerServo")
-        val servoExtend = hardwareMap.get(CRServo::class.java, "servoExtend")
+        val Servo = hardwareMap.get(Servo::class.java, "servoTest")
+        //val extendServo2 = hardwareMap.get(Servo::class.java, "cTilt2")
         /*
         servo1.direction = Servo.Direction.REVERSE
 
-        servo1.position = 0.5
-        servo2.position = 0.5*/
-
-        /*
-        * poz cos brat: 0.4839
-        *
-        * */
+        */
 
 
         var previousTime: Double
         var deltaTime : Double
         var now : Double
+
         waitForStart()
         previousTime = now()
 
-        clawRotationServo.position = 0.5
-        fingerServo.position = 0.5
+        Servo.position = 0.5
 
         while (opModeIsActive()){
             now = now()
@@ -47,32 +40,26 @@ class ServoTest : LinearOpMode() {
 
 
            if(gamepad1.a) {
-               clawRotationServo.position += 0.1 * deltaTime
+               Servo.position += 0.1 * deltaTime
             }
             else if(gamepad1.y) {
-               clawRotationServo.position -= 0.1 * deltaTime
-            }
-            else if(gamepad1.b){
-               fingerServo.position -= 0.1 * deltaTime
-            }
+               Servo.position -= 0.1 * deltaTime
+            }/*
             else if(gamepad1.x){
-               fingerServo.position += 0.1 * deltaTime
-            }
-            else if(gamepad1.dpad_up){
-                servoExtend.power = 1.0
+                extendServo2.position += 0.1 * deltaTime
            }
-            telemetry.addData("x Pressed", gamepad1.a)
-            telemetry.addData("Servo", clawRotationServo.position)
-            telemetry.addData("deget", fingerServo.position)
-            telemetry.update()
-            /*
+            else if(gamepad1.b){
+                extendServo2.position -= 0.1 * deltaTime
+           }*/
 
-
+            telemetry.addData("a Pressed", gamepad1.a)
+            telemetry.addData("y Pressed", gamepad1.y)
+            telemetry.addData("Servo", Servo.position)
             telemetry.addData("deltaTime", deltaTime)
-            telemetry.addData("positionServo2", servo2.position)
+            /*telemetry.addData("positionServo2", servo2.position)
             telemetry.addData("positionServo1", servo1.position)
-            telemetry.addData("poseDif", servo1.position - servo2.position)
-            telemetry.update()*/
+            telemetry.addData("poseDif", servo1.position - servo2.position)*/
+            telemetry.update()
 
 
 

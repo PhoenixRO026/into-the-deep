@@ -33,15 +33,16 @@ class DriveExtend : LinearOpMode() {
 
             drive.drive(
                 -gamepad1.left_stick_y.toDouble(),
-                gamepad1.left_stick_x.toDouble(),
-                gamepad1.right_stick_x.toDouble()
+                -gamepad1.left_stick_x.toDouble(),
+                -gamepad1.right_stick_x.toDouble()
             )
 
             extend.powerLift = -gamepad2.right_stick_y
 
             extend.updateLift()
 
-            extendo.extend += gamepad2.right_stick_x * deltaTime * 0.001
+            extendo.extend += gamepad2.right_stick_x * deltaTime * 0.05
+
 
             extendo.extendToPos(gamepad2.left_stick_x.toDouble())
 
