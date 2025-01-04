@@ -1,5 +1,5 @@
 @file:JvmName("MeepMeep")
-package com.lib
+package com.meep
 
 import com.acmerobotics.roadrunner.Pose2d
 import com.lib.roadrunner_ext.ex
@@ -8,7 +8,6 @@ import com.lib.units.inch
 import com.noahbres.meepmeep.MeepMeep
 import com.noahbres.meepmeep.MeepMeep.Background
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder
-
 
 fun main() {
     System.setProperty("sun.java2d.opengl", "true")
