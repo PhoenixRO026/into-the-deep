@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
+import org.firstinspires.ftc.teamcode.robot.Arm
 import org.firstinspires.ftc.teamcode.robot.Drive
 import org.firstinspires.ftc.teamcode.robot.NewDrive
 import org.firstinspires.ftc.teamcode.teleop.config.robotConfigGherla
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.teleop.config.robotConfigGherla
 class BasicDrive : LinearOpMode() {
     override fun runOpMode() {
         val drive = NewDrive(hardwareMap, Pose2d(0.0, 0.0, 0.0), NewDrive.Side.RED)
+        val arm = Arm(hardwareMap)
 
         waitForStart()
 
@@ -29,7 +31,11 @@ class BasicDrive : LinearOpMode() {
             if(gamepad1.y){
                 drive.resetHeading()
             }
+
+            //ArmDriveRun(gamepad1, arm)
+            //ClawDriveRun(gamepad1, claw)
+            //DriveDriveRun(gamepad2, drive)
+
         }
     }
-
 }

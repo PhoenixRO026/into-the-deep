@@ -61,18 +61,18 @@ class CraneDrive : LinearOpMode() {
             else if(gamepad1.right_bumper){
                 claw.tiltToScore()
             }*/
-            if(gamepad1.dpad_right){
-                claw.tiltToDown()
-            }
-            else if(gamepad1.dpad_left) {
-                claw.tiltToUp()
-            }
-            if(gamepad1.dpad_up){
-                claw.rotateToUp()
-            }
-            else if(gamepad1.dpad_down){
-                claw.rotateToDown()
-            }
+//            if(gamepad1.dpad_right){
+//                claw.tiltToDown()
+//            }
+//            else if(gamepad1.dpad_left) {
+//                claw.tiltToUp()
+//            }
+//            if(gamepad1.dpad_up){
+//                claw.rotateToUp()
+//            }
+//            else if(gamepad1.dpad_down){
+//                claw.rotateToDown()
+//            }
             //telemetry.addData("extend pos", robot.extendPosition)
             //telemetry.addData("lift power", robot.liftPower)
             telemetry.addData("robot yaw degrees", robot.drive.yaw / PI * 180)

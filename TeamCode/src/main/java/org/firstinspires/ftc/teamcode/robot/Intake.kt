@@ -128,10 +128,16 @@ class Intake(hardwareMap: HardwareMap) {
     var tiltBox : Double = boxUp
         set(value){
             val clippedValue = value.coerceIn(0.0, 1.0)
+            if (clippedValue == tiltBoxServo.position)
+                return
+
             tiltBoxServo.position = clippedValue
             field = clippedValue
         }
 
+
+    // TODO condition somehow the sequential action to execute only if newTilt != tilBox,
+    //  to avoid unnecessary Sleeps
     fun tiltToPosBox(newTilt : Double) = SequentialAction(
         InstantAction { tiltBox = newTilt},
         SleepAction(boxWait)
