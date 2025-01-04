@@ -65,7 +65,7 @@ class Intake(hardwareMap: HardwareMap) {
         powerIntakeMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
     }
 
-    fun liftGoToPos(newPos: Int) = SequentialAction(
+    fun ExtendGoToPos(newPos: Int) = SequentialAction(
         object: Action {
             var init = true
             override fun run(p: TelemetryPacket): Boolean {
