@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.robot.config
 import org.firstinspires.ftc.teamcode.library.config.IMUConfig
 import org.firstinspires.ftc.teamcode.library.config.MotorConfig
 
-data class DriveConfig(
+data class DriveHardwareConfig(
     val imu: IMUConfig,
 
     val motorRF: MotorConfig,

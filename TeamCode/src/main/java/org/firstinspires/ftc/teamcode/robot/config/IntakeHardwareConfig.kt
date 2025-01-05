@@ -4,7 +4,7 @@ import org.firstinspires.ftc.teamcode.library.config.EncoderConfig
 import org.firstinspires.ftc.teamcode.library.config.MotorConfig
 import org.firstinspires.ftc.teamcode.library.config.ServoConfig
 
-data class IntakeConfig(
+data class IntakeHardwareConfig(
     val motorExtendoIntake: MotorConfig,
     val encoderExtendo: EncoderConfig,
     val motorSweeper: MotorConfig,

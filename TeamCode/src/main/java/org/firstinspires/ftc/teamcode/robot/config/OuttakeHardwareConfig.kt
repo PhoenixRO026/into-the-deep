@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.robot.config
 
 import org.firstinspires.ftc.teamcode.library.config.ServoConfig
 
-data class OuttakeConfig(
+data class OuttakeHardwareConfig(
     val servoExtendo: ServoConfig,
     val servoShoulder: ServoConfig,
     val servoElbow: ServoConfig,

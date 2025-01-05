@@ -4,15 +4,15 @@ import org.firstinspires.ftc.teamcode.library.config.EncoderConfig
 import org.firstinspires.ftc.teamcode.library.config.IMUConfig
 import org.firstinspires.ftc.teamcode.library.config.MotorConfig
 import org.firstinspires.ftc.teamcode.library.config.ServoConfig
-import org.firstinspires.ftc.teamcode.robot.config.DriveConfig
-import org.firstinspires.ftc.teamcode.robot.config.IntakeConfig
-import org.firstinspires.ftc.teamcode.robot.config.LiftConfig
-import org.firstinspires.ftc.teamcode.robot.config.OuttakeConfig
-import org.firstinspires.ftc.teamcode.robot.config.RobotConfig
+import org.firstinspires.ftc.teamcode.robot.config.DriveHardwareConfig
+import org.firstinspires.ftc.teamcode.robot.config.IntakeHardwareConfig
+import org.firstinspires.ftc.teamcode.robot.config.LiftHardwareConfig
+import org.firstinspires.ftc.teamcode.robot.config.OuttakeHardwareConfig
+import org.firstinspires.ftc.teamcode.robot.config.RobotHardwareConfig
 
-val robotConfigWonder = RobotConfig(
+val robotHardwareConfigWonder = RobotHardwareConfig(
     name = "Wonderland",
-    drive = DriveConfig(
+    drive = DriveHardwareConfig(
         imu = IMUConfig(
             deviceName = "imu",
             logoDirection = IMUConfig.LogoDirection.LEFT,
@@ -48,7 +48,7 @@ val robotConfigWonder = RobotConfig(
             resetEncoder = true
         )
     ),
-    lift = LiftConfig(
+    lift = LiftHardwareConfig(
         motorLiftRight = MotorConfig(
             deviceName = "motorLiftRight",
             direction = MotorConfig.Direction.FORWARD,
@@ -68,7 +68,7 @@ val robotConfigWonder = RobotConfig(
             direction = EncoderConfig.Direction.FORWARD
         )
     ),
-    intake = IntakeConfig(
+    intake = IntakeHardwareConfig(
         motorExtendoIntake = MotorConfig(
             deviceName = "motorExtendoIntake",
             direction = MotorConfig.Direction.FORWARD,
@@ -100,7 +100,7 @@ val robotConfigWonder = RobotConfig(
             rangeScale = 0.0..1.0
         ),
     ),
-    outtake = OuttakeConfig(
+    outtake = OuttakeHardwareConfig(
         servoExtendo = ServoConfig(
             deviceName = "servoExtendoOuttake",
             direction = ServoConfig.Direction.FORWARD,

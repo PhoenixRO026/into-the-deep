@@ -2,13 +2,13 @@ package org.firstinspires.ftc.teamcode.tele.tests
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.robot.Lift
-import org.firstinspires.ftc.teamcode.tele.config.robotConfigWonder
 
 class LiftOnly : LinearOpMode() {
     override fun runOpMode() {
-        val config = testsRobotConfig
+        val config = testsRobotHardwareConfig
+        val values = testsRobotValues
 
-        val lift = Lift(robotConfigWonder.lift)
+        val lift = Lift(config.lift, values.lift)
         lift.init(hardwareMap)
 
         telemetry.addData("Config name", config.name)

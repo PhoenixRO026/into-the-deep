@@ -3,13 +3,13 @@ package org.firstinspires.ftc.teamcode.tele.tests
 import com.lib.units.rad
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.robot.Drive
-import org.firstinspires.ftc.teamcode.tele.config.robotConfigWonder
 
 class DriveOnly : LinearOpMode() {
     override fun runOpMode() {
-        val config = testsRobotConfig
+        val config = testsRobotHardwareConfig
+        val values = testsRobotValues
 
-        val drive = Drive(robotConfigWonder.drive)
+        val drive = Drive(config.drive, values.drive)
         drive.init(hardwareMap)
 
         telemetry.addData("Config name", config.name)

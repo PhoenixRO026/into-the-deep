@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
 
 class DriveDirectionTest : LinearOpMode() {
     override fun runOpMode() {
-        val config = testsRobotConfig
+        val config = testsRobotHardwareConfig
 
         val motorRF = hardwareMap.createMotorUsingConfig(config.drive.motorRF)
         val motorRB = hardwareMap.createMotorUsingConfig(config.drive.motorRB)

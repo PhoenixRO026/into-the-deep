@@ -5,10 +5,12 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.library.config.createEncoderUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
-import org.firstinspires.ftc.teamcode.robot.config.LiftConfig
+import org.firstinspires.ftc.teamcode.robot.config.LiftHardwareConfig
+import org.firstinspires.ftc.teamcode.robot.values.LiftValues
 
 class Lift(
-    private val config: LiftConfig
+    private val config: LiftHardwareConfig,
+    private val values: LiftValues
 ) {
     private lateinit var motorLiftRight: DcMotorEx
     private lateinit var motorLiftLeft: DcMotorEx

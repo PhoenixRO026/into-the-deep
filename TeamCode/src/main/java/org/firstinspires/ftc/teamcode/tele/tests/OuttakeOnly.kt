@@ -5,24 +5,18 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.reverseScale
 import org.firstinspires.ftc.teamcode.robot.Outtake
-import org.firstinspires.ftc.teamcode.tele.config.robotConfigWonder
 
 class OuttakeOnly : LinearOpMode() {
     override fun runOpMode() {
-        val config = testsRobotConfig
+        val config = testsRobotHardwareConfig
+        val values = testsRobotValues
 
         val timeKeep = TimeKeep()
-        val outtake = Outtake(robotConfigWonder.outtake)
+        val outtake = Outtake(config.outtake, values.outtake, timeKeep)
         outtake.init(hardwareMap)
 
         telemetry.addData("Config name", config.name)
         telemetry.update()
-
-        val extendoMaxTravelDuration = 5.s
-        val shoulderMaxTravelDuration = 5.s
-        val elbowMaxTravelDuration = 5.s
-        val wristMaxTravelDuration = 5.s
-        val clawMaxTravelDuration = 5.s
 
         waitForStart()
 
@@ -32,19 +26,19 @@ class OuttakeOnly : LinearOpMode() {
             val rightStickY = -gamepad1.right_stick_y.toDouble()
             val triggers = (gamepad1.right_trigger - gamepad1.left_trigger).toDouble()
 
-            outtake.extendoPos += timeKeep.deltaTime / extendoMaxTravelDuration * triggers
+            outtake.extendoSpeed = triggers
 
-            outtake.shoulderPos += timeKeep.deltaTime / shoulderMaxTravelDuration * leftStickY
+            outtake.shoulderCurrentPos += timeKeep.deltaTime / values.outtake.shoulderMaxTravelDuration * leftStickY
 
-            outtake.elbowPos += timeKeep.deltaTime / elbowMaxTravelDuration * rightStickY
+            outtake.elbowCurrentPos += timeKeep.deltaTime / values.outtake.elbowMaxTravelDuration * rightStickY
 
-            outtake.wristPos += timeKeep.deltaTime / wristMaxTravelDuration * when {
+            outtake.wristPos += timeKeep.deltaTime / values.outtake.wristMaxTravelDuration * when {
                 gamepad1.right_bumper -> 1.0
                 gamepad1.left_bumper -> -1.0
                 else -> 0.0
             }
 
-            outtake.clawPos += timeKeep.deltaTime / clawMaxTravelDuration * when {
+            outtake.clawPos += timeKeep.deltaTime / values.outtake.clawMaxTravelDuration * when {
                 gamepad1.y -> 1.0
                 gamepad1.a -> -1.0
                 else -> 0.0
@@ -52,14 +46,13 @@ class OuttakeOnly : LinearOpMode() {
 
             telemetry.addData("Config name", config.name)
 
-            telemetry.addData("extendo pos", outtake.extendoPos)
-            telemetry.addData("abs extendo pos", outtake.extendoPos.reverseScale(config.outtake.servoExtendo.rangeScale))
+            telemetry.addData("extendo pos", outtake.extendoCurrentPos)
 
-            telemetry.addData("shoulder pos", outtake.shoulderPos)
-            telemetry.addData("abs shoulder pos", outtake.shoulderPos.reverseScale(config.outtake.servoShoulder.rangeScale))
+            telemetry.addData("shoulder pos", outtake.shoulderCurrentPos)
+            telemetry.addData("abs shoulder pos", outtake.shoulderCurrentPos.reverseScale(config.outtake.servoShoulder.rangeScale))
 
-            telemetry.addData("elbow pos", outtake.elbowPos)
-            telemetry.addData("abs elbow pos", outtake.elbowPos.reverseScale(config.outtake.servoElbow.rangeScale))
+            telemetry.addData("elbow pos", outtake.elbowCurrentPos)
+            telemetry.addData("abs elbow pos", outtake.elbowCurrentPos.reverseScale(config.outtake.servoElbow.rangeScale))
 
             telemetry.addData("wrist pos", outtake.wristPos)
             telemetry.addData("abs wrist pos", outtake.wristPos.reverseScale(config.outtake.servoWrist.rangeScale))

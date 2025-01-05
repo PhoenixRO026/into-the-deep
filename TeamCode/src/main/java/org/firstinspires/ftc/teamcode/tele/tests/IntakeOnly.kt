@@ -5,21 +5,18 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.reverseScale
 import org.firstinspires.ftc.teamcode.robot.Intake
-import org.firstinspires.ftc.teamcode.tele.config.robotConfigWonder
 
 class IntakeOnly : LinearOpMode() {
     override fun runOpMode() {
-        val config = testsRobotConfig
+        val config = testsRobotHardwareConfig
+        val values = testsRobotValues
 
         val timeKeep = TimeKeep()
-        val intake = Intake(robotConfigWonder.intake)
+        val intake = Intake(config.intake, values.intake, timeKeep)
         intake.init(hardwareMap)
 
         telemetry.addData("Config name", config.name)
         telemetry.update()
-
-        val boxTiltMaxTravelDuration = 5.s
-        val intakeTiltMaxTravelDuration = 5.s
 
         waitForStart()
 
@@ -35,13 +32,13 @@ class IntakeOnly : LinearOpMode() {
             intake.extendoPower = leftStickY
             intake.sweeperPower = rightStickY
 
-            intake.boxTilt += timeKeep.deltaTime / boxTiltMaxTravelDuration * when {
+            intake.boxTiltCurrentPos += timeKeep.deltaTime / values.intake.boxTiltMaxTravelDuration * when {
                 gamepad1.dpad_up -> 1.0
                 gamepad1.dpad_down -> -1.0
                 else -> 0.0
             }
 
-            intake.intakeTilt += timeKeep.deltaTime / intakeTiltMaxTravelDuration * when {
+            intake.intakeTiltCurrentPos += timeKeep.deltaTime / values.intake.intakeTiltMaxTravelDuration * when {
                 gamepad1.y -> 1.0
                 gamepad1.a -> -1.0
                 else -> 0.0
@@ -51,10 +48,10 @@ class IntakeOnly : LinearOpMode() {
             telemetry.addData("extendo pos", intake.extendoPosition)
             telemetry.addData("extendo power", intake.extendoPower)
             telemetry.addData("sweeper power", intake.sweeperPower)
-            telemetry.addData("box tilt pos", intake.boxTilt)
-            telemetry.addData("abs box tilt pos", intake.boxTilt.reverseScale(config.intake.servoBoxTilt.rangeScale))
-            telemetry.addData("intake tilt pos", intake.intakeTilt)
-            telemetry.addData("abs intake tilt pos", intake.intakeTilt.reverseScale(config.intake.servoBoxTilt.rangeScale))
+            telemetry.addData("box tilt pos", intake.boxTiltCurrentPos)
+            telemetry.addData("abs box tilt pos", intake.boxTiltCurrentPos.reverseScale(config.intake.servoBoxTilt.rangeScale))
+            telemetry.addData("intake tilt pos", intake.intakeTiltCurrentPos)
+            telemetry.addData("abs intake tilt pos", intake.intakeTiltCurrentPos.reverseScale(config.intake.servoBoxTilt.rangeScale))
             telemetry.addData("delta time ms", timeKeep.deltaTime.asMs)
             telemetry.addData("fps", 1.s / timeKeep.deltaTime)
             telemetry.addLine("Press B to reset extendo position")

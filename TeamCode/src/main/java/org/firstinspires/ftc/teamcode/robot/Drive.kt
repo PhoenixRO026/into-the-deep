@@ -10,11 +10,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.IMU
 import org.firstinspires.ftc.teamcode.library.config.createIMUUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
-import org.firstinspires.ftc.teamcode.robot.config.DriveConfig
+import org.firstinspires.ftc.teamcode.robot.config.DriveHardwareConfig
+import org.firstinspires.ftc.teamcode.robot.values.DriveValues
 import kotlin.math.absoluteValue
 
 class Drive(
-    private val config: DriveConfig
+    private val config: DriveHardwareConfig,
+    private val values: DriveValues
 ) {
     private val mecanumKinematics = MecanumKinematics(1.0)
 
@@ -24,11 +26,9 @@ class Drive(
     private lateinit var motorLF: DcMotorEx
     private lateinit var motorLB: DcMotorEx
 
-    private val slowSpeed = 0.3
-
     private var offset = 0.0
 
-    private val currentSpeed get() = if (isSlowMode) slowSpeed else 1.0
+    private val currentSpeed get() = if (isSlowMode) values.slowSpeed else 1.0
 
     var isSlowMode = false
 
