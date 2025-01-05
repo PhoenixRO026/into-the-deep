@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.tele.config
 
+import org.firstinspires.ftc.teamcode.library.config.EncoderConfig
 import org.firstinspires.ftc.teamcode.library.config.IMUConfig
 import org.firstinspires.ftc.teamcode.library.config.MotorConfig
 import org.firstinspires.ftc.teamcode.library.config.ServoConfig
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.robot.config.OuttakeConfig
 import org.firstinspires.ftc.teamcode.robot.config.RobotConfig
 
 val robotConfigWonder = RobotConfig(
-    name = "Config Wonder",
+    name = "Wonderland",
     drive = DriveConfig(
         imu = IMUConfig(
             deviceName = "imu",
@@ -61,6 +62,10 @@ val robotConfigWonder = RobotConfig(
             runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
             zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
             resetEncoder = true
+        ),
+        encoder = EncoderConfig(
+            deviceName = "motorRF",
+            direction = EncoderConfig.Direction.FORWARD
         )
     ),
     intake = IntakeConfig(
@@ -70,6 +75,10 @@ val robotConfigWonder = RobotConfig(
             runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
             zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
             resetEncoder = true
+        ),
+        encoderExtendo = EncoderConfig(
+            deviceName = "motorRB",
+            direction = EncoderConfig.Direction.FORWARD
         ),
         motorSweeper = MotorConfig(
             deviceName = "motorSweeper",

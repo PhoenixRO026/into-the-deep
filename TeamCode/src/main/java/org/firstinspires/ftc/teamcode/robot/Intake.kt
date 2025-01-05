@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.robot
 
+import com.acmerobotics.roadrunner.ftc.Encoder
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.teamcode.library.config.createEncoderUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
 import org.firstinspires.ftc.teamcode.robot.config.IntakeConfig
@@ -14,6 +16,7 @@ class Intake(
     private lateinit var motorSweeper: DcMotorEx
     private lateinit var servoIntakeTilt: Servo
     private lateinit var servoBoxTilt: Servo
+    private lateinit var encoderExtendo: Encoder
 
     private var extendoOffset = 0
 
@@ -22,9 +25,10 @@ class Intake(
         motorSweeper = hardwareMap.createMotorUsingConfig(config.motorSweeper)
         servoIntakeTilt = hardwareMap.createServoWithConfig(config.servoIntakeTilt)
         servoBoxTilt = hardwareMap.createServoWithConfig(config.servoBoxTilt)
+        encoderExtendo = hardwareMap.createEncoderUsingConfig(config.encoderExtendo)
     }
 
-    val extendoPosition get() = motorExtendoIntake.currentPosition - extendoOffset
+    val extendoPosition get() = encoderExtendo.getPositionAndVelocity().position - extendoOffset
 
     var extendoPower by motorExtendoIntake::power
 
@@ -35,6 +39,6 @@ class Intake(
     var intakeTilt by servoIntakeTilt::position
 
     fun resetExtendoPosition() {
-        extendoOffset = motorExtendoIntake.currentPosition
+        extendoOffset = encoderExtendo.getPositionAndVelocity().position
     }
 }

@@ -26,6 +26,8 @@ class DriveOnly : LinearOpMode() {
                 drive.resetFieldCentric()
             }
 
+            drive.isSlowMode = gamepad1.left_bumper
+
             drive.driveFieldCentric(
                 leftStickY,
                 -leftStickX,

@@ -24,7 +24,13 @@ class Drive(
     private lateinit var motorLF: DcMotorEx
     private lateinit var motorLB: DcMotorEx
 
+    private val slowSpeed = 0.3
+
     private var offset = 0.0
+
+    private val currentSpeed get() = if (isSlowMode) slowSpeed else 1.0
+
+    var isSlowMode = false
 
     val yaw
         get() = imu.robotYawPitchRollAngles.yaw - offset
@@ -46,10 +52,10 @@ class Drive(
         val driveVec = PoseVelocity2dDual.constant<Time>(
             PoseVelocity2d(
                 Vector2d(
-                    forward,
-                    left
+                    forward * currentSpeed,
+                    left * currentSpeed
                 ),
-                rotate
+                rotate * currentSpeed
             ),
             1
         )
