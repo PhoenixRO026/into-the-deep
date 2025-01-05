@@ -46,6 +46,14 @@ val robotHardwareConfigWonder = RobotHardwareConfig(
             runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
             zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
             resetEncoder = true
+        ),
+        parEncoder = EncoderConfig(
+            deviceName = "motorLF",
+            direction = EncoderConfig.Direction.FORWARD
+        ),
+        perpEncoder = EncoderConfig(
+            deviceName = "motorLB",
+            direction = EncoderConfig.Direction.FORWARD
         )
     ),
     lift = LiftHardwareConfig(

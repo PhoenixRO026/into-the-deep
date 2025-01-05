@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.library.config.MotorConfig.Direction
 
 data class MotorConfig(
     val deviceName: String,
@@ -28,11 +29,6 @@ data class MotorConfig(
         FLOAT
     }
 
-    private fun toMotorDirection() = when (direction) {
-        Direction.FORWARD -> DcMotorSimple.Direction.FORWARD
-        Direction.REVERSE -> DcMotorSimple.Direction.REVERSE
-    }
-
     private fun toMotorRunMode() = when (runMode) {
         RunMode.RUN_WITHOUT_ENCODER -> DcMotor.RunMode.RUN_WITHOUT_ENCODER
         RunMode.RUN_USING_ENCODER -> DcMotor.RunMode.RUN_USING_ENCODER
@@ -50,11 +46,16 @@ data class MotorConfig(
             motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motor.mode = toMotorRunMode()
         motor.zeroPowerBehavior = toMotorZeroPowerBehavior()
-        motor.direction = toMotorDirection()
+        motor.direction = direction.toMotorDirection()
         return motor
     }
 }
 
 fun HardwareMap.createMotorUsingConfig(config: MotorConfig): DcMotorEx {
     return config.createMotor(this)
+}
+
+fun Direction.toMotorDirection() = when (this) {
+    Direction.FORWARD -> DcMotorSimple.Direction.FORWARD
+    Direction.REVERSE -> DcMotorSimple.Direction.REVERSE
 }

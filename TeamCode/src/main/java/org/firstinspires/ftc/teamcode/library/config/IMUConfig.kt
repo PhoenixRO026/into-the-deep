@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.library.config
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.IMU
+import org.firstinspires.ftc.teamcode.library.config.IMUConfig.LogoDirection
+import org.firstinspires.ftc.teamcode.library.config.IMUConfig.USBDirection
 
 data class IMUConfig(
     val deviceName: String,
@@ -28,25 +30,7 @@ data class IMUConfig(
         RIGHT
     }
 
-    private fun toRevLogoDirection() = when (logoDirection) {
-        LogoDirection.UP -> RevHubOrientationOnRobot.LogoFacingDirection.UP
-        LogoDirection.DOWN -> RevHubOrientationOnRobot.LogoFacingDirection.DOWN
-        LogoDirection.FORWARD -> RevHubOrientationOnRobot.LogoFacingDirection.FORWARD
-        LogoDirection.BACKWARD -> RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD
-        LogoDirection.LEFT -> RevHubOrientationOnRobot.LogoFacingDirection.LEFT
-        LogoDirection.RIGHT -> RevHubOrientationOnRobot.LogoFacingDirection.RIGHT
-    }
-
-    private fun toRevUSBDirection() = when (usbDirection) {
-        USBDirection.UP -> RevHubOrientationOnRobot.UsbFacingDirection.UP
-        USBDirection.DOWN -> RevHubOrientationOnRobot.UsbFacingDirection.DOWN
-        USBDirection.FORWARD -> RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
-        USBDirection.BACKWARD -> RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
-        USBDirection.LEFT -> RevHubOrientationOnRobot.UsbFacingDirection.LEFT
-        USBDirection.RIGHT -> RevHubOrientationOnRobot.UsbFacingDirection.RIGHT
-    }
-
-    private fun toHubOrientation() = RevHubOrientationOnRobot(toRevLogoDirection(), toRevUSBDirection())
+    private fun toHubOrientation() = RevHubOrientationOnRobot(logoDirection.toRevLogoDirection(), usbDirection.toRevUSBDirection())
 
     private fun toRevParameters() = IMU.Parameters(toHubOrientation())
 
@@ -61,4 +45,22 @@ data class IMUConfig(
 
 fun HardwareMap.createIMUUsingConfig(config: IMUConfig): IMU {
     return config.createIMU(this)
+}
+
+fun USBDirection.toRevUSBDirection() = when (this) {
+    USBDirection.UP -> RevHubOrientationOnRobot.UsbFacingDirection.UP
+    USBDirection.DOWN -> RevHubOrientationOnRobot.UsbFacingDirection.DOWN
+    USBDirection.FORWARD -> RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+    USBDirection.BACKWARD -> RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
+    USBDirection.LEFT -> RevHubOrientationOnRobot.UsbFacingDirection.LEFT
+    USBDirection.RIGHT -> RevHubOrientationOnRobot.UsbFacingDirection.RIGHT
+}
+
+fun LogoDirection.toRevLogoDirection() = when (this) {
+    LogoDirection.UP -> RevHubOrientationOnRobot.LogoFacingDirection.UP
+    LogoDirection.DOWN -> RevHubOrientationOnRobot.LogoFacingDirection.DOWN
+    LogoDirection.FORWARD -> RevHubOrientationOnRobot.LogoFacingDirection.FORWARD
+    LogoDirection.BACKWARD -> RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD
+    LogoDirection.LEFT -> RevHubOrientationOnRobot.LogoFacingDirection.LEFT
+    LogoDirection.RIGHT -> RevHubOrientationOnRobot.LogoFacingDirection.RIGHT
 }
