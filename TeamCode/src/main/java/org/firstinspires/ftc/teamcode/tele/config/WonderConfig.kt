@@ -49,7 +49,7 @@ val robotHardwareConfigWonder = RobotHardwareConfig(
             resetEncoder = true
         ),
         parEncoder = EncoderConfig(
-            deviceName = "motorLF",
+            deviceName = "motorRF",
             direction = EncoderConfig.Direction.FORWARD
         ),
         perpEncoder = EncoderConfig(
@@ -73,7 +73,7 @@ val robotHardwareConfigWonder = RobotHardwareConfig(
             resetEncoder = true
         ),
         encoder = EncoderConfig(
-            deviceName = "motorRF",
+            deviceName = "motorRB",
             direction = EncoderConfig.Direction.FORWARD
         )
     ),
@@ -86,7 +86,7 @@ val robotHardwareConfigWonder = RobotHardwareConfig(
             resetEncoder = true
         ),
         encoderExtendo = EncoderConfig(
-            deviceName = "motorRB",
+            deviceName = "motorLF",
             direction = EncoderConfig.Direction.FORWARD
         ),
         motorSweeper = MotorConfig(
