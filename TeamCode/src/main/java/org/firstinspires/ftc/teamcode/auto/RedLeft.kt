@@ -15,12 +15,36 @@ class RedLeft : LinearOpMode() {
 
         telemetry = MultipleTelemetry(telemetry, dash.telemetry)
 
-        val startPose = Pose2d(12.0, -62.0, Math.toRadians(-90.0))
+        val startPose = Pose2d(-50.0, -61.0, Math.toRadians(0.0))
+        val basket = Pose2d(-55.0,-55.0, Math.toRadians(45.0))
+        val first_yellow = Pose2d(-47.0,-47.0, Math.toRadians(90.0))
+        val mid_yellow = Pose2d(-47.0,-47.0, Math.toRadians(120.0))
+        val last_yellow = Pose2d(-55.0,-47.0, Math.toRadians(120.0))
 
         val drive = MecanumDrive(hardwareMap, startPose)
 
         val action = drive.actionBuilder(startPose)
+            .waitSeconds(3.0)
+            .setTangent(90.0)
+            .splineToLinearHeading(Pose2d(first_yellow.position, first_yellow.heading), Math.toRadians(90.0))
+            .waitSeconds(3.0)
+            .setTangent(Math.toRadians(90.0))
+            .setTangent(Math.toRadians(45.0))
+            .lineToXLinearHeading(basket.position.x, basket.heading)
+            .waitSeconds(3.0)
+            .setTangent(Math.toRadians(45.0))
+            .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
+            .waitSeconds(3.0)
+            .setTangent(Math.toRadians(-135.0))
+            .lineToXLinearHeading(basket.position.x, basket.heading)
+            .waitSeconds(3.0)
+            .setTangent(Math.toRadians(0.0))
+            .splineToLinearHeading(Pose2d(last_yellow.position, last_yellow.heading), Math.toRadians(90.0))
+            .waitSeconds(3.0)
             .setTangent(Math.toRadians(-90.0))
+            .splineToLinearHeading(Pose2d(basket.position, basket.heading), Math.toRadians(-135.0))
+            .waitSeconds(3.0)
+            .build()
 
     }
 }
