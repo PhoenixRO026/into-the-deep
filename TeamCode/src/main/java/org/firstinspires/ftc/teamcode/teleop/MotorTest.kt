@@ -2,24 +2,25 @@ package org.firstinspires.ftc.teamcode.teleop.MotorTest
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import  org.firstinspires.ftc.teamcode.robot.Extend
+import com.qualcomm.robotcore.hardware.DcMotor
 
 @TeleOp
 class MotorTest : LinearOpMode(){
     override fun runOpMode() {
-        val lift = Extend(hardwareMap)
+        var motor : DcMotor = hardwareMap.get(DcMotor::class.java, "motor")
 
         waitForStart()
 
         while(opModeIsActive()){
-            lift.powerLift = -gamepad1.right_stick_y
-            lift.updateLift()
+            if(gamepad1.y)
+                motor.power = 1.0
+            else if(gamepad1.a)
+                motor.power = -1.0
+            else
+                motor.power = 0.0
 
-            telemetry.addData("lift power", lift.powerLift)
-            telemetry.addData("left pos", lift.leftLiftMotor.currentPosition)
-            telemetry.addData("right pos", lift.rightLiftMotor.currentPosition)
-            telemetry.addData("left target", lift.leftLiftMotor.targetPosition)
-            telemetry.addData("right target", lift.rightLiftMotor.targetPosition)
+            telemetry.addData("left pos", motor.currentPosition)
+            telemetry.addData("left target", motor.targetPosition)
             telemetry.update()
         }
     }
