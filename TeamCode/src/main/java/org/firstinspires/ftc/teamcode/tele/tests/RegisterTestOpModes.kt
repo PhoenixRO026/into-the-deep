@@ -27,5 +27,6 @@ object RegisterTestOpModes {
         manager.register(metaForClass(IntakeOnly::class.java), IntakeOnly())
         manager.register(metaForClass(LiftOnly::class.java), LiftOnly())
         manager.register(metaForClass(OuttakeOnly::class.java), OuttakeOnly())
+        manager.register(metaForClass(AnalogEncoderTest::class.java), AnalogEncoderTest())
     }
 }
