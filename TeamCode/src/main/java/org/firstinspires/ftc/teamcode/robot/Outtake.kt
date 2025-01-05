@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.robot
 
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.teamcode.library.AnalogEncoderServo
 import org.firstinspires.ftc.teamcode.library.TimeKeep
+import org.firstinspires.ftc.teamcode.library.config.createAnalogEncoderCRServ
 import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
 import org.firstinspires.ftc.teamcode.robot.config.OuttakeHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.values.OuttakeValues
@@ -14,43 +16,23 @@ class Outtake(
     private val values: OuttakeValues,
     private val timeKeep: TimeKeep
 ) {
-    private lateinit var servoExtendo: Servo
+    private lateinit var servoExtendo: AnalogEncoderServo
     private lateinit var servoShoulder: Servo
     private lateinit var servoElbow: Servo
     private lateinit var servoWrist: Servo
     private lateinit var servoClaw: Servo
 
     fun init(hardwareMap: HardwareMap) {
-        servoExtendo = hardwareMap.createServoWithConfig(config.servoExtendo)
+        servoExtendo = hardwareMap.createAnalogEncoderCRServ(config.servoExtendo)
         servoShoulder = hardwareMap.createServoWithConfig(config.servoShoulder)
         servoElbow = hardwareMap.createServoWithConfig(config.servoElbow)
         servoWrist = hardwareMap.createServoWithConfig(config.servoWrist)
         servoClaw = hardwareMap.createServoWithConfig(config.servoClaw)
     }
 
-    var extendoCurrentPos
-        get() = servoExtendo.position
-        set(value) {
-            servoExtendo.position = value
-            _extendoTargetPos = servoExtendo.position
-            extendoSpeed = 0.0
-        }
+    var extendoPower by servoExtendo::power
 
-    private var _extendoTargetPos = servoExtendo.position
-        set(value) {
-            field = value.coerceIn(0.0, 1.0)
-        }
-    var extendoTargetPos
-        get() = _extendoTargetPos
-        set(value) {
-            _extendoTargetPos = value
-            extendoSpeed = 0.0
-        }
-
-    var extendoSpeed: Double = 0.0
-        set(value) {
-            field = value.coerceIn(-1.0, 1.0)
-        }
+    val extendoPos by servoExtendo::rotaions
 
     var shoulderCurrentPos
         get() = servoShoulder.position
@@ -107,7 +89,6 @@ class Outtake(
     fun update() {
         moveShoulder()
         moveElbow()
-        moveExtendo()
     }
 
     private fun moveShoulder() {
@@ -123,22 +104,6 @@ class Outtake(
             servoShoulder.position = shoulderTargetPos
         } else {
             servoShoulder.position += error.sign * step
-        }
-    }
-
-    private fun moveExtendo() {
-        if (extendoSpeed != 0.0) {
-            servoExtendo.position += timeKeep.deltaTime / values.extendoMaxTravelDuration * extendoSpeed
-            _extendoTargetPos = extendoCurrentPos
-            return
-        }
-        val error = extendoCurrentPos - extendoTargetPos
-        if (error == 0.0) return
-        val step = timeKeep.deltaTime / values.extendoMaxTravelDuration
-        if (abs(error) < step) {
-            servoExtendo.position = extendoTargetPos
-        } else {
-            servoExtendo.position += error.sign * step
         }
     }
 

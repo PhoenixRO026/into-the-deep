@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.tele.config
 
+import org.firstinspires.ftc.teamcode.library.config.AnalogEncoderCRServoConfig
 import org.firstinspires.ftc.teamcode.library.config.EncoderConfig
 import org.firstinspires.ftc.teamcode.library.config.IMUConfig
 import org.firstinspires.ftc.teamcode.library.config.MotorConfig
@@ -109,11 +110,10 @@ val robotHardwareConfigWonder = RobotHardwareConfig(
         ),
     ),
     outtake = OuttakeHardwareConfig(
-        servoExtendo = ServoConfig(
-            deviceName = "servoExtendoOuttake",
-            direction = ServoConfig.Direction.FORWARD,
-            pwmRange = ServoConfig.PWMRange.DEFAULT,
-            rangeScale = 0.0..1.0
+        servoExtendo = AnalogEncoderCRServoConfig(
+            servoDeviceName = "servoExtendoOuttake",
+            encoderDeviceName = "encoderExtendoOuttake",
+            direction = AnalogEncoderCRServoConfig.Direction.FORWARD,
         ),
         servoShoulder = ServoConfig(
             deviceName = "servoShoulder",

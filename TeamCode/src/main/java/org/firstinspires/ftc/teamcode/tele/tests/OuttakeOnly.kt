@@ -26,7 +26,7 @@ class OuttakeOnly : LinearOpMode() {
             val rightStickY = -gamepad1.right_stick_y.toDouble()
             val triggers = (gamepad1.right_trigger - gamepad1.left_trigger).toDouble()
 
-            outtake.extendoSpeed = triggers
+            outtake.extendoPower = triggers
 
             outtake.shoulderCurrentPos += timeKeep.deltaTime / values.outtake.shoulderMaxTravelDuration * leftStickY
 
@@ -46,7 +46,8 @@ class OuttakeOnly : LinearOpMode() {
 
             telemetry.addData("Config name", config.name)
 
-            telemetry.addData("extendo pos", outtake.extendoCurrentPos)
+            telemetry.addData("extendo pos", outtake.extendoPos)
+            telemetry.addData("extendo power", outtake.extendoPower)
 
             telemetry.addData("shoulder pos", outtake.shoulderCurrentPos)
             telemetry.addData("abs shoulder pos", outtake.shoulderCurrentPos.reverseScale(config.outtake.servoShoulder.rangeScale))

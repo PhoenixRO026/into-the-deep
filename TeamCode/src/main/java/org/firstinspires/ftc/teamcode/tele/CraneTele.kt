@@ -54,7 +54,7 @@ class CraneTele : LinearOpMode() {
             )
 
             //OUTTAKE
-            robot.outtake.extendoSpeed = pad2RightStickX
+            robot.outtake.extendoPower = pad2RightStickX
             robot.outtake.shoulderSpeed = pad2LeftStickY
             robot.outtake.elbowSpeed = pad2LeftStickX
             robot.outtake.wristPos = when {
@@ -88,7 +88,8 @@ class CraneTele : LinearOpMode() {
             telemetry.addLine("DRIVE:")
             telemetry.addData("yaw degs", robot.drive.yaw.rad.asDeg)
             telemetry.addLine("OUTTAKE:")
-            telemetry.addData("outtake extendo pos", robot.outtake.extendoCurrentPos)
+            telemetry.addData("outtake extendo pos", robot.outtake.extendoPos)
+            telemetry.addData("outtake extendo power", robot.outtake.extendoPower)
             telemetry.addData("shoulder pos", robot.outtake.shoulderCurrentPos)
             telemetry.addData("elbow pos", robot.outtake.elbowCurrentPos)
             telemetry.addData("wrist pos", robot.outtake.wristPos)

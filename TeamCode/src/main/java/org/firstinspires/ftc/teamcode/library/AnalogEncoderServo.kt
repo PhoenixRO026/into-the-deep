@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.library
 import com.lib.units.rev
 import com.qualcomm.robotcore.hardware.AnalogInput
 import com.qualcomm.robotcore.hardware.CRServo
+import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import java.util.LinkedList
 import kotlin.math.abs
@@ -10,10 +11,15 @@ import kotlin.math.abs
 class AnalogEncoderServo(
     hardwareMap: HardwareMap,
     inputName: String,
-    servoName: String
+    servoName: String,
+    private val direction: DcMotorSimple.Direction = DcMotorSimple.Direction.FORWARD
 ) {
     private val analogInput = hardwareMap.get(AnalogInput::class.java, inputName)
     private val servo = hardwareMap.get(CRServo::class.java, servoName)
+
+    init {
+        servo.direction = direction
+    }
 
     private var init = true
 
@@ -29,7 +35,7 @@ class AnalogEncoderServo(
 
     val absPos get() = 1.0 - (analogInput.voltage / 3.3)
 
-    val position get() = rotCount + absPos - offset
+    val position get() = (rotCount + absPos - offset) * if (direction == DcMotorSimple.Direction.REVERSE) -1.0 else 1.0
 
     val rotaions get() = position.rev
 
