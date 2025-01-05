@@ -19,6 +19,7 @@ class Arm (hardwareMap: HardwareMap) {
     companion object{
         const val robotTilt = 0.5
         const val scoreTilt = 0.5
+        const val backTilt = 0.5
 
         const val clawUp = 0.5
         const val clawDown = 0.0
@@ -47,6 +48,8 @@ class Arm (hardwareMap: HardwareMap) {
     fun tiltToS3core() = tiltToPos(scoreTilt)
 
     fun tiltToRobot() = tiltToPos(robotTilt)
+
+    fun tiltToBack() = tiltToPos(backTilt)
 
     fun tiltUp() = tiltToPos(clawUp)
 

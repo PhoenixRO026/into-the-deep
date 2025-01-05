@@ -110,6 +110,10 @@ class Intake(hardwareMap: HardwareMap) {
             powerIntakeMotor.power = value.toDouble()
         }
 
+    fun powerIntake(newPower : Double) = SequentialAction(
+        InstantAction {power = newPower}
+    )
+
     var tiltIntake : Double = intakeUp
         set(value){
             val clippedValue = value.coerceIn(0.0, 1.0)
