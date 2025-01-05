@@ -83,7 +83,7 @@ class Intake(hardwareMap: HardwareMap) {
         SleepAction(0.1.s)
     )
 
-    val busyExtend get() = abs(extendIntakeMotor.currentPosition - targetPositionTicks) > Extend.toleranceTicks
+    val busyExtend get() = abs(extendIntakeMotor.currentPosition - targetPositionTicks) > toleranceTicks
 
     var extend : Double = 0.0
         get() = extendIntakeMotor.power
@@ -94,7 +94,7 @@ class Intake(hardwareMap: HardwareMap) {
         }
 
     fun updateExtend() {
-        val feedback = controller.calculate(extendIntakeMotor.currentPosition.toDouble(), targetPositionTicks.toDouble()) + org.firstinspires.ftc.teamcode.robot.Extend.kF
+        val feedback = controller.calculate(extendIntakeMotor.currentPosition.toDouble(), targetPositionTicks.toDouble()) + kF
 
         if (mode == Mode.TARGET) {
             extendIntakeMotor.power = feedback

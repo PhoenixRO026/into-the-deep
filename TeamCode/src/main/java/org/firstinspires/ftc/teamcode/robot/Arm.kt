@@ -44,7 +44,7 @@ class Arm (hardwareMap: HardwareMap) {
         SleepAction(tiltWait)
     )
 
-    fun tiltToScore() = tiltToPos(scoreTilt)
+    fun tiltToS3core() = tiltToPos(scoreTilt)
 
     fun tiltToRobot() = tiltToPos(robotTilt)
 
