@@ -60,7 +60,7 @@ class Lift (hardwareMap: HardwareMap) {
         SleepAction(0.1.s)
     )
 
-    val busyLift get() = abs(leftLiftMotor.currentPosition - targetPositionTicks) > Extend.toleranceTicks
+    val busyLift get() = abs(leftLiftMotor.currentPosition - targetPositionTicks) > toleranceTicks
 
     var powerLift : Number
         get() = leftLiftMotor.power
@@ -71,7 +71,7 @@ class Lift (hardwareMap: HardwareMap) {
             rightLiftMotor.power = value.toDouble()
         }
     fun updateLift() {
-        val feedback = org.firstinspires.ftc.teamcode.robot.Extend.controller.calculate(leftLiftMotor.currentPosition.toDouble(), targetPositionTicks.toDouble()) + org.firstinspires.ftc.teamcode.robot.Extend.kF
+        val feedback = controller.calculate(leftLiftMotor.currentPosition.toDouble(), targetPositionTicks.toDouble()) + kF
 
         if (mode == Mode.TARGET) {
             leftLiftMotor.power = feedback
