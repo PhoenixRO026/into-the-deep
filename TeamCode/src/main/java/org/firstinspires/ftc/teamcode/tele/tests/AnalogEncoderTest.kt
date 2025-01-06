@@ -6,12 +6,14 @@ import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.AnalogEncoderServo
 import org.firstinspires.ftc.teamcode.library.TimeKeep
+import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigWonder
 
 class AnalogEncoderTest : LinearOpMode() {
     override fun runOpMode() {
+        val config = robotHardwareConfigWonder.outtake.servoExtendo
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
         val timeKeep = TimeKeep()
-        val servo = AnalogEncoderServo(hardwareMap, "pos", "servoTest")
+        val servo = AnalogEncoderServo(hardwareMap, config.encoderDeviceName, config.servoDeviceName)
 
         waitForStart()
 

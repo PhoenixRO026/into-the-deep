@@ -19,8 +19,8 @@ class OuttakeOnly : LinearOpMode() {
 
         outtake.shoulderCurrentPos = 0.5
         outtake.elbowCurrentPos = 0.5
-        outtake.wristPos = 0.5
-        outtake.clawPos = 0.5
+        outtake.wristPosToMiddle()
+        outtake.clawPos
 
         waitForStart()
 
@@ -36,7 +36,7 @@ class OuttakeOnly : LinearOpMode() {
 
             outtake.elbowCurrentPos += timeKeep.deltaTime / values.outtake.elbowMaxTravelDuration * rightStickY
 
-            outtake.wristPos += timeKeep.deltaTime / values.outtake.wristMaxTravelDuration * when {
+            outtake.wristCurrentPos += timeKeep.deltaTime / values.outtake.wristMaxTravelDuration * when {
                 gamepad1.right_bumper -> 1.0
                 gamepad1.left_bumper -> -1.0
                 else -> 0.0
@@ -47,6 +47,8 @@ class OuttakeOnly : LinearOpMode() {
                 gamepad1.a -> -1.0
                 else -> 0.0
             }
+
+            outtake.update()
 
             telemetry.addData("Config name", config.name)
 
@@ -59,8 +61,8 @@ class OuttakeOnly : LinearOpMode() {
             telemetry.addData("elbow pos", outtake.elbowCurrentPos)
             telemetry.addData("abs elbow pos", outtake.elbowCurrentPos.reverseScale(config.outtake.servoElbow.rangeScale))
 
-            telemetry.addData("wrist pos", outtake.wristPos)
-            telemetry.addData("abs wrist pos", outtake.wristPos.reverseScale(config.outtake.servoWrist.rangeScale))
+            telemetry.addData("wrist pos", outtake.wristCurrentPos)
+            telemetry.addData("abs wrist pos", outtake.wristCurrentPos.reverseScale(config.outtake.servoWrist.rangeScale))
 
             telemetry.addData("claw pos", outtake.clawPos)
             telemetry.addData("abs claw pos", outtake.clawPos.reverseScale(config.outtake.servoClaw.rangeScale))

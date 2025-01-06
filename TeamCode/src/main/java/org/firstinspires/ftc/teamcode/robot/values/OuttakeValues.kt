@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.robot.values
 import com.lib.units.Duration
 
 data class OuttakeValues(
-    val extendoMaxTravelDuration: Duration,
     val shoulderMaxTravelDuration: Duration,
     val elbowMaxTravelDuration: Duration,
     val wristMaxTravelDuration: Duration,
@@ -16,5 +15,7 @@ data class OuttakeValues(
     val shoulderSpecimenPos: Double,
     val elbowSpecimenPos: Double,
     val shoulderIntakePos: Double,
-    val elbowIntakePos: Double
+    val elbowIntakePos: Double,
+    val shoulderPickupPos: Double,
+    val elbowPickupPos: Double,
 )

@@ -98,13 +98,13 @@ val robotHardwareConfigWonder = RobotHardwareConfig(
         ),
         servoIntakeTilt = ServoConfig(
             deviceName = "servoIntakeTilt",
-            direction = ServoConfig.Direction.FORWARD,
+            direction = ServoConfig.Direction.REVERSE,
             pwmRange = ServoConfig.PWMRange.DEFAULT,
-            rangeScale = 0.0..1.0
+            rangeScale = 0.602..0.775
         ),
         servoBoxTilt = ServoConfig(
             deviceName = "servoBoxTilt",
-            direction = ServoConfig.Direction.FORWARD,
+            direction = ServoConfig.Direction.REVERSE,
             pwmRange = ServoConfig.PWMRange.DEFAULT,
             rangeScale = 0.0..1.0
         ),

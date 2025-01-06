@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.tele
 
+import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
@@ -12,6 +14,8 @@ class CraneTele : LinearOpMode() {
     override fun runOpMode() {
         val config = robotHardwareConfigWonder
         val values = robotValuesWonder
+
+        telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("INITIALIZING")
@@ -26,10 +30,15 @@ class CraneTele : LinearOpMode() {
 
         waitForStart()
 
+        robot.outtake.shoulderCurrentPos = 0.3
+        robot.outtake.elbowCurrentPos = 0.41
+        robot.outtake.wristPosToMiddle()
+        robot.outtake.clawPos = 1.0
+
         while (isStarted && !isStopRequested) {
             timeKeep.resetDeltaTime()
             val pad1LeftStickY = -gamepad1.left_stick_y.toDouble()
-            val pad1LeftStickX = gamepad1.right_stick_x.toDouble()
+            val pad1LeftStickX = gamepad1.left_stick_x.toDouble()
             val pad1RightStickX = gamepad1.right_stick_x.toDouble()
             val pad1Triggers = gamepad1.right_trigger.toDouble() - gamepad1.left_trigger.toDouble()
 
@@ -42,7 +51,7 @@ class CraneTele : LinearOpMode() {
             if (gamepad1.y)
                 robot.drive.resetFieldCentric()
 
-            robot.drive.isSlowMode = gamepad1.left_bumper
+            robot.drive.isSlowMode = gamepad1.left_trigger >= 0.2
 
             robot.drive.driveFieldCentric(
                 pad1LeftStickY,
@@ -51,18 +60,26 @@ class CraneTele : LinearOpMode() {
             )
 
             //OUTTAKE
-            robot.outtake.extendoPower = pad2RightStickX
-            robot.outtake.shoulderSpeed = pad2LeftStickY
-            robot.outtake.elbowSpeed = pad2LeftStickX
-            robot.outtake.wristPos = when {
-                gamepad2.left_bumper -> 0.0
-                gamepad2.right_bumper -> 1.0
-                else -> 0.5
+            robot.outtake.extendoPower = pad2LeftStickY
+            robot.outtake.shoulderSpeed = when {
+                gamepad2.dpad_up -> 1.0
+                gamepad2.dpad_down -> -1.0
+                else -> 0.0
+            }
+            robot.outtake.elbowSpeed = when {
+                gamepad2.y -> 1.0
+                gamepad2.a -> -1.0
+                else -> 0.0
+            }
+            robot.outtake.wristSpeed = when {
+                gamepad2.dpad_left -> -1.0
+                gamepad2.dpad_right -> 1.0
+                else -> 0.0
             }
             robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
             //INTAKE
-            robot.intake.extendoPower = pad1Triggers
+            /*robot.intake.extendoPower = pad1Triggers
             robot.intake.sweeperPower = if (gamepad2.x) -1.0 else gamepad2.left_trigger.toDouble()
             robot.intake.boxTiltSpeed = when {
                 gamepad2.dpad_up -> 1.0
@@ -73,10 +90,10 @@ class CraneTele : LinearOpMode() {
                 gamepad2.dpad_right -> 1.0
                 gamepad2.dpad_left -> -1.0
                 else -> 0.0
-            }
+            }*/
 
             //LIFT
-            robot.lift.power = pad2RightStickY
+            robot.lift.power = pad2RightStickY + 0.15
 
             robot.update()
 

@@ -39,7 +39,7 @@ class Outtake(
     }
 
     fun wristPosToMiddle() {
-        wristPos = values.wristMiddlPos
+        wristCurrentPos = values.wristMiddlPos
     }
 
     var extendoPower by servoExtendo::power
@@ -94,13 +94,53 @@ class Outtake(
             field = value.coerceIn(-1.0, 1.0)
         }
 
-    var wristPos by servoWrist::position
+    var wristCurrentPos
+        get() = servoWrist.position
+        set(value) {
+            servoWrist.position = value
+            _wristTargetPos = servoWrist.position
+            wristSpeed = 0.0
+        }
+
+    private var _wristTargetPos = servoWrist.position
+        set(value) {
+            field = value.coerceIn(0.0, 1.0)
+        }
+    var wristTargetPos
+        get() = _wristTargetPos
+        set(value) {
+            _wristTargetPos = value
+            wristSpeed = 0.0
+        }
+
+    var wristSpeed: Double = 0.0
+        set(value) {
+            field = value.coerceIn(-1.0, 1.0)
+        }
 
     var clawPos by servoClaw::position
 
     fun update() {
+        servoExtendo.update()
         moveShoulder()
         moveElbow()
+        moveWrist()
+    }
+
+    private fun moveWrist() {
+        if (wristSpeed != 0.0) {
+            servoWrist.position += timeKeep.deltaTime / values.wristMaxTravelDuration * wristSpeed
+            _wristTargetPos = wristCurrentPos
+            return
+        }
+        val error = wristCurrentPos - wristTargetPos
+        if (error == 0.0) return
+        val step = timeKeep.deltaTime / values.wristMaxTravelDuration
+        if (abs(error) < step) {
+            servoWrist.position = wristTargetPos
+        } else {
+            servoWrist.position += error.sign * step
+        }
     }
 
     private fun moveShoulder() {

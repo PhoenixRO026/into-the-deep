@@ -29,6 +29,22 @@ class Intake(
 
     val extendoPosition get() = encoderExtendo.getPositionAndVelocity().position - extendoOffset
 
+    fun intakeDown() {
+        intakeTiltCurrentPos = 0.0
+    }
+
+    fun intakeUp() {
+        intakeTiltCurrentPos = 1.0
+    }
+
+    fun boxDown() {
+        boxTiltCurrentPos = 0.0
+    }
+
+    fun boxUp() {
+        boxTiltCurrentPos = 1.0
+    }
+
     var extendoPower
         get() = motorExtendoIntake.power
         set(value) {
