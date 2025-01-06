@@ -9,20 +9,16 @@ import org.firstinspires.ftc.teamcode.robot.config.LiftHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.values.LiftValues
 
 class Lift(
-    private val config: LiftHardwareConfig,
+    hardwareMap: HardwareMap,
+    config: LiftHardwareConfig,
     private val values: LiftValues
 ) {
-    private lateinit var motorLiftRight: DcMotorEx
-    private lateinit var motorLiftLeft: DcMotorEx
-    private lateinit var encoder: Encoder
+    private val motorLiftRight: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorLiftRight)
+    private val motorLiftLeft: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorLiftLeft)
+    private val encoder: Encoder = hardwareMap.createEncoderUsingConfig(config.encoder)
 
     private var offset = 0
 
-    fun init(hardwareMap: HardwareMap) {
-        motorLiftRight = hardwareMap.createMotorUsingConfig(config.motorLiftRight)
-        motorLiftLeft = hardwareMap.createMotorUsingConfig(config.motorLiftLeft)
-        encoder = hardwareMap.createEncoderUsingConfig(config.encoder)
-    }
     val position get() = encoder.getPositionAndVelocity().position - offset
 
     var power

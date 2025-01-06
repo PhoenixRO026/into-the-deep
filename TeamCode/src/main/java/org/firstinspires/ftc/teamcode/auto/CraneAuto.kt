@@ -32,8 +32,7 @@ class CraneAuto : LinearOpMode() {
         telemetry.update()
 
         val timeKeep = TimeKeep()
-        val robot = Robot(config, values, timeKeep)
-        robot.init(hardwareMap)
+        val robot = Robot(hardwareMap, config, values, timeKeep)
         val mecanumDrive = MecanumDriveEx(hardwareMap, startPose.pose2d)
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()

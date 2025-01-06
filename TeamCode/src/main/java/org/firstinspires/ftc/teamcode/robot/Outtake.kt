@@ -12,27 +12,20 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 class Outtake(
-    private val config: OuttakeHardwareConfig,
+    hardwareMap: HardwareMap,
+    config: OuttakeHardwareConfig,
     private val values: OuttakeValues,
     private val timeKeep: TimeKeep
 ) {
-    private lateinit var servoExtendo: AnalogEncoderServo
-    private lateinit var servoShoulder: Servo
-    private lateinit var servoElbow: Servo
-    private lateinit var servoWrist: Servo
-    private lateinit var servoClaw: Servo
-
-    fun init(hardwareMap: HardwareMap) {
-        servoExtendo = hardwareMap.createAnalogEncoderCRServ(config.servoExtendo)
-        servoShoulder = hardwareMap.createServoWithConfig(config.servoShoulder)
-        servoElbow = hardwareMap.createServoWithConfig(config.servoElbow)
-        servoWrist = hardwareMap.createServoWithConfig(config.servoWrist)
-        servoClaw = hardwareMap.createServoWithConfig(config.servoClaw)
-    }
+    private val servoExtendo: AnalogEncoderServo = hardwareMap.createAnalogEncoderCRServ(config.servoExtendo)
+    private val servoShoulder: Servo = hardwareMap.createServoWithConfig(config.servoShoulder)
+    private val servoElbow: Servo = hardwareMap.createServoWithConfig(config.servoElbow)
+    private val servoWrist: Servo = hardwareMap.createServoWithConfig(config.servoWrist)
+    private val servoClaw: Servo = hardwareMap.createServoWithConfig(config.servoClaw)
 
     var extendoPower by servoExtendo::power
 
-    val extendoPos by servoExtendo::rotaions
+    val extendoPos by servoExtendo::position
 
     var shoulderCurrentPos
         get() = servoShoulder.position

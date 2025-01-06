@@ -8,8 +8,7 @@ class LiftOnly : LinearOpMode() {
         val config = testsRobotHardwareConfig
         val values = testsRobotValues
 
-        val lift = Lift(config.lift, values.lift)
-        lift.init(hardwareMap)
+        val lift = Lift(hardwareMap, config.lift, values.lift)
 
         telemetry.addData("Config name", config.name)
         telemetry.update()

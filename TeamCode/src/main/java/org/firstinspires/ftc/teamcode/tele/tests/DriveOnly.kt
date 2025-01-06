@@ -9,8 +9,7 @@ class DriveOnly : LinearOpMode() {
         val config = testsRobotHardwareConfig
         val values = testsRobotValues
 
-        val drive = Drive(config.drive, values.drive)
-        drive.init(hardwareMap)
+        val drive = Drive(hardwareMap, config.drive, values.drive)
 
         telemetry.addData("Config name", config.name)
         telemetry.update()

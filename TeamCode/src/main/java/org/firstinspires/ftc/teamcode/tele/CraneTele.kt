@@ -18,8 +18,7 @@ class CraneTele : LinearOpMode() {
         telemetry.update()
 
         val timeKeep = TimeKeep()
-        val robot = Robot(config, values, timeKeep)
-        robot.init(hardwareMap)
+        val robot = Robot(hardwareMap, config, values, timeKeep)
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("READY!")

@@ -9,21 +9,15 @@ import org.firstinspires.ftc.teamcode.robot.config.RobotHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.values.RobotValues
 
 class Robot(
+    hardwareMap: HardwareMap,
     private val config: RobotHardwareConfig,
     values: RobotValues,
     private val timeKeep: TimeKeep
 ) {
-    val drive = Drive(config.drive, values.drive)
-    val intake = Intake(config.intake, values.intake, timeKeep)
-    val lift = Lift(config.lift, values.lift)
-    val outtake = Outtake(config.outtake, values.outtake, timeKeep)
-
-    fun init(hardwareMap: HardwareMap) {
-        drive.init(hardwareMap)
-        intake.init(hardwareMap)
-        lift.init(hardwareMap)
-        outtake.init(hardwareMap)
-    }
+    val drive = Drive(hardwareMap, config.drive, values.drive)
+    val intake = Intake(hardwareMap, config.intake, values.intake, timeKeep)
+    val lift = Lift(hardwareMap, config.lift, values.lift)
+    val outtake = Outtake(hardwareMap, config.outtake, values.outtake, timeKeep)
 
     fun update() {
         intake.update()

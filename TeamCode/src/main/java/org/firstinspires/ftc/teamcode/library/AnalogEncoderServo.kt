@@ -37,7 +37,7 @@ class AnalogEncoderServo(
 
     val position get() = (rotCount + absPos - offset) * if (direction == DcMotorSimple.Direction.REVERSE) -1.0 else 1.0
 
-    val rotaions get() = position.rev
+    val rotations get() = position.rev
 
     var power by servo::power
 

@@ -14,29 +14,26 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 class Intake(
-    private val config: IntakeHardwareConfig,
+    hardwareMap: HardwareMap,
+    config: IntakeHardwareConfig,
     private val values: IntakeValues,
     private val timeKeep: TimeKeep
 ) {
-    private lateinit var motorExtendoIntake: DcMotorEx
-    private lateinit var motorSweeper: DcMotorEx
-    private lateinit var servoIntakeTilt: Servo
-    private lateinit var servoBoxTilt: Servo
-    private lateinit var encoderExtendo: Encoder
+    private val motorExtendoIntake: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorExtendoIntake)
+    private val motorSweeper: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorSweeper)
+    private val servoIntakeTilt: Servo = hardwareMap.createServoWithConfig(config.servoIntakeTilt)
+    private val servoBoxTilt: Servo = hardwareMap.createServoWithConfig(config.servoBoxTilt)
+    private val encoderExtendo: Encoder = hardwareMap.createEncoderUsingConfig(config.encoderExtendo)
 
     private var extendoOffset = 0
 
-    fun init(hardwareMap: HardwareMap) {
-        motorExtendoIntake = hardwareMap.createMotorUsingConfig(config.motorExtendoIntake)
-        motorSweeper = hardwareMap.createMotorUsingConfig(config.motorSweeper)
-        servoIntakeTilt = hardwareMap.createServoWithConfig(config.servoIntakeTilt)
-        servoBoxTilt = hardwareMap.createServoWithConfig(config.servoBoxTilt)
-        encoderExtendo = hardwareMap.createEncoderUsingConfig(config.encoderExtendo)
-    }
-
     val extendoPosition get() = encoderExtendo.getPositionAndVelocity().position - extendoOffset
 
-    var extendoPower by motorExtendoIntake::power
+    var extendoPower
+        get() = motorExtendoIntake.power
+        set(value) {
+            motorExtendoIntake.power = value
+        }
 
     var sweeperPower by motorSweeper::power
 

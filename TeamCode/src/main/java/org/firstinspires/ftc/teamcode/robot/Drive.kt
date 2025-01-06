@@ -5,9 +5,11 @@ import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.PoseVelocity2dDual
 import com.acmerobotics.roadrunner.Time
 import com.acmerobotics.roadrunner.Vector2d
+import com.lib.units.rotate
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.IMU
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.teamcode.library.config.createIMUUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
 import org.firstinspires.ftc.teamcode.robot.config.DriveHardwareConfig
@@ -15,16 +17,20 @@ import org.firstinspires.ftc.teamcode.robot.values.DriveValues
 import kotlin.math.absoluteValue
 
 class Drive(
-    private val config: DriveHardwareConfig,
+    hardwareMap: HardwareMap,
+    config: DriveHardwareConfig,
     private val values: DriveValues
 ) {
     private val mecanumKinematics = MecanumKinematics(1.0)
 
-    private lateinit var imu: IMU
-    private lateinit var motorRF: DcMotorEx
-    private lateinit var motorRB: DcMotorEx
-    private lateinit var motorLF: DcMotorEx
-    private lateinit var motorLB: DcMotorEx
+    private val imu: IMU = hardwareMap.createIMUUsingConfig(config.imu)
+    private val motorRF: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorRF)
+
+    private val motorRB: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorRB)
+
+    private val motorLF: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorLF)
+
+    private val motorLB: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorLB)
 
     private var offset = 0.0
 
@@ -33,19 +39,10 @@ class Drive(
     var isSlowMode = false
 
     val yaw
-        get() = imu.robotYawPitchRollAngles.yaw - offset
+        get() = imu.robotYawPitchRollAngles.getYaw(AngleUnit.RADIANS) - offset
 
     fun resetFieldCentric() {
-        offset = imu.robotYawPitchRollAngles.yaw
-    }
-
-    fun init(hardwareMap: HardwareMap) {
-        imu = hardwareMap.createIMUUsingConfig(config.imu)
-
-        motorRF = hardwareMap.createMotorUsingConfig(config.motorRF)
-        motorRB = hardwareMap.createMotorUsingConfig(config.motorRB)
-        motorLF = hardwareMap.createMotorUsingConfig(config.motorLF)
-        motorLB = hardwareMap.createMotorUsingConfig(config.motorLB)
+        offset = imu.robotYawPitchRollAngles.getYaw(AngleUnit.RADIANS)
     }
 
     fun driveFieldCentric(forward: Double, left: Double, rotate: Double) {
@@ -54,7 +51,7 @@ class Drive(
                 Vector2d(
                     forward * currentSpeed,
                     left * currentSpeed
-                ),
+                ).rotate(-yaw),
                 rotate * currentSpeed
             ),
             1

@@ -21,7 +21,7 @@ class AnalogEncoderTest : LinearOpMode() {
 
             servo.power = -gamepad1.left_stick_y.toDouble()
 
-            telemetry.addData("servo pos", servo.rotaions.asRev)
+            telemetry.addData("servo pos", servo.rotations.asRev)
             telemetry.addData("voltage", servo.voltage)
             telemetry.addData("change count", servo.changeCount)
             telemetry.addData("fps", 1.s / timeKeep.deltaTime)

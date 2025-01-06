@@ -12,8 +12,7 @@ class IntakeOnly : LinearOpMode() {
         val values = testsRobotValues
 
         val timeKeep = TimeKeep()
-        val intake = Intake(config.intake, values.intake, timeKeep)
-        intake.init(hardwareMap)
+        val intake = Intake(hardwareMap, config.intake, values.intake, timeKeep)
 
         telemetry.addData("Config name", config.name)
         telemetry.update()

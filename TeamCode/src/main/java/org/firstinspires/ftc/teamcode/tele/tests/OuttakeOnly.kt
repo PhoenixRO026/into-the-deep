@@ -12,11 +12,15 @@ class OuttakeOnly : LinearOpMode() {
         val values = testsRobotValues
 
         val timeKeep = TimeKeep()
-        val outtake = Outtake(config.outtake, values.outtake, timeKeep)
-        outtake.init(hardwareMap)
+        val outtake = Outtake(hardwareMap, config.outtake, values.outtake, timeKeep)
 
         telemetry.addData("Config name", config.name)
         telemetry.update()
+
+        outtake.shoulderCurrentPos = 0.5
+        outtake.elbowCurrentPos = 0.5
+        outtake.wristPos = 0.5
+        outtake.clawPos = 0.5
 
         waitForStart()
 
