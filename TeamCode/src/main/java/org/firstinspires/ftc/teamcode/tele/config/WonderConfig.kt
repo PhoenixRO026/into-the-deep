@@ -137,7 +137,7 @@ val robotHardwareConfigWonder = RobotHardwareConfig(
             deviceName = "servoClaw",
             direction = ServoConfig.Direction.FORWARD,
             pwmRange = ServoConfig.PWMRange.DEFAULT,
-            rangeScale = 0.0..1.0
+            rangeScale = 0.353..0.6
         ),
     )
 )

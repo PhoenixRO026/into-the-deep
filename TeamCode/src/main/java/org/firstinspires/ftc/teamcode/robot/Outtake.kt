@@ -23,6 +23,25 @@ class Outtake(
     private val servoWrist: Servo = hardwareMap.createServoWithConfig(config.servoWrist)
     private val servoClaw: Servo = hardwareMap.createServoWithConfig(config.servoClaw)
 
+    fun armTargetToBasket() {
+        shoulderTargetPos = values.shoulderBasketPos
+        elbowTargetPos = values.elbowBasketPos
+    }
+
+    fun armTargetToSpecimen() {
+        shoulderTargetPos = values.shoulderSpecimenPos
+        elbowTargetPos = values.elbowSpecimenPos
+    }
+
+    fun armTargetToIntake() {
+        shoulderTargetPos = values.shoulderIntakePos
+        elbowTargetPos = values.elbowIntakePos
+    }
+
+    fun wristPosToMiddle() {
+        wristPos = values.wristMiddlPos
+    }
+
     var extendoPower by servoExtendo::power
 
     val extendoPos by servoExtendo::position

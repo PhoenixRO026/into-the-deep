@@ -23,6 +23,15 @@ val robotValuesWonder = RobotValues(
         shoulderMaxTravelDuration = 5.s,
         elbowMaxTravelDuration = 5.s,
         wristMaxTravelDuration = 5.s,
-        clawMaxTravelDuration = 5.s
+        clawMaxTravelDuration = 5.s,
+        //clawOpenPos = 0.6,
+        //clawClosePos = 0.353,
+        shoulderBasketPos = 0.71,
+        elbowBasketPos = 0.478,
+        wristMiddlPos = 0.476,
+        shoulderSpecimenPos = 0.265,
+        elbowSpecimenPos = 0.563,
+        shoulderIntakePos = 0.358,
+        elbowIntakePos = 0.05
     )
 )
