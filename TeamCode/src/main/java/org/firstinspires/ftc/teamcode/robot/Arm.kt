@@ -23,6 +23,7 @@ class Arm (hardwareMap: HardwareMap) {
 
         const val clawUp = 0.5
         const val clawDown = 0.0
+        const val clawIntake = 0.5
 
         val tiltWait = 0.8
         val angWait = 0.5
@@ -45,7 +46,7 @@ class Arm (hardwareMap: HardwareMap) {
         SleepAction(tiltWait)
     )
 
-    fun tiltToS3core() = tiltToPos(scoreTilt)
+    fun tiltToScore() = tiltToPos(scoreTilt)
 
     fun tiltToRobot() = tiltToPos(robotTilt)
 
@@ -54,6 +55,8 @@ class Arm (hardwareMap: HardwareMap) {
     fun tiltUp() = tiltToPos(clawUp)
 
     fun tiltDown() = tiltToPos(clawDown)
+
+    fun tiltToIntake() = tiltToPos(clawIntake)
 
     var angle : Double = clawDown
         set(value){

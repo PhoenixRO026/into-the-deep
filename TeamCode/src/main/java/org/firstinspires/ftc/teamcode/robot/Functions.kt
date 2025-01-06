@@ -25,6 +25,7 @@ class Functions (hardwareMap: HardwareMap) {
     private val extend_out = 1
     private val extend_in = 1
     private val wait = 1.s
+    private val second_basket = 1
 
     fun scoreFirstBar() = SequentialAction(
         lift.liftGoToPos(first_bar),
@@ -58,12 +59,35 @@ class Functions (hardwareMap: HardwareMap) {
         intake.ExtendGoToPos(extend_in)
     )
 
+    fun grabBasket() = SequentialAction(
+        intake.ExtendGoToPos(extend_out),
+        intake.tiltBoxDown(),
+        intake.powerIntake(1.0),
+        SleepAction(wait),
+        intake.powerIntake(0.0),
+        intake.tiltBoxUp(),
+        intake.ExtendGoToPos(extend_in)
+    )
+
     fun release() = SequentialAction(
         intake.ExtendGoToPos(extend_out),
         intake.powerIntake(-1.0),
         SleepAction(wait),
         intake.powerIntake(0.0),
         intake.ExtendGoToPos(extend_in)
+    )
+
+    fun basketScore() = SequentialAction(
+        claw.openClaw(),
+        arm.tiltToIntake(),
+        claw.closeClaw(),
+        arm.tiltToScore(),
+        lift.liftGoToPos(second_basket),
+        arm.tiltToBack(),
+        claw.openClaw(),
+        claw.closeClaw(),
+        arm.tiltToScore(),
+        lift.liftGoToPos(lift_in)
     )
 }
 
