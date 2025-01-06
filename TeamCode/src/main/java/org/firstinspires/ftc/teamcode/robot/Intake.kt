@@ -15,12 +15,12 @@ import kotlin.math.abs
 
 class Intake(hardwareMap: HardwareMap) {
     companion object{
-        const val intakeUp = 0.5
-        const val intakeDown = 0.5
+        const val intakeUp = 0.0 //
+        const val intakeDown = 0.5 //
 
         const val boxUp = 0.5
-        const val boxDown = 0.5
-        const val boxMid=0.5
+        const val boxDown = 0.74 //
+        const val boxMid=0.5 // no more
 
         const val extendInrobot = 0.5
         const val extendOutrobot = 0.5
@@ -71,6 +71,7 @@ class Intake(hardwareMap: HardwareMap) {
             override fun run(p: TelemetryPacket): Boolean {
                 if (init) {
                     init = false
+5
 
                     targetPositionTicks = newPos
 
