@@ -33,6 +33,11 @@ class Outtake(
         elbowTargetPos = values.elbowSpecimenPos
     }
 
+    fun armTargetToPickup() {
+        shoulderTargetPos = values.shoulderPickupPos
+        elbowTargetPos = values.elbowPickupPos
+    }
+
     fun armTargetToIntake() {
         shoulderTargetPos = values.shoulderIntakePos
         elbowTargetPos = values.elbowIntakePos
@@ -133,7 +138,7 @@ class Outtake(
             _wristTargetPos = wristCurrentPos
             return
         }
-        val error = wristCurrentPos - wristTargetPos
+        val error = wristTargetPos - wristCurrentPos
         if (error == 0.0) return
         val step = timeKeep.deltaTime / values.wristMaxTravelDuration
         if (abs(error) < step) {
@@ -149,7 +154,7 @@ class Outtake(
             _shoulderTargetPos = shoulderCurrentPos
             return
         }
-        val error = shoulderCurrentPos - shoulderTargetPos
+        val error = shoulderTargetPos - shoulderCurrentPos
         if (error == 0.0) return
         val step = timeKeep.deltaTime / values.shoulderMaxTravelDuration
         if (abs(error) < step) {
@@ -165,7 +170,7 @@ class Outtake(
             _elbowTargetPos = elbowCurrentPos
             return
         }
-        val error = elbowCurrentPos - elbowTargetPos
+        val error = elbowTargetPos - elbowCurrentPos
         if (error == 0.0) return
         val step = timeKeep.deltaTime / values.elbowMaxTravelDuration
         if (abs(error) < step) {

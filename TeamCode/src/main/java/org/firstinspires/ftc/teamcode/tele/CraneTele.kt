@@ -30,8 +30,8 @@ class CraneTele : LinearOpMode() {
 
         waitForStart()
 
-        robot.outtake.shoulderCurrentPos = 0.3
-        robot.outtake.elbowCurrentPos = 0.41
+        robot.outtake.shoulderCurrentPos = 0.3385
+        robot.outtake.elbowCurrentPos = 0.3293
         robot.outtake.wristPosToMiddle()
         robot.outtake.clawPos = 1.0
 
@@ -60,6 +60,14 @@ class CraneTele : LinearOpMode() {
             )
 
             //OUTTAKE
+            if (gamepad2.right_bumper) {
+                robot.outtake.armTargetToSpecimen()
+            } else if (gamepad2.left_bumper) {
+                robot.outtake.armTargetToPickup()
+            } else if (gamepad2.left_trigger >= 0.3) {
+                robot.outtake.shoulderTargetPos = 0.43
+                robot.outtake.elbowTargetPos = values.outtake.elbowPickupPos
+            }
             robot.outtake.extendoPower = pad2LeftStickY
             robot.outtake.shoulderSpeed = when {
                 gamepad2.dpad_up -> 1.0

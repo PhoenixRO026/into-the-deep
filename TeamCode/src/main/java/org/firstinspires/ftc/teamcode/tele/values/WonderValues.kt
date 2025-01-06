@@ -29,11 +29,11 @@ val robotValuesWonder = RobotValues(
         shoulderBasketPos = 0.71,
         elbowBasketPos = 0.478,
         wristMiddlPos = 0.476,
-        shoulderSpecimenPos = 0.265,
-        elbowSpecimenPos = 0.563,
+        shoulderSpecimenPos = 0.7,
+        elbowSpecimenPos = 0.4869,
         shoulderIntakePos = 0.358,
         elbowIntakePos = 0.05,
-        shoulderPickupPos = 0.207,
-        elbowPickupPos = 0.0644,
+        shoulderPickupPos = 0.2269,
+        elbowPickupPos = 0.0,
     )
 )
