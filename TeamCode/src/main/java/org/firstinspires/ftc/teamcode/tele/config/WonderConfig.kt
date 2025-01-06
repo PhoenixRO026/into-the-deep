@@ -60,21 +60,21 @@ val robotHardwareConfigWonder = RobotHardwareConfig(
     lift = LiftHardwareConfig(
         motorLiftRight = MotorConfig(
             deviceName = "motorLiftRight",
-            direction = MotorConfig.Direction.FORWARD,
+            direction = MotorConfig.Direction.REVERSE,
             runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
             zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
             resetEncoder = true
         ),
         motorLiftLeft = MotorConfig(
             deviceName = "motorLiftLeft",
-            direction = MotorConfig.Direction.REVERSE,
+            direction = MotorConfig.Direction.FORWARD,
             runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
             zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
             resetEncoder = true
         ),
         encoder = EncoderConfig(
             deviceName = "motorRB",
-            direction = EncoderConfig.Direction.FORWARD
+            direction = EncoderConfig.Direction.REVERSE
         )
     ),
     intake = IntakeHardwareConfig(
