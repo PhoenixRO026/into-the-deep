@@ -3,9 +3,11 @@
 package com.dpit.meepmeep
 
 import com.acmerobotics.roadrunner.Pose2d
+import com.acmerobotics.roadrunner.SequentialAction
 import com.noahbres.meepmeep.MeepMeep
 import com.noahbres.meepmeep.MeepMeep.Background
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder
+import sun.security.pkcs11.wrapper.Functions
 
 
 fun main() {
@@ -15,9 +17,25 @@ fun main() {
 
     val myBot =
         DefaultBotBuilder(meepMeep) // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-            .setConstraints(60.0, 60.0, Math.toRadians(180.0), Math.toRadians(180.0), 15.0)
+            .setConstraints(60.0,60.0,Math.toRadians(180.0),Math.toRadians(180.0), 15.0)
             .build()
 
+
+    val submerssible = Pose2d(10.0,-36.0,Math.toRadians(90.0))
+    val take_specimen = Pose2d(35.0,-50.0,Math.toRadians(0.0))
+    val startPose = Pose2d(-50.0, -61.0, Math.toRadians(0.0))
+    val basket = Pose2d(-55.0,-55.0, Math.toRadians(45.0))
+    val first_yellow = Pose2d(-47.0,-47.0, Math.toRadians(90.0))
+    val mid_yellow = Pose2d(-47.0,-47.0, Math.toRadians(120.0))
+    val last_yellow = Pose2d(-55.0,-47.0, Math.toRadians(120.0))
+
+    /*
+    waitForStart()
+
+    while (isStarted && !isStopRequested) {
+        val now = System.currentTimeMillis().ms
+        sideDeltaTime = now - previousTime
+        previousTime = now
 
     val startPose = Pose2d(50.0, 61.0, Math.toRadians(180.0))
     val basket = Pose2d(55.0,55.0, Math.toRadians(-135.0))
@@ -25,6 +43,10 @@ fun main() {
     val mid_yellow = Pose2d(47.0,47.0, Math.toRadians(-60.0))
     val last_yellow = Pose2d(55.0,47.0, Math.toRadians(-60.0))
 
+        expansionHub.clearBulkCache()
+    }*/
+
+    val second_bar = 1
 
     val action = myBot.drive.actionBuilder(startPose)
         .waitSeconds(3.0)
@@ -47,6 +69,8 @@ fun main() {
         .setTangent(Math.toRadians(90.0))
         .splineToLinearHeading(Pose2d(basket.position, basket.heading), Math.toRadians(45.0))
         .waitSeconds(3.0)
+        .setTangent(Math.toRadians(90.0))
+
         .build()
 
     myBot.runAction(action)
