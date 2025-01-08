@@ -26,8 +26,8 @@ class Claw (hardwareMap: HardwareMap) {
         const val intakeTilt = 0.5
         const val scoreTilt = 0.5
 
-        const val openFingers = 0.5
-        const val closedFingers = 0.7
+        const val openFingers = 0.353
+        const val closedFingers = 0.6
 
         const val clawAngF = 0.5
         const val clawAngL = 0.5
