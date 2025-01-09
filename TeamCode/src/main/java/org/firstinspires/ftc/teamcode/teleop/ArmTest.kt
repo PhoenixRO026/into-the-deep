@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.now
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -49,7 +51,7 @@ class ArmTest : LinearOpMode() {
         waitForStart()
         previousTime = now()
 
-
+        var currentAction : Action? = null
 
         var ok : Boolean = false
 
@@ -59,23 +61,29 @@ class ArmTest : LinearOpMode() {
             previousTime = now
 
             if(gamepad1.a) {
-                arm.tiltToRobot()
+                currentAction = arm.tiltToRobot()
             }
             else if(gamepad1.y) {
-                arm.tiltToBack()
+                currentAction = arm.tiltToBack()
             }
             else if(gamepad1.x) {
-                claw.openClaw()
+                currentAction = claw.openClaw()
             }
             else if(gamepad1.b) {
-                claw.closeClaw()
+                currentAction = claw.closeClaw()
             }
             else if(gamepad1.dpad_down){
-                arm.rotateDown()
+                currentAction = arm.rotateDown()
             }
             else if(gamepad1.dpad_up){
-                arm.rotateUp()
+                currentAction = arm.rotateUp()
             }
+
+            val running = currentAction?.run(TelemetryPacket()) ?: false
+            if(!running){
+                currentAction = null
+            }
+
             //
 
             /*
@@ -89,9 +97,9 @@ class ArmTest : LinearOpMode() {
             //ztelemetry.addData("position", position)
             telemetry.addData("a Pressed", gamepad1.a)
             telemetry.addData("y Pressed", gamepad1.y)
-            telemetry.addData("ServoClaw", servoShoulder.position)
+            telemetry.addData("ServoShoulder", servoShoulder.position)
             telemetry.addData("ServoElbow", servoElbow.position)
-            telemetry.addData("ServoShoulder", servoClaw.position)
+            telemetry.addData("ServoClaw", servoClaw.position)
             telemetry.addData("deltaTime", deltaTime)
             telemetry.update()
 

@@ -27,7 +27,7 @@ double position = analogInput.getVoltage() / 3.3 * 360;
         val servo2 = hardwareMap.get(Servo::class.java, "servoL")
         val servorotate = hardwareMap.get(CRServo::class.java, "rotatie")*/
 
-        val servo = hardwareMap.get(Servo::class.java, "servoShoulder")
+        val servo = hardwareMap.get(Servo::class.java, "servoClaw")
         //val analogInput = hardwareMap.get(AnalogInput::class.java, "pos")
         //val extendServo2 = hardwareMap.get(Servo::class.java, "cTilt2")
         /*

@@ -17,9 +17,9 @@ class Arm (hardwareMap: HardwareMap) {
     }
 
     companion object{
-        const val robotTilt = 0.5961
-        const val scoreTilt = 0.5
-        const val backTilt = 0.8
+        const val robotTilt = 0.857//0.5961
+        const val scoreTilt = 0.8844//0.5
+        const val backTilt = 1.0//0.8
 
         const val clawUp = 0.5
         const val clawDown = 0.5
@@ -66,7 +66,7 @@ class Arm (hardwareMap: HardwareMap) {
         }
 
     fun rotateToAng(newAng : Double) = SequentialAction(
-        InstantAction{ angle = newAng},
+        InstantAction{ angle = newAng },
         SleepAction(angWait)
     )
 
