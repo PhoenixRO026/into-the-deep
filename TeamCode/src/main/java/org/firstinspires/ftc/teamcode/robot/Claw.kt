@@ -20,9 +20,6 @@ class Claw (hardwareMap: HardwareMap) {
     }
 
     companion object{
-        const val robotTilt = 0.5
-        const val intakeTilt = 0.5
-        const val scoreTilt = 0.5
 
         const val openFingers = 0.7422
         const val closedFingers = 0.3
@@ -32,39 +29,9 @@ class Claw (hardwareMap: HardwareMap) {
         const val clawAngR = 0.5
         const val clawAngB = 0.5
 
-        const val clawUp = 0.5
-        const val clawDown = 0.5
-
-
-        val tiltWait = 0.8
         val fingerWait = 0.5
         val rotWait = 0.5
-        val angWait = 0.5
     }
-    //tilt
-    var tilt : Double = robotTilt
-        set(value){
-            val clippedValue = value.coerceIn(0.0, 1.0)
-            clawTiltServo.position = clippedValue
-            field = clippedValue
-        }
-
-
-    fun tiltToPos(newTilt : Double) = SequentialAction(
-        InstantAction { tilt = newTilt},
-        SleepAction(tiltWait)
-    )
-
-    fun tiltToScore() = tiltToPos(scoreTilt)
-
-    fun tiltToIntake() = tiltToPos(intakeTilt)
-
-    fun tiltToRobot() = tiltToPos(robotTilt)
-
-    fun tiltToUp() = tiltToPos(clawUp)
-
-    fun tiltToDown() = tiltToPos(clawDown)
-
     //rotation
     var rotation : Double = clawAngF
         set(value){
@@ -85,22 +52,6 @@ class Claw (hardwareMap: HardwareMap) {
     fun rotateToF() = rotateToPos(clawAngF)
 
     fun rotateToB() = rotateToPos(clawAngB)
-
-    var angle : Double = clawDown
-        set(value){
-            val clippedValue = value.coerceIn(0.0, 1.0)
-            clawAngServo.position = clippedValue
-            field = clippedValue
-        }
-
-    fun rotateToAng(newAng : Double) = SequentialAction(
-        InstantAction{ angle = newAng},
-        SleepAction(angWait)
-    )
-
-    fun rotateToUp() = rotateToAng(clawUp)
-
-    fun rotateToDown() = rotateToAng(clawDown)
 
     //finger
     var finger : Double = 1.0

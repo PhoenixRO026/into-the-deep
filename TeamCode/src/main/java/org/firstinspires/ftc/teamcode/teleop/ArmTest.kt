@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.teleop
 import com.acmerobotics.roadrunner.now
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.AnalogInput
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.teamcode.lib.units.s
 import org.firstinspires.ftc.teamcode.robot.Arm
@@ -29,7 +28,9 @@ class ArmTest : LinearOpMode() {
         val servo2 = hardwareMap.get(Servo::class.java, "servoL")
         val servorotate = hardwareMap.get(CRServo::class.java, "rotatie")*/
 
-        val servo = hardwareMap.get(Servo::class.java, "servoShoulder")
+        val servoShoulder = hardwareMap.get(Servo::class.java, "servoShoulder")
+        val servoElbow = hardwareMap.get(Servo::class.java, "servoElbow")
+        val servoClaw = hardwareMap.get(Servo::class.java, "servoClaw")
         //val analogInput = hardwareMap.get(AnalogInput::class.java, "pos")
         //val extendServo2 = hardwareMap.get(Servo::class.java, "cTilt2")
         /*
@@ -48,7 +49,7 @@ class ArmTest : LinearOpMode() {
         waitForStart()
         previousTime = now()
 
-        servo.position = 0.5
+
 
         var ok : Boolean = false
 
@@ -56,23 +57,6 @@ class ArmTest : LinearOpMode() {
             now = now()
             deltaTime = now - previousTime
             previousTime = now
-            /*
-            if(servo.position >= 0.1 && servo.position <= 0.9){
-                if (!ok){
-                    servo.position += 0.1 * deltaTime
-                }
-                else if(ok){
-                    servo.position -= 0.1 * deltaTime
-                }
-            }
-            else if(servo.position < 0.1){
-                ok = false
-                servo.position += 0.1 * deltaTime
-            }
-            else if (servo.position > 0.9){
-                ok = true
-                servo.position -= 0.1 * deltaTime
-            }*/
 
             if(gamepad1.a) {
                 arm.tiltToRobot()
@@ -85,7 +69,14 @@ class ArmTest : LinearOpMode() {
             }
             else if(gamepad1.b) {
                 claw.closeClaw()
-            }//
+            }
+            else if(gamepad1.dpad_down){
+                arm.rotateDown()
+            }
+            else if(gamepad1.dpad_up){
+                arm.rotateUp()
+            }
+            //
 
             /*
             else if(gamepad1.x){
@@ -98,11 +89,10 @@ class ArmTest : LinearOpMode() {
             //ztelemetry.addData("position", position)
             telemetry.addData("a Pressed", gamepad1.a)
             telemetry.addData("y Pressed", gamepad1.y)
-            telemetry.addData("Servo", servo.position)
+            telemetry.addData("ServoClaw", servoShoulder.position)
+            telemetry.addData("ServoElbow", servoElbow.position)
+            telemetry.addData("ServoShoulder", servoClaw.position)
             telemetry.addData("deltaTime", deltaTime)
-            /*telemetry.addData("positionServo2", servo2.position)
-            telemetry.addData("positionServo1", servo1.position)
-            telemetry.addData("poseDif", servo1.position - servo2.position)*/
             telemetry.update()
 
 
