@@ -38,10 +38,10 @@ class Intake(hardwareMap: HardwareMap) {
         val kF = 0.16
     }
 
-    private val tiltIntakeServo = hardwareMap.get(Servo::class.java, "iTilt")
-    private val tiltBoxServo = hardwareMap.get(Servo::class.java, "iTilt2")
-    private val extendIntakeMotor : DcMotor = hardwareMap.get(DcMotor::class.java, "iExt")
-    private val powerIntakeMotor : DcMotor = hardwareMap.get(DcMotor::class.java, "iPower")
+    private val tiltIntakeServo = hardwareMap.get(Servo::class.java, "servoIntakeTilt")
+    private val tiltBoxServo = hardwareMap.get(Servo::class.java, "servoBoxTilt")
+    private val extendIntakeMotor : DcMotor = hardwareMap.get(DcMotor::class.java, "motorExtendoIntake")
+    private val powerIntakeMotor : DcMotor = hardwareMap.get(DcMotor::class.java, "motorSweeper")
 
     enum class Mode {
         POWER,

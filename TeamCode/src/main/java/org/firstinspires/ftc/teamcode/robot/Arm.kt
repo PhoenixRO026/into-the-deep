@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 
 class Arm (hardwareMap: HardwareMap) {
-    private val tiltClawServo = hardwareMap.get(Servo::class.java, "cTilt")
-    private val angClawServo = hardwareMap.get(Servo::class.java, "cAngle")
-    private val extendClawServo = hardwareMap.get(Servo::class.java, "cExt")
+    private val tiltClawServo = hardwareMap.get(Servo::class.java, "servoShoulder")
+    private val angClawServo = hardwareMap.get(Servo::class.java, "servoElbow")
+    //private val extendClawServo = hardwareMap.get(Servo::class.java, "servoExtendoOuttake")
 
     init {
         tiltClawServo.position = 0.5
@@ -17,12 +17,12 @@ class Arm (hardwareMap: HardwareMap) {
     }
 
     companion object{
-        const val robotTilt = 0.5
+        const val robotTilt = 0.5961
         const val scoreTilt = 0.5
-        const val backTilt = 0.5
+        const val backTilt = 0.8
 
         const val clawUp = 0.5
-        const val clawDown = 0.0
+        const val clawDown = 0.5
         const val clawIntake = 0.5
 
         val tiltWait = 0.8
@@ -74,7 +74,7 @@ class Arm (hardwareMap: HardwareMap) {
 
     fun rotateDown() = rotateToAng(clawDown)
 
-    var extend : Double = extendInrobot
+   /*var extend : Double = extendInrobot
         set(value){
             val clippedValue = value.coerceIn(0.0, 1.0)
             extendClawServo.position = clippedValue
@@ -88,5 +88,5 @@ class Arm (hardwareMap: HardwareMap) {
 
     fun extendOut() = extendToPos(extendOutrobot)
 
-    fun extendIn() = rotateToAng(extendInrobot)
+    fun extendIn() = rotateToAng(extendInrobot)*/
 }

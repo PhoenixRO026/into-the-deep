@@ -7,18 +7,16 @@ import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.SleepAction
 
 class Claw (hardwareMap: HardwareMap) {
-    private val fingerServo = hardwareMap.get(Servo::class.java, "fingers")
-    private val clawTiltServo = hardwareMap.get(Servo::class.java, "cTilt")
-    private val clawTiltServo2 = hardwareMap.get(Servo::class.java, "cTilt2")
-    private val clawRotationServo = hardwareMap.get(Servo::class.java, "clawRotation")
-    private val clawAngServo = hardwareMap.get(Servo::class.java, "cAngle")
+    private val fingerServo = hardwareMap.get(Servo::class.java, "servoClaw")
+    private val clawTiltServo = hardwareMap.get(Servo::class.java, "servoShoulder")
+    //private val clawTiltServo2 = hardwareMap.get(Servo::class.java, "cTilt2")
+    private val clawRotationServo = hardwareMap.get(Servo::class.java, "servoWrist")
+    private val clawAngServo = hardwareMap.get(Servo::class.java, "servoElbow")
 
     init {
-        clawTiltServo2.direction = Servo.Direction.REVERSE
+        //clawTiltServo2.direction = Servo.Direction.REVERSE
         fingerServo.position = closedFingers
         clawRotationServo.position = 0.5
-        clawTiltServo.position = 0.5
-        clawAngServo.position = clawDown
     }
 
     companion object{
@@ -26,8 +24,8 @@ class Claw (hardwareMap: HardwareMap) {
         const val intakeTilt = 0.5
         const val scoreTilt = 0.5
 
-        const val openFingers = 0.353
-        const val closedFingers = 0.6
+        const val openFingers = 0.7422
+        const val closedFingers = 0.3
 
         const val clawAngF = 0.5
         const val clawAngL = 0.5
@@ -35,7 +33,7 @@ class Claw (hardwareMap: HardwareMap) {
         const val clawAngB = 0.5
 
         const val clawUp = 0.5
-        const val clawDown = 0.0
+        const val clawDown = 0.5
 
 
         val tiltWait = 0.8

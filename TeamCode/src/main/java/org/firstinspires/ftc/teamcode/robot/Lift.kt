@@ -20,8 +20,8 @@ class Lift (hardwareMap: HardwareMap) {
         val toleranceTicks = 16
         val kF = 0.16
     }
-    val leftLiftMotor: DcMotor = hardwareMap.get(DcMotor::class.java, "leftLift")
-    val rightLiftMotor: DcMotor = hardwareMap.get(DcMotor::class.java, "rightLift")
+    val leftLiftMotor: DcMotor = hardwareMap.get(DcMotor::class.java, "motorLiftLeft")
+    val rightLiftMotor: DcMotor = hardwareMap.get(DcMotor::class.java, "motorLiftRight")
 
     enum class Mode {
         POWER,

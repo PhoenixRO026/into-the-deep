@@ -6,22 +6,24 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.AnalogInput
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.teamcode.lib.units.s
+import org.firstinspires.ftc.teamcode.robot.Arm
+import org.firstinspires.ftc.teamcode.robot.Claw
 
 
 @TeleOp
-class ServoTest : LinearOpMode() {
+class ArmTest : LinearOpMode() {
 
     override fun runOpMode() {
-    /*
+        /*
 
-    //get our analog input from the hardwareMap
-AnalogInput analogInput = hardwareMap.get(AnalogInput.class, "myanaloginput");
+        //get our analog input from the hardwareMap
+    AnalogInput analogInput = hardwareMap.get(AnalogInput.class, "myanaloginput");
 
-// get the voltage of our analog line
-// divide by 3.3 (the max voltage) to get a value between 0 and 1
-// multiply by 360 to convert it to 0 to 360 degrees
-double position = analogInput.getVoltage() / 3.3 * 360;
-     */
+    // get the voltage of our analog line
+    // divide by 3.3 (the max voltage) to get a value between 0 and 1
+    // multiply by 360 to convert it to 0 to 360 degrees
+    double position = analogInput.getVoltage() / 3.3 * 360;
+         */
 
         /*val servo1 =hardwareMap.get(Servo::class.java, "servoR")
         val servo2 = hardwareMap.get(Servo::class.java, "servoL")
@@ -35,10 +37,13 @@ double position = analogInput.getVoltage() / 3.3 * 360;
 
         */
         var wait = 10.0.s
+
+        var claw = Claw(hardwareMap)
+        var arm = Arm(hardwareMap)
+
         var previousTime: Double
         var deltaTime : Double
         var now : Double
-
 
         waitForStart()
         previousTime = now()
@@ -70,17 +75,18 @@ double position = analogInput.getVoltage() / 3.3 * 360;
             }*/
 
             if(gamepad1.a) {
-               servo.position += 0.1 * deltaTime
+                arm.tiltToRobot()
             }
             else if(gamepad1.y) {
-               servo.position -= 0.1 * deltaTime
+                arm.tiltToBack()
             }
-            /*else if (gamepad1.dpad_down){
-                servo3.position += 0.1 * deltaTime
+            else if(gamepad1.x) {
+                claw.openClaw()
             }
-            else if (gamepad1.dpad_up){
-                servo3.position -= 0.1 * deltaTime
-            }*/
+            else if(gamepad1.b) {
+                claw.closeClaw()
+            }//
+
             /*
             else if(gamepad1.x){
                 extendServo2.position += 0.1 * deltaTime
@@ -92,8 +98,6 @@ double position = analogInput.getVoltage() / 3.3 * 360;
             //ztelemetry.addData("position", position)
             telemetry.addData("a Pressed", gamepad1.a)
             telemetry.addData("y Pressed", gamepad1.y)
-            telemetry.addData("x Pressed", gamepad1.x)
-            telemetry.addData("b Pressed", gamepad1.b)
             telemetry.addData("Servo", servo.position)
             telemetry.addData("deltaTime", deltaTime)
             /*telemetry.addData("positionServo2", servo2.position)

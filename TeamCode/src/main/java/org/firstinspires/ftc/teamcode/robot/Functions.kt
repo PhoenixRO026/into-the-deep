@@ -29,24 +29,24 @@ class Functions (hardwareMap: HardwareMap) {
 
     fun scoreFirstBar() = SequentialAction(
         lift.liftGoToPos(first_bar),
-        arm.extendOut(),
+        //arm.extendOut(),
         claw.rotateToF(),
         arm.tiltUp(),
         arm.tiltDown(),
         claw.openClaw(),
-        arm.extendIn(),
+        //arm.extendIn(),
         claw.closeClaw(),
         lift.liftGoToPos(lift_in)
     )
 
     fun scoreSecondBar() = SequentialAction(
         lift.liftGoToPos(second_bar),
-        arm.extendOut(),
+        //arm.extendOut(),
         claw.rotateToF(),
         arm.tiltUp(),
         arm.tiltDown(),
         claw.openClaw(),
-        arm.extendIn(),
+        //arm.extendIn(),
         claw.closeClaw(),
         lift.liftGoToPos(lift_in)
     )

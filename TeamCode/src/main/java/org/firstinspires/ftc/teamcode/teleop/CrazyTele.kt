@@ -58,7 +58,7 @@ class CrazyTele : LinearOpMode() {
                 drive.resetHeading()
             }
 
-            clawArm.extend += gamepad2.right_stick_x * deltaTime * 0.001
+            //clawArm.extend += gamepad2.right_stick_x * deltaTime * 0.001
             lift.powerLift = -gamepad2.right_stick_x
         }
     }
