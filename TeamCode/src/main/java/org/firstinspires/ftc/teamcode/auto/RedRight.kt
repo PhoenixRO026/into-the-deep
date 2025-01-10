@@ -41,8 +41,7 @@ class RedRight : LinearOpMode() {
         val robot = Robot(hardwareMap, config, values, timeKeep)
         val mecanumDrive = MecanumDriveEx(hardwareMap, startPose.pose2d)
 
-        val action = SequentialAction()
-        robot.drive.actionBuilder(startPose)
+        val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(Math.toRadians(90.0))
             .lineToY(-40.0)
             .afterTime(0.0, functions.scoreSecondBar())
