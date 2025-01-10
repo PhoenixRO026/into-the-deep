@@ -1,11 +1,18 @@
 package org.firstinspires.ftc.teamcode.robot
 
+import com.acmerobotics.dashboard.config.Config
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.Action
+import com.lib.units.Angle
+import com.lib.units.abs
+import com.lib.units.deg
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.teamcode.library.AnalogEncoderServo
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.config.createAnalogEncoderCRServ
 import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
+import org.firstinspires.ftc.teamcode.library.controller.PIDController
 import org.firstinspires.ftc.teamcode.robot.config.OuttakeHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.values.OuttakeValues
 import kotlin.math.abs
@@ -17,11 +24,65 @@ class Outtake(
     private val values: OuttakeValues,
     private val timeKeep: TimeKeep
 ) {
+    @Config
+    data object OuttakeConfig {
+        @JvmField
+        var extendoController: PIDController? = null
+    }
+
+    init {
+        OuttakeConfig.extendoController = PIDController(
+            kP = 0.0,
+            kD = 0.0,
+            kI = 0.0,
+            timeKeep = timeKeep
+        )
+    }
+
     private val servoExtendo: AnalogEncoderServo = hardwareMap.createAnalogEncoderCRServ(config.servoExtendo)
     private val servoShoulder: Servo = hardwareMap.createServoWithConfig(config.servoShoulder)
     private val servoElbow: Servo = hardwareMap.createServoWithConfig(config.servoElbow)
     private val servoWrist: Servo = hardwareMap.createServoWithConfig(config.servoWrist)
     private val servoClaw: Servo = hardwareMap.createServoWithConfig(config.servoClaw)
+
+    fun extendoToPosAction(pos: Angle) = object : Action {
+        var init = true
+
+        override fun run(p: TelemetryPacket): Boolean {
+            if (init) {
+                init = false
+                extendoTargetPos = pos
+            }
+
+            return abs(extendoPos - extendoTargetPos) > 5.deg
+        }
+    }
+
+    fun shoudlerToPosAction(pos: Double) = object : Action {
+        var init = true
+
+        override fun run(p: TelemetryPacket): Boolean {
+            if (init) {
+                init = false
+                shoulderTargetPos = pos
+            }
+
+            return shoulderTargetPos != shoulderCurrentPos
+        }
+    }
+
+    fun elbowToPosAction(pos: Double) = object : Action {
+        var init = true
+
+        override fun run(p: TelemetryPacket): Boolean {
+            if (init) {
+                init = false
+                elbowTargetPos = pos
+            }
+
+            return elbowTargetPos != elbowCurrentPos
+        }
+    }
 
     fun armTargetToBasket() {
         shoulderTargetPos = values.shoulderBasketPos
@@ -49,7 +110,9 @@ class Outtake(
 
     var extendoPower by servoExtendo::power
 
-    val extendoPos by servoExtendo::position
+    val extendoPos by servoExtendo::rotations
+
+    var extendoTargetPos = extendoPos
 
     var shoulderCurrentPos
         get() = servoShoulder.position
@@ -127,6 +190,7 @@ class Outtake(
 
     fun update() {
         servoExtendo.update()
+        extendoPower = OuttakeConfig.extendoController?.calculate(extendoPos.asRev, extendoTargetPos.asRev) ?: 0.0
         moveShoulder()
         moveElbow()
         moveWrist()

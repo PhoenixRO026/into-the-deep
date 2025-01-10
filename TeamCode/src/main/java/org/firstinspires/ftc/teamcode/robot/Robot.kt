@@ -16,12 +16,13 @@ class Robot(
 ) {
     val drive = Drive(hardwareMap, config.drive, values.drive)
     val intake = Intake(hardwareMap, config.intake, values.intake, timeKeep)
-    val lift = Lift(hardwareMap, config.lift, values.lift)
+    val lift = Lift(hardwareMap, config.lift, values.lift, timeKeep)
     val outtake = Outtake(hardwareMap, config.outtake, values.outtake, timeKeep)
 
     fun update() {
         intake.update()
         outtake.update()
+        lift.update()
     }
 
     fun addTelemetry(telemetry: Telemetry) {

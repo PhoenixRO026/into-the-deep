@@ -17,6 +17,7 @@ data class Angle(@JvmField var asDeg: Double) {
     operator fun div(scalar: Number) = Angle(asDeg / scalar.toDouble())
     operator fun div(other: Angle) = asDeg / other.asDeg
     operator fun div(duration: Duration) = AngularVelocity(this, duration)
+    operator fun compareTo(other: Angle) = asDeg.compareTo(other.asDeg)
     operator fun unaryMinus() = Angle(-asDeg)
 
     override fun toString() = "$asDeg " + if (asDeg == 1.0) "degree" else "degrees"
@@ -47,3 +48,4 @@ val Rotation2d.angle get() = Angle(toDouble().radToDeg())
 
 fun sin(angle: Angle) = kotlin.math.sin(angle.asRad)
 fun cos(angle: Angle) = kotlin.math.cos(angle.asRad)
+fun abs(angle: Angle) = Angle(kotlin.math.abs(angle.asDeg))

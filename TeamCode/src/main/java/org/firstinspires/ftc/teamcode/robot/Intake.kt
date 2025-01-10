@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.robot
 
+import com.acmerobotics.dashboard.config.Config
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
@@ -8,6 +11,7 @@ import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.config.createEncoderUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
+import org.firstinspires.ftc.teamcode.library.controller.PIDController
 import org.firstinspires.ftc.teamcode.robot.config.IntakeHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.values.IntakeValues
 import kotlin.math.abs
@@ -19,6 +23,28 @@ class Intake(
     private val values: IntakeValues,
     private val timeKeep: TimeKeep
 ) {
+    @Config
+    data object IntakeConfig {
+        @JvmField
+        var extendoController: PIDController? = null
+    }
+
+    enum class MODE {
+        RUN_TO_POSITION,
+        RAW_POWER
+    }
+
+    init {
+        IntakeConfig.extendoController = PIDController(
+            kP = 0.0,
+            kD = 0.0,
+            kI = 0.0,
+            timeKeep = timeKeep
+        )
+    }
+
+    private var extendoMode = MODE.RAW_POWER
+
     private val motorExtendoIntake: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorExtendoIntake)
     private val motorSweeper: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorSweeper)
     private val servoIntakeTilt: Servo = hardwareMap.createServoWithConfig(config.servoIntakeTilt)
@@ -28,6 +54,12 @@ class Intake(
     private var extendoOffset = 0
 
     val extendoPosition get() = encoderExtendo.getPositionAndVelocity().position - extendoOffset
+
+    var extendoTargetPosition = extendoPosition
+        set(value) {
+            field = value
+            extendoMode = MODE.RUN_TO_POSITION
+        }
 
     fun intakeDown() {
         intakeTiltCurrentPos = 0.0
@@ -45,11 +77,33 @@ class Intake(
         boxTiltCurrentPos = 1.0
     }
 
-    var extendoPower
+    fun extendoToPosAction(pos: Int) = object : Action {
+        var init = true
+
+        override fun run(p: TelemetryPacket): Boolean {
+            if (init) {
+                init = false
+                extendoTargetPosition = pos
+            }
+
+            return abs(extendoTargetPosition - extendoPosition) > 20
+        }
+
+    }
+
+    var _extendoPower
         get() = motorExtendoIntake.power
         set(value) {
             motorExtendoIntake.power = value
         }
+
+    var extendoPower
+        get() = _extendoPower
+        set(value) {
+            _extendoPower = value
+            extendoMode = MODE.RAW_POWER
+        }
+
 
     var sweeperPower by motorSweeper::power
 
@@ -108,6 +162,9 @@ class Intake(
     fun update() {
         moveBoxTilt()
         moveIntakeTilt()
+
+        if (extendoMode == MODE.RUN_TO_POSITION)
+            _extendoPower = IntakeConfig.extendoController?.calculate(extendoPosition.toDouble(), extendoTargetPosition.toDouble()) ?: 0.0
     }
 
     private fun moveBoxTilt() {
