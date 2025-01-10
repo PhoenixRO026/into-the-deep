@@ -20,4 +20,5 @@ data class OuttakeValues(
     val elbowPickupPos: Double,
     val elbowWaitingPos: Double,
     val shoulderWaitingPos: Double,
+    val extendForHang: Double
 )

@@ -5,4 +5,5 @@ data class LiftValues(
     val basketPos: Int,
     val secondBar: Int,
     val inRobot: Int,
+    val onHangBar: Int
 )

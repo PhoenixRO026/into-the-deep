@@ -59,6 +59,11 @@ class BlueLeftPreload : LinearOpMode() {
             ))
             .setTangent(-135.0.deg)
             .splineTo(park.position, park.heading)
+            .lineToX(25.0)
+            .afterTime(0.0, SequentialAction(
+                robot.lift.liftToPosAction(values.lift.onHangBar),
+                robot.outtake.extendoToPosAction(values.outtake.extendForHang.deg)
+            ))
             .build()
 
         telemetry.addData("Config name", config.name)
