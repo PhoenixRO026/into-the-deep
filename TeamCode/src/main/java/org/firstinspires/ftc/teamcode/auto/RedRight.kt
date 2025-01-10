@@ -4,6 +4,8 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.InstantAction
+import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.roadrunner_ext.ex
 import com.lib.units.Pose
 import com.lib.units.Pose2d
@@ -13,6 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDriveEx
+import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigWonder
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesWonder
@@ -32,7 +35,7 @@ class RedRight : LinearOpMode() {
         telemetry.addLine("INITIALIZING")
         telemetry.update()
 
-        val startPose = Pose2d(10.0.inch, 0.0.inch, 90.0.deg)
+        val startPose = Pose2d(10.0.inch, -57.0.inch, 90.0.deg)
         val submerssible = Pose2d(10.0.inch,-36.0.inch, 90.0.deg)
         val take_specimen = Pose2d(38.0.inch,-50.0.inch, 0.0.deg)
 
@@ -40,10 +43,28 @@ class RedRight : LinearOpMode() {
         val robot = Robot(hardwareMap, config, values, timeKeep)
         val mecanumDrive = MecanumDriveEx(hardwareMap, startPose.pose2d)
 
+        //val values_Drive =
+
+        //val second_bar = 1
+
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(Math.toRadians(90.0))
             .lineToY(-40.0)
+            .afterTime(0.0,SequentialAction(
+                robot.lift.liftToPosAction(values.lift.secondBar),
+                //robot.outtake.elbowToPosAction(values.outtake.elbowSpecimenPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderSpecimenPos),
+                InstantAction{robot.outtake.clawPos = 0.0}),
+                )
+            .lineToY(-45.0)
+            .afterTime(0.0,SequentialAction(
+                robot.outtake.elbowToPosAction(values.outtake.shoulderWaitingPos),
+                robot.lift.liftToPosAction(values.lift.inRobot),
+            ))
+
+
             //.afterTime(0.0, functions.scoreSecondBar())
+
             .waitSeconds(1.0)
             .setTangent(Math.toRadians(0.0))
             .lineToXLinearHeading(34.0,Math.toRadians(45.0))
@@ -81,6 +102,7 @@ class RedRight : LinearOpMode() {
             //.afterTime(0.0, functions.scoreSecondBar())
             .strafeTo(submerssible.position)
             .build()
+
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("READY!")
