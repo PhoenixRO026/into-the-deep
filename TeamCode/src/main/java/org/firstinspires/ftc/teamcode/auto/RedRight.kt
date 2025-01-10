@@ -49,58 +49,19 @@ class RedRight : LinearOpMode() {
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(Math.toRadians(90.0))
-            .lineToY(-40.0)
+            .lineToY(-36.0.inch)
             .afterTime(0.0,SequentialAction(
                 robot.lift.liftToPosAction(values.lift.secondBar),
                 //robot.outtake.elbowToPosAction(values.outtake.elbowSpecimenPos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderSpecimenPos),
                 InstantAction{robot.outtake.clawPos = 0.0}),
                 )
-            .lineToY(-45.0)
+            .lineToY(-40.0.inch)
             .afterTime(0.0,SequentialAction(
                 robot.outtake.elbowToPosAction(values.outtake.shoulderWaitingPos),
+                InstantAction{robot.outtake.clawPos = 1.0},
                 robot.lift.liftToPosAction(values.lift.inRobot),
             ))
-
-
-            //.afterTime(0.0, functions.scoreSecondBar())
-
-            .waitSeconds(1.0)
-            .setTangent(Math.toRadians(0.0))
-            .lineToXLinearHeading(34.0,Math.toRadians(45.0))
-            //.afterTime(0.0, functions.grab())
-            .waitSeconds(1.0)
-            .turnTo(Math.toRadians(-50.0))
-            //.afterTime(0.0, functions.release())
-            .waitSeconds(1.0)
-            .setTangent(Math.toRadians(0.0))
-            .lineToXLinearHeading(40.0,Math.toRadians(35.0))
-            //.afterTime(0.0, functions.grab())
-            .waitSeconds(1.0)
-            .turnTo(Math.toRadians(-50.0))
-            //.afterTime(0.0, functions.release())
-            .waitSeconds(1.0)
-            .setTangent(0.0)
-            .lineToXLinearHeading(50.0,Math.toRadians(35.0))
-            //.afterTime(0.0, functions.grab())
-            .waitSeconds(1.0)
-            .turnTo(Math.toRadians(-90.0))
-            .setTangent(Math.toRadians(180.0))
-            .lineToX(38.0)
-            //.wallGrab(arm, claw)
-            .strafeTo(take_specimen.position)
-            .waitSeconds(1.0)
-            //.afterTime(0.0, functions.scoreSecondBar())
-            .strafeTo(submerssible.position)
-            .waitSeconds(1.0)
-            //.wallGrab(arm, claw)
-            .strafeTo(take_specimen.position)
-            //.afterTime(0.0, functions.scoreSecondBar())
-            .strafeTo(submerssible.position)
-            //.wallGrab(arm, claw)
-            .strafeTo(take_specimen.position)
-            //.afterTime(0.0, functions.scoreSecondBar())
-            .strafeTo(submerssible.position)
             .build()
 
 
