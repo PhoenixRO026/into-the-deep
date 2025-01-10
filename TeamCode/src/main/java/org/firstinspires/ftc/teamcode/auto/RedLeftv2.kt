@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.SequentialAction
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
 import org.firstinspires.ftc.teamcode.robot.Arm
@@ -12,6 +13,8 @@ import org.firstinspires.ftc.teamcode.robot.Functions
 import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Lift
 import org.firstinspires.ftc.teamcode.robot.wallGrab
+
+@Autonomous
 
 class RedLeftv2 : LinearOpMode(){
 

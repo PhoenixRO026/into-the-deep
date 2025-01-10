@@ -67,7 +67,8 @@ class ArmTest : LinearOpMode() {
                 currentAction = arm.tiltToBack()
             }
             else if(gamepad1.x) {
-                currentAction = claw.openClaw()
+                //currentAction = claw.openClaw()
+                claw.openClaw().run(TelemetryPacket())
             }
             else if(gamepad1.b) {
                 currentAction = claw.closeClaw()

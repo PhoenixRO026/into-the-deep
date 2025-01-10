@@ -18,7 +18,7 @@ class CrazyTele : LinearOpMode() {
 
 
         var claw = Claw(hardwareMap)
-        var clawArm = Arm(hardwareMap)
+        var arm = Arm(hardwareMap)
         var drive = NewDrive(hardwareMap, Pose2d(0.0, 0.0, 0.0), NewDrive.Side.NEUTRAL)
         var intake = Intake(hardwareMap)
         var lift = Lift(hardwareMap)

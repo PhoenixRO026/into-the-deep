@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.now
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -45,6 +46,7 @@ double position = analogInput.getVoltage() / 3.3 * 360;
 
         servo.position = 0.5
 
+        val p = TelemetryPacket()
         var ok : Boolean = false
 
         while (opModeIsActive()){
