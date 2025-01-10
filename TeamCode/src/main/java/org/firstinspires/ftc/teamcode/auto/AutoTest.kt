@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.auto
 
 import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.SequentialAction
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
@@ -27,12 +28,11 @@ class AutoTest : LinearOpMode() {
         var previousTime = System.currentTimeMillis().ms
         var auto = RedLeftv2()
 
-        val startPose = Pose2d(-50.0, -61.0, Math.toRadians(0.0))
+        val startPose = Pose2d(0.0, 0.0, Math.toRadians(0.0))
         val drive = MecanumDrive(hardwareMap, startPose)
 
         waitForStart()
 
-        //claw.finger= 0.3
 /*
         while (isStarted && !isStopRequested) {
             val now = System.currentTimeMillis().ms
@@ -40,27 +40,32 @@ class AutoTest : LinearOpMode() {
             previousTime = now
         }*/
 
-        val action = drive.actionBuilder(startPose)
-            //.lineToX()
 
+       val action = SequentialAction(
+           drive.actionBuilder(startPose)
+               .lineToX(1.0)
+               .build(),
+           SleepAction(0.2.s)
+       )
 
-        var running = true
+      // val action = action_move
 
-        //val c = Canvas()
-        //action.preview(c)
+       var running = true
 
-        while (isStarted && !isStopRequested && running) {
-            val now = System.currentTimeMillis().ms
-            deltaTime = now - previousTime
-            previousTime = now
+       val c = Canvas()
 
-            //controlHub.clearBulkCache()
+       while (isStarted && !isStopRequested && running) {
+           val now = System.currentTimeMillis().ms
+           deltaTime = now - previousTime
+           previousTime = now
 
-            //val p = TelemetryPacket()
-            //p.fieldOverlay().operations.addAll(c.operations)
+           //controlHub.clearBulkCache()
 
-            //running = action.run(TelemetryPacket())
+           val p = TelemetryPacket()
+           p.fieldOverlay().operations.addAll(c.operations)
 
-        }
-    }
+           running = action.run(p)
+
+       }
+   }
 }
