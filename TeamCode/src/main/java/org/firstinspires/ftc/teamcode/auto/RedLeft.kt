@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.roadrunner_ext.ex
 import com.lib.units.Pose
 import com.lib.units.deg
@@ -21,6 +22,8 @@ class RedLeft : LinearOpMode() {
     private val startPose = Pose(10.0.inch, -57.0.inch, 90.0.deg)
     private val submerssible = Pose(10.0.inch, -36.0.inch, 90.0.deg)
     private val take_specimen = Pose(38.0.inch, -50.0.inch, 0.0.deg)
+
+    private val
 
     override fun runOpMode() {
         val config = robotHardwareConfigWonder
@@ -40,6 +43,9 @@ class RedLeft : LinearOpMode() {
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(Math.toRadians(90.0))
             .lineToY(-40.0)
+            .afterTime(0.0, SequentialAction(
+
+            ))
 
             //.afterTime(0.0, functions.scoreSecondBar())
             .waitSeconds(1.0)
