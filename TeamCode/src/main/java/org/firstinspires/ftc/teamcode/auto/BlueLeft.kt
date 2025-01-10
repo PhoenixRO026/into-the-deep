@@ -4,11 +4,14 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.roadrunner_ext.ex
 import com.lib.units.Pose
+import com.lib.units.SleepAction
 import com.lib.units.deg
 import com.lib.units.inch
+import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
@@ -47,27 +50,84 @@ class BlueLeft : LinearOpMode() {
             .lineToXLinearHeading(basket.position.x, basket.heading)
             //.waitSeconds(3.0)
             .afterTime(0.0, SequentialAction(
-                robot.lift.liftToPosAction(values.lift.basket)
+                robot.lift.liftToPosAction(values.lift.basketPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
+                robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos),
+                InstantAction{robot.outtake.clawPos = 0.0},
+                InstantAction{robot.outtake.clawPos = 1.0},
+                robot.outtake.elbowToPosAction(values.outtake.elbowWaitingPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos),
+                robot.lift.liftToPosAction(values.lift.inRobot),
             ))
             .setTangent(Math.toRadians(-90.0))
             .splineToLinearHeading(Pose(first_yellow.position, first_yellow.heading), -90.0.deg)
-            .waitSeconds(3.0)
-            .setTangent(Math.toRadians(-90.0))
+            .afterTime(0.0, SequentialAction(
+                robot.intake.extendoToPosAction(values.intake.extendoLimit),
+                InstantAction{ robot.intake._extendoPower = 1.0},
+                SleepAction(1.s),
+                InstantAction{ robot.intake._extendoPower = 0.0},
+                robot.intake.extendoToPosAction(values.intake.extendoInBot)
+            ))
+            //.waitSeconds(3.0)
             .setTangent(Math.toRadians(-135.0))
             .lineToXLinearHeading(basket.position.x, basket.heading)
-            .waitSeconds(3.0)
+            .afterTime(0.0, SequentialAction(
+                robot.lift.liftToPosAction(values.lift.basketPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
+                robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos),
+                InstantAction{robot.outtake.clawPos = 0.0},
+                InstantAction{robot.outtake.clawPos = 1.0},
+                robot.outtake.elbowToPosAction(values.outtake.elbowWaitingPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos),
+                robot.lift.liftToPosAction(values.lift.inRobot),
+            ))
+            //.waitSeconds(3.0)
             .setTangent(Math.toRadians(-135.0))
             .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
-            .waitSeconds(3.0)
+            .afterTime(0.0, SequentialAction(
+                robot.intake.extendoToPosAction(values.intake.extendoLimit),
+                InstantAction{ robot.intake._extendoPower = 1.0},
+                SleepAction(1.s),
+                InstantAction{ robot.intake._extendoPower = 0.0},
+                robot.intake.extendoToPosAction(values.intake.extendoInBot)
+            ))
+            //.waitSeconds(3.0)
             .setTangent(Math.toRadians(45.0))
             .lineToXLinearHeading(basket.position.x, basket.heading)
-            .waitSeconds(3.0)
+            .afterTime(0.0, SequentialAction(
+                robot.lift.liftToPosAction(values.lift.basketPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
+                robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos),
+                InstantAction{robot.outtake.clawPos = 0.0},
+                InstantAction{robot.outtake.clawPos = 1.0},
+                robot.outtake.elbowToPosAction(values.outtake.elbowWaitingPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos),
+                robot.lift.liftToPosAction(values.lift.inRobot),
+            ))
+            //.waitSeconds(3.0)
             .setTangent(Math.toRadians(180.0))
             .splineToLinearHeading(Pose(last_yellow.position, last_yellow.heading), -90.0.deg)
-            .waitSeconds(3.0)
+            .afterTime(0.0, SequentialAction(
+                robot.intake.extendoToPosAction(values.intake.extendoLimit),
+                InstantAction{ robot.intake._extendoPower = 1.0},
+                SleepAction(1.s),
+                InstantAction{ robot.intake._extendoPower = 0.0},
+                robot.intake.extendoToPosAction(values.intake.extendoInBot)
+            ))
+            //.waitSeconds(3.0)
             .setTangent(Math.toRadians(90.0))
             .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg)
-            .waitSeconds(3.0)
+            .afterTime(0.0, SequentialAction(
+                robot.lift.liftToPosAction(values.lift.basketPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
+                robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos),
+                InstantAction{robot.outtake.clawPos = 0.0},
+                InstantAction{robot.outtake.clawPos = 1.0},
+                robot.outtake.elbowToPosAction(values.outtake.elbowWaitingPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos),
+                robot.lift.liftToPosAction(values.lift.inRobot),
+            ))
+            //.waitSeconds(3.0)
             .build()
 
         telemetry.addData("Config name", config.name)

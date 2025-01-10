@@ -18,6 +18,6 @@ data class OuttakeValues(
     val elbowIntakePos: Double,
     val shoulderPickupPos: Double,
     val elbowPickupPos: Double,
-
+    val elbowWaitingPos: Double,
     val shoulderWaitingPos: Double,
 )
