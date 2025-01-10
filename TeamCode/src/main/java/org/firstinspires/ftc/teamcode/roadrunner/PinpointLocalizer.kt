@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.roadrunner
 
+import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Vector2d
@@ -12,13 +13,21 @@ class PinpointLocalizer @JvmOverloads constructor(
     hardwareMap: HardwareMap,
     private val initPose: Pose2d = Pose2d(0.0, 0.0, 0.0)
 ): Localizer {
+    @Config
+    data object PinpointConfig {
+        @JvmField
+        var xOffset = 0.0
+        @JvmField
+        var yOffset = 0.0
+    }
+
     private var currentPose: Pose2d = initPose
     val odo: GoBildaPinpointDriver = hardwareMap.get(GoBildaPinpointDriver::class.java, "odo")
 
     init {
         odo.setOffsets(
-            0.0,
-            0.0
+            PinpointConfig.xOffset,
+            PinpointConfig.yOffset
         )
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
         odo.setEncoderDirections(
