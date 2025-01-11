@@ -6,14 +6,16 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.robot.Robot
+import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigWonder
+import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesWonder
 
 @TeleOp
 class CraneTele : LinearOpMode() {
     override fun runOpMode() {
-        val config = robotHardwareConfigWonder
-        val values = robotValuesWonder
+        val config = robotHardwareConfigTransilvaniaCollege
+        val values = robotValuesTransilvaniaCollege
 
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 

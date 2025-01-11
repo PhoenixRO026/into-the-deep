@@ -20,7 +20,7 @@ class OuttakeOnly : LinearOpMode() {
         outtake.shoulderCurrentPos = 0.5
         outtake.elbowCurrentPos = 0.5
         outtake.wristPosToMiddle()
-        outtake.clawPos = 0.0
+        outtake.clawPos = 0.5
 
         waitForStart()
 
