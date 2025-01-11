@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.config.createAnalogEncoderCRServ
 import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
-import org.firstinspires.ftc.teamcode.robot.Lift.LiftConfig
 import org.firstinspires.ftc.teamcode.robot.config.OuttakeHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.values.OuttakeValues
 import kotlin.math.abs
