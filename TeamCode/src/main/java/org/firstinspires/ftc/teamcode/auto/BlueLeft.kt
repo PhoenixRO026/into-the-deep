@@ -17,7 +17,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDriveEx
 import org.firstinspires.ftc.teamcode.robot.Robot
+import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigWonder
+import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesWonder
 
 @Autonomous
@@ -29,8 +31,8 @@ class BlueLeft : LinearOpMode() {
     private val  last_yellow = Pose(55.0.inch, 47.0.inch, -60.0.deg)
 
     override fun runOpMode() {
-        val config = robotHardwareConfigWonder
-        val values = robotValuesWonder
+        val config = robotHardwareConfigTransilvaniaCollege
+        val values = robotValuesTransilvaniaCollege
 
         val dash = FtcDashboard.getInstance()
         telemetry = MultipleTelemetry(telemetry, dash.telemetry)

@@ -42,8 +42,8 @@ class Lift(
 
     private var currentMode = MODE.RAW_POWER
     
-    private val motorLiftRight: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorLiftRight)
-    private val motorLiftLeft: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorLiftLeft)
+    val motorLiftRight: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorLiftRight)
+    val motorLiftLeft: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorLiftLeft)
     private val encoder: Encoder = hardwareMap.createEncoderUsingConfig(config.encoder)
 
     private var offset = 0
