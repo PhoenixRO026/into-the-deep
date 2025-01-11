@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.config.createAnalogEncoderCRServ
 import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
+import org.firstinspires.ftc.teamcode.robot.Lift.LiftConfig
 import org.firstinspires.ftc.teamcode.robot.config.OuttakeHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.values.OuttakeValues
 import kotlin.math.abs
@@ -38,6 +39,13 @@ class Outtake(
             timeKeep = timeKeep
         )
     }
+
+    enum class MODE {
+        RUN_TO_POSITION,
+        RAW_POWER
+    }
+
+    private var currentMode = MODE.RAW_POWER
 
     private val servoExtendo: AnalogEncoderServo = hardwareMap.createAnalogEncoderCRServ(config.servoExtendo)
     private val servoShoulder: Servo = hardwareMap.createServoWithConfig(config.servoShoulder)
@@ -108,11 +116,22 @@ class Outtake(
         wristCurrentPos = values.wristMiddlPos
     }
 
-    var extendoPower by servoExtendo::power
+    var _extendoPower by servoExtendo::power
+
+    var extendoPower
+        get() = _extendoPower
+        set(value) {
+            _extendoPower = value
+            currentMode = MODE.RAW_POWER
+        }
 
     val extendoPos by servoExtendo::rotations
 
     var extendoTargetPos = extendoPos
+        set(value) {
+            field = value
+            currentMode = MODE.RUN_TO_POSITION
+        }
 
     var shoulderCurrentPos
         get() = servoShoulder.position
@@ -190,7 +209,8 @@ class Outtake(
 
     fun update() {
         servoExtendo.update()
-        extendoPower = OuttakeConfig.extendoController?.calculate(extendoPos.asRev, extendoTargetPos.asRev) ?: 0.0
+        if (currentMode == MODE.RUN_TO_POSITION)
+            extendoPower = OuttakeConfig.extendoController?.calculate(extendoPos.asRev, extendoTargetPos.asRev) ?: 0.0
         moveShoulder()
         moveElbow()
         moveWrist()
