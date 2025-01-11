@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.library.config.createEncoderUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createMotorUsingConfig
 import org.firstinspires.ftc.teamcode.library.config.createServoWithConfig
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
+import org.firstinspires.ftc.teamcode.robot.Lift.MODE
 import org.firstinspires.ftc.teamcode.robot.config.IntakeHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.values.IntakeValues
 import kotlin.math.abs
@@ -47,7 +48,7 @@ class Intake(
 
     private val motorExtendoIntake: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorExtendoIntake)
     private val motorSweeper: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorSweeper)
-    private val servoIntakeTilt: Servo = hardwareMap.createServoWithConfig(config.servoIntakeTilt)
+    val servoIntakeTilt: Servo = hardwareMap.createServoWithConfig(config.servoIntakeTilt)
     private val servoBoxTilt: Servo = hardwareMap.createServoWithConfig(config.servoBoxTilt)
     private val encoderExtendo: Encoder = hardwareMap.createEncoderUsingConfig(config.encoderExtendo)
 
@@ -100,7 +101,8 @@ class Intake(
     var extendoPower
         get() = _extendoPower
         set(value) {
-            _extendoPower = value
+            val newPower = if (extendoPosition >= values.extendoLim) value.coerceAtMost(0.0) else value
+            _extendoPower = newPower
             extendoMode = MODE.RAW_POWER
         }
 

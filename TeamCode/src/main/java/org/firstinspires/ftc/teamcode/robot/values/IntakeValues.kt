@@ -6,5 +6,6 @@ data class IntakeValues(
     val boxTiltMaxTravelDuration: Duration,
     val intakeTiltMaxTravelDuration: Duration,
     val extendoInBot: Int,
-    val extendoLimit: Int
+    val extendoLimit: Int,
+    val extendoLim: Int
 )

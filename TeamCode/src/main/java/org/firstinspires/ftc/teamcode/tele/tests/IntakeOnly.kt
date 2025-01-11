@@ -19,6 +19,8 @@ class IntakeOnly : LinearOpMode() {
 
         waitForStart()
 
+        intake.intakeTiltCurrentPos = 0.5
+
         while (opModeIsActive()) {
             timeKeep.resetDeltaTime()
             val leftStickY = -gamepad1.left_stick_y.toDouble()

@@ -37,6 +37,8 @@ class CraneTele : LinearOpMode() {
         robot.outtake.wristPosToMiddle()
         robot.outtake.clawPos = 1.0
 
+        robot.intake.intakeTiltCurrentPos = 0.5
+
         while (isStarted && !isStopRequested) {
             timeKeep.resetDeltaTime()
             val pad1LeftStickY = -gamepad1.left_stick_y.toDouble()

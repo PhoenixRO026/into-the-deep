@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.robot.config.OuttakeHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.config.RobotHardwareConfig
 
 val robotHardwareConfigTransilvaniaCollege = RobotHardwareConfig(
-    name = "Wonderland",
+    name = "TransilvaniaCollege",
     drive = DriveHardwareConfig(
         imu = IMUConfig(
             deviceName = "imu",
@@ -100,7 +100,7 @@ val robotHardwareConfigTransilvaniaCollege = RobotHardwareConfig(
             deviceName = "servoIntakeTilt",
             direction = ServoConfig.Direction.REVERSE,
             pwmRange = ServoConfig.PWMRange.DEFAULT,
-            rangeScale = 0.602..0.775
+            rangeScale = 0.0..1.0
         ),
         servoBoxTilt = ServoConfig(
             deviceName = "servoBoxTilt",
