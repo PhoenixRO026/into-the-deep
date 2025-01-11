@@ -12,12 +12,17 @@ val robotValuesWonder = RobotValues(
         slowSpeed = 0.5
     ),
     lift = LiftValues(
-        highPos = 0
+        highPos = 0,
+        basketPos = 0,
+        secondBar = 0,
+        inRobot = 0,
+        onHangBar = 0
     ),
     intake = IntakeValues(
         boxTiltMaxTravelDuration = 5.s,
         intakeTiltMaxTravelDuration = 5.s,
         extendoLimit = 0,
+        extendoInBot = 0
     ),
     outtake = OuttakeValues(
         shoulderMaxTravelDuration = 4.s,
@@ -35,5 +40,8 @@ val robotValuesWonder = RobotValues(
         elbowIntakePos = 0.05,
         shoulderPickupPos = 0.2269,
         elbowPickupPos = 0.0,
+        extendForHang = 0.0,
+        elbowWaitingPos = 0.5,
+        shoulderWaitingPos = 0.5,
     )
 )

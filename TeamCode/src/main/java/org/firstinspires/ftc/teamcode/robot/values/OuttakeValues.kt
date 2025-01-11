@@ -13,7 +13,7 @@ data class OuttakeValues(
     val elbowBasketPos: Double,
     val wristMiddlPos: Double,
     val shoulderSpecimenPos: Double,
-    val elbowSpecimenPos: Double,
+        val elbowSpecimenPos: Double,
     val shoulderIntakePos: Double,
     val elbowIntakePos: Double,
     val shoulderPickupPos: Double,
