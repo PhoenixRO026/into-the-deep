@@ -58,7 +58,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.messages.MecanumLocalizerInputs
 import org.firstinspires.ftc.teamcode.roadrunner.messages.PoseMessage;
 import org.firstinspires.ftc.teamcode.robot.config.DriveHardwareConfig;
 import org.firstinspires.ftc.teamcode.robot.config.RobotHardwareConfig;
-import org.firstinspires.ftc.teamcode.tele.config.WonderConfigKt;
+import org.firstinspires.ftc.teamcode.tele.config.TransilvaniaCollegeKt;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -66,7 +66,7 @@ import java.util.List;
 
 @Config
 public final class MecanumDriveEx {
-    public static RobotHardwareConfig robotHardwareConfig = WonderConfigKt.getRobotHardwareConfigWonder();
+    public static RobotHardwareConfig robotHardwareConfig = TransilvaniaCollegeKt.getRobotHardwareConfigTransilvaniaCollege();
 
     public static class Params {
         // IMU orientation
