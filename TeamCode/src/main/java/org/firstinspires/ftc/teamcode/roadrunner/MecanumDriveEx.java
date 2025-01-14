@@ -57,6 +57,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.messages.MecanumCommandMessage;
 import org.firstinspires.ftc.teamcode.roadrunner.messages.MecanumLocalizerInputsMessage;
 import org.firstinspires.ftc.teamcode.roadrunner.messages.PoseMessage;
 import org.firstinspires.ftc.teamcode.robot.config.DriveHardwareConfig;
+import org.firstinspires.ftc.teamcode.robot.config.RobotHardwareConfig;
 import org.firstinspires.ftc.teamcode.tele.config.WonderConfigKt;
 
 import java.util.Arrays;
@@ -65,14 +66,16 @@ import java.util.List;
 
 @Config
 public final class MecanumDriveEx {
+    public static RobotHardwareConfig robotHardwareConfig = WonderConfigKt.getRobotHardwareConfigWonder();
+
     public static class Params {
         // IMU orientation
         // TODO: fill in these values based on
         //   see https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html?highlight=imu#physical-hub-mounting
         public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
-                IMUConfigKt.toRevLogoDirection(WonderConfigKt.getRobotHardwareConfigWonder().getDrive().getImu().getLogoDirection());
+                IMUConfigKt.toRevLogoDirection(robotHardwareConfig.getDrive().getImu().getLogoDirection());
         public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
-                IMUConfigKt.toRevUSBDirection(WonderConfigKt.getRobotHardwareConfigWonder().getDrive().getImu().getUsbDirection());
+                IMUConfigKt.toRevUSBDirection(robotHardwareConfig.getDrive().getImu().getUsbDirection());
 
         // drive model parameters
         public double inPerTick = 1;
@@ -241,7 +244,7 @@ public final class MecanumDriveEx {
 
         // TODO: make sure your config has motors with these names (or change them)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
-        DriveHardwareConfig drive = WonderConfigKt.getRobotHardwareConfigWonder().getDrive();
+        DriveHardwareConfig drive = robotHardwareConfig.getDrive();
 
         leftFront = hardwareMap.get(DcMotorEx.class, drive.getMotorLF().getDeviceName());
         leftBack = hardwareMap.get(DcMotorEx.class, drive.getMotorLB().getDeviceName());

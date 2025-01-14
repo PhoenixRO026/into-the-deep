@@ -110,7 +110,7 @@ public final class TuningOpModes {
             };
         } else if (DRIVE_CLASS.equals(MecanumDriveEx.class)) {
             dvf = hardwareMap -> {
-                MecanumDrive md = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+                MecanumDriveEx md = new MecanumDriveEx(hardwareMap, new Pose2d(0, 0, 0));
 
                 List<Encoder> leftEncs = new ArrayList<>(), rightEncs = new ArrayList<>();
                 List<Encoder> parEncs = new ArrayList<>(), perpEncs = new ArrayList<>();
