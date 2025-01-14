@@ -20,9 +20,12 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.MecanumDriveEx;
+import org.firstinspires.ftc.teamcode.roadrunner.PinpointLocalizer;
 import org.firstinspires.ftc.teamcode.roadrunner.TankDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.ThreeDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.roadrunner.TwoDeadWheelLocalizer;
@@ -33,7 +36,7 @@ import java.util.List;
 
 public final class TuningOpModes {
     // TODO: change this to TankDrive.class if you're using tank
-    public static final Class<?> DRIVE_CLASS = MecanumDrive.class;
+    public static final Class<?> DRIVE_CLASS = MecanumDriveEx.class;
 
     public static final String GROUP = "quickstart";
     public static final boolean DISABLED = false;
@@ -81,6 +84,67 @@ public final class TuningOpModes {
 
                 return new DriveView(
                     DriveType.MECANUM,
+                        MecanumDrive.PARAMS.inPerTick,
+                        MecanumDrive.PARAMS.maxWheelVel,
+                        MecanumDrive.PARAMS.minProfileAccel,
+                        MecanumDrive.PARAMS.maxProfileAccel,
+                        hardwareMap.getAll(LynxModule.class),
+                        Arrays.asList(
+                                md.leftFront,
+                                md.leftBack
+                        ),
+                        Arrays.asList(
+                                md.rightFront,
+                                md.rightBack
+                        ),
+                        leftEncs,
+                        rightEncs,
+                        parEncs,
+                        perpEncs,
+                        md.lazyImu,
+                        md.voltageSensor,
+                        () -> new MotorFeedforward(MecanumDrive.PARAMS.kS,
+                                MecanumDrive.PARAMS.kV / MecanumDrive.PARAMS.inPerTick,
+                                MecanumDrive.PARAMS.kA / MecanumDrive.PARAMS.inPerTick)
+                );
+            };
+        } else if (DRIVE_CLASS.equals(MecanumDriveEx.class)) {
+            dvf = hardwareMap -> {
+                MecanumDrive md = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+
+                List<Encoder> leftEncs = new ArrayList<>(), rightEncs = new ArrayList<>();
+                List<Encoder> parEncs = new ArrayList<>(), perpEncs = new ArrayList<>();
+                if (md.localizer instanceof MecanumDrive.DriveLocalizer) {
+                    MecanumDrive.DriveLocalizer dl = (MecanumDrive.DriveLocalizer) md.localizer;
+                    leftEncs.add(dl.leftFront);
+                    leftEncs.add(dl.leftBack);
+                    rightEncs.add(dl.rightFront);
+                    rightEncs.add(dl.rightBack);
+                } else if (md.localizer instanceof ThreeDeadWheelLocalizer) {
+                    ThreeDeadWheelLocalizer dl = (ThreeDeadWheelLocalizer) md.localizer;
+                    parEncs.add(dl.par0);
+                    parEncs.add(dl.par1);
+                    perpEncs.add(dl.perp);
+                } else if (md.localizer instanceof TwoDeadWheelLocalizer) {
+                    TwoDeadWheelLocalizer dl = (TwoDeadWheelLocalizer) md.localizer;
+                    parEncs.add(dl.par);
+                    perpEncs.add(dl.perp);
+                } else if (md.localizer instanceof PinpointLocalizer) {
+                    PinpointLocalizer dl = (PinpointLocalizer) md.localizer;
+                    RobotLog.addGlobalWarningMessage(
+                            "Disabling Pinpoint IMU. Perform a power cycle (turn the robot off and back on again) to reset it before running Feedback Tuner, LocalizationTest, or an auto (Angular Scalar now 0, previously %f)",
+                            dl.getOdo().getYawScalar()
+                    );
+                    dl.getOdo().setYawScalar(0.0);
+                    dl.getOdo().resetPosAndIMU();
+                    parEncs.add(dl.getEncX());
+                    perpEncs.add(dl.getEncY());
+                } else {
+                    throw new RuntimeException("unknown localizer: " + md.localizer.getClass().getName());
+                }
+
+                return new DriveView(
+                        DriveType.MECANUM,
                         MecanumDrive.PARAMS.inPerTick,
                         MecanumDrive.PARAMS.maxWheelVel,
                         MecanumDrive.PARAMS.minProfileAccel,
