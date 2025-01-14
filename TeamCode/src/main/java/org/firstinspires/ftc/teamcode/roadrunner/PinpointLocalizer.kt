@@ -4,14 +4,17 @@ import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Vector2d
+import com.acmerobotics.roadrunner.ftc.RawEncoder
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
 import org.firstinspires.ftc.teamcode.library.pinpoint.GoBildaPinpointDriver
+import org.firstinspires.ftc.teamcode.library.pinpoint.fakeOdoMotor
 
 class PinpointLocalizer @JvmOverloads constructor(
     hardwareMap: HardwareMap,
-    private val initPose: Pose2d = Pose2d(0.0, 0.0, 0.0)
+    initPose: Pose2d = Pose2d(0.0, 0.0, 0.0)
 ): Localizer {
     @Config
     data object PinpointConfig {
@@ -23,6 +26,16 @@ class PinpointLocalizer @JvmOverloads constructor(
 
     private var currentPose: Pose2d = initPose
     val odo: GoBildaPinpointDriver = hardwareMap.get(GoBildaPinpointDriver::class.java, "odo")
+    val encX = RawEncoder(fakeOdoMotor(
+        { odo.posX },
+        { odo.velX },
+        { odo.update() }
+    ))
+    val encY = RawEncoder(fakeOdoMotor(
+        { odo.posY },
+        { odo.velY },
+        { odo.update() }
+    ))
 
     init {
         odo.setOffsets(
@@ -35,10 +48,12 @@ class PinpointLocalizer @JvmOverloads constructor(
             GoBildaPinpointDriver.EncoderDirection.FORWARD
         )
         odo.resetPosAndIMU()
+        odo.setPosition(Pose2D(DistanceUnit.INCH, initPose.position.x, initPose.position.y, AngleUnit.RADIANS, initPose.heading.toDouble()))
     }
 
     override fun setPose(pose: Pose2d) {
         currentPose = pose
+        odo.setPosition(Pose2D(DistanceUnit.INCH, pose.position.x, pose.position.y, AngleUnit.RADIANS, pose.heading.toDouble()))
     }
 
     override fun getPose(): Pose2d = currentPose
@@ -59,8 +74,8 @@ class PinpointLocalizer @JvmOverloads constructor(
             Vector2d(
                 odoPosX,
                 odoPosY
-            ) + initPose.position,
-            odoPosHeading + initPose.heading.toDouble()
+            ),
+            odoPosHeading
         )
 
         return PoseVelocity2d(
