@@ -67,7 +67,7 @@ val robotHardwareConfigTransilvaniaCollege = RobotHardwareConfig(
         ),
         motorLiftLeft = MotorConfig(
             deviceName = "motorLiftLeft",
-            direction = MotorConfig.Direction.REVERSE,
+            direction = MotorConfig.Direction.FORWARD,
             runMode = MotorConfig.RunMode.RUN_WITHOUT_ENCODER,
             zeroPowerBehavior = MotorConfig.ZeroPowerBehavior.BRAKE,
             resetEncoder = true

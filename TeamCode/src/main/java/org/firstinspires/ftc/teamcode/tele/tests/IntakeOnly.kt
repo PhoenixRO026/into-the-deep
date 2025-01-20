@@ -27,7 +27,7 @@ class IntakeOnly : LinearOpMode() {
             val rightStickY = -gamepad1.right_stick_y.toDouble()
 
             if (gamepad1.b) {
-                intake.resetExtendoPosition()
+                intake.resetExtendoPosition()   
             }
 
             intake.extendoPower = leftStickY

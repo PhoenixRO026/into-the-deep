@@ -19,9 +19,9 @@ class PinpointLocalizer @JvmOverloads constructor(
     @Config
     data object PinpointConfig {
         @JvmField
-        var xOffset = 0.0
+        var xOffset = 24.0
         @JvmField
-        var yOffset = 0.0
+        var yOffset = 12.4
     }
 
     private var currentPose: Pose2d = initPose
@@ -45,7 +45,7 @@ class PinpointLocalizer @JvmOverloads constructor(
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
         odo.setEncoderDirections(
             GoBildaPinpointDriver.EncoderDirection.FORWARD,
-            GoBildaPinpointDriver.EncoderDirection.FORWARD
+            GoBildaPinpointDriver.EncoderDirection.REVERSED
         )
         odo.resetPosAndIMU()
         odo.setPosition(Pose2D(DistanceUnit.INCH, initPose.position.x, initPose.position.y, AngleUnit.RADIANS, initPose.heading.toDouble()))

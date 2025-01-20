@@ -49,5 +49,6 @@ class Robot(
         telemetry.addLine("LIFT:")
         telemetry.addData("lift power", lift.power)
         telemetry.addData("lift pos", lift.position)
+        //telemetry.addData("X coordonates", )")
     }
 }
