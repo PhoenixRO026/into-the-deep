@@ -40,8 +40,11 @@ class Testing : LinearOpMode() {
         var currPose = startPose
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
+            .setTangent(0.0)
             .turn(1080.deg)
+            .setTangent(0.0)
             .lineToX(10.inch)
+            .setTangent(0.0)
             .turn(180.deg)
             .build()
 
