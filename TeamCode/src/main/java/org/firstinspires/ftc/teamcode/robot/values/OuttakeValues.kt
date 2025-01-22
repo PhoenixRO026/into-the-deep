@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.values
 
+import com.lib.units.Angle
 import com.lib.units.Duration
 
 data class OuttakeValues(
@@ -12,12 +13,16 @@ data class OuttakeValues(
     val shoulderBasketPos: Double,
     val elbowBasketPos: Double,
     val wristMiddlPos: Double,
+    //specimen pos
     val shoulderSpecimenPos: Double,
-        val elbowSpecimenPos: Double,
+    val elbowSpecimenPos: Double,
+    //intake pos
+    val extendoIntakePos : Angle,
     val shoulderIntakePos: Double,
     val elbowIntakePos: Double,
-    val shoulderPickupPos: Double,
-    val elbowPickupPos: Double,
+    //robot pos
+    val shoulderRobotPos: Double,
+    val elbowRobotPos: Double,
     val elbowWaitingPos: Double,
     val shoulderWaitingPos: Double,
     val extendForHang: Double

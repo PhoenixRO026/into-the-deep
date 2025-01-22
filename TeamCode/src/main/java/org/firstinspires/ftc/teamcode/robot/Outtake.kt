@@ -101,12 +101,13 @@ class Outtake(
         elbowTargetPos = values.elbowSpecimenPos
     }
 
-    fun armTargetToPickup() {
-        shoulderTargetPos = values.shoulderPickupPos
-        elbowTargetPos = values.elbowPickupPos
+    fun armTargetToRobot() {
+        shoulderTargetPos = values.shoulderRobotPos
+        elbowTargetPos = values.elbowRobotPos
     }
 
     fun armTargetToIntake() {
+        extendoTargetPos = values.extendoIntakePos
         shoulderTargetPos = values.shoulderIntakePos
         elbowTargetPos = values.elbowIntakePos
     }

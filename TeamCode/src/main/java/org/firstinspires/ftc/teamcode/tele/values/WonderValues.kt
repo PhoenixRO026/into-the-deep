@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.tele.values
 
+import com.lib.units.deg
 import com.lib.units.s
 import org.firstinspires.ftc.teamcode.robot.values.DriveValues
 import org.firstinspires.ftc.teamcode.robot.values.IntakeValues
@@ -25,8 +26,7 @@ val robotValuesWonder = RobotValues(
         extendoInBot = 0,
         extendoLim = 0
     ),
-    outtake = OuttakeValues(
-        shoulderMaxTravelDuration = 4.s,
+    outtake = OuttakeValues(shoulderMaxTravelDuration = 4.s,
         elbowMaxTravelDuration = 3.s,
         wristMaxTravelDuration = 3.s,
         clawMaxTravelDuration = 5.s,
@@ -35,14 +35,17 @@ val robotValuesWonder = RobotValues(
         shoulderBasketPos = 0.71,
         elbowBasketPos = 0.478,
         wristMiddlPos = 0.476,
-        shoulderSpecimenPos = 0.7,
-        elbowSpecimenPos = 0.4869,
-        shoulderIntakePos = 0.358,
-        elbowIntakePos = 0.05,
-        shoulderPickupPos = 0.2269,
-        elbowPickupPos = 0.0,
+        shoulderSpecimenPos = 0.0, // specimen
+        elbowSpecimenPos = 0.2412,
+        //intake
+        extendoIntakePos = 435.7.deg,
+        shoulderIntakePos = 0.44,
+        elbowIntakePos = 0.0,
+        //robot
+        shoulderRobotPos = 0.2269,
+        elbowRobotPos = 0.4733,
         extendForHang = 0.0,
         elbowWaitingPos = 0.5,
-        shoulderWaitingPos = 0.5,
+        shoulderWaitingPos = 0.5
     )
 )

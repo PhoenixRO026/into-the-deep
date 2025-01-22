@@ -63,19 +63,19 @@ class Intake(
         }
 
     fun intakeDown() {
-        intakeTiltCurrentPos = 0.0
+        intakeTiltCurrentPos = 0.5106
     }
 
     fun intakeUp() {
-        intakeTiltCurrentPos = 1.0
+        intakeTiltCurrentPos = 0.6794
     }
 
     fun boxDown() {
-        boxTiltCurrentPos = 0.0
+        boxTiltCurrentPos = 0.5633
     }
 
     fun boxUp() {
-        boxTiltCurrentPos = 1.0
+        boxTiltCurrentPos = 0.172
     }
 
     fun extendoToPosAction(pos: Int) = object : Action {

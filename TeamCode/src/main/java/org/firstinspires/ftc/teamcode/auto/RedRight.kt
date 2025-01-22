@@ -134,7 +134,7 @@ class RedRight : LinearOpMode() {
             .strafeTo(wallGrab.position)
             .afterTime(0.0,SequentialAction(
                 InstantAction{robot.outtake.clawPos = 1.0},
-                robot.outtake.shoudlerToPosAction(values.outtake.shoulderPickupPos), //pickup=back?
+                //robot.outtake.shoudlerToPosAction(values.outtake.shoulderPickupPos), //pickup=back?
                 InstantAction{ robot.intake._extendoPower = 0.0},
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos)
             ))
@@ -153,7 +153,7 @@ class RedRight : LinearOpMode() {
             .strafeTo(wallGrab.position)
             .afterTime(0.0,SequentialAction(
                 InstantAction{robot.outtake.clawPos = 1.0},
-                robot.outtake.shoudlerToPosAction(values.outtake.shoulderPickupPos), //pickup=baxk?
+                //robot.outtake.shoudlerToPosAction(values.outtake.shoulderPickupPos), //pickup=baxk?
                 InstantAction{ robot.intake._extendoPower = 0.0},
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos)
             ))
@@ -173,7 +173,7 @@ class RedRight : LinearOpMode() {
             .strafeTo(wallGrab.position)
             .afterTime(0.0,SequentialAction(
                 InstantAction{robot.outtake.clawPos = 1.0},
-                robot.outtake.shoudlerToPosAction(values.outtake.shoulderPickupPos), //pickup=baxk?
+                //robot.outtake.shoudlerToPosAction(values.outtake.shoulderPickupPos), //pickup=baxk?
                 InstantAction{ robot.intake._extendoPower = 0.0},
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos)
             ))
