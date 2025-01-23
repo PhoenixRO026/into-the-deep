@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.library.pinpoint
 
+import com.qualcomm.hardware.lynx.LynxDcMotorController
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorController
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -11,7 +12,7 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 
-fun fakeOdoMotor(pos: () -> Double, vel : () -> Double, update: () -> Unit): DcMotorEx = object :
+fun fakeOdoMotor(pos: () -> Double, vel : () -> Double, update: () -> Unit, controller: LynxDcMotorController): DcMotorEx = object :
     DcMotorEx {
     override fun getManufacturer(): Manufacturer = Manufacturer.Other
 
@@ -37,51 +38,7 @@ fun fakeOdoMotor(pos: () -> Double, vel : () -> Double, update: () -> Unit): DcM
 
     override fun setMotorType(motorType: MotorConfigurationType) {}
 
-    override fun getController(): DcMotorController = object : DcMotorController {
-        override fun getManufacturer(): Manufacturer = Manufacturer.Other
-
-        override fun getDeviceName(): String = "fake motor controller"
-
-        override fun getConnectionInfo(): String = "fake info"
-
-        override fun getVersion(): Int = 1
-
-        override fun resetDeviceConfigurationForOpMode(motor: Int) {}
-
-        override fun resetDeviceConfigurationForOpMode() {}
-
-        override fun close() {}
-
-        override fun setMotorType(motor: Int, motorType: MotorConfigurationType) {}
-
-        override fun getMotorType(motor: Int): MotorConfigurationType = MotorConfigurationType.getUnspecifiedMotorType()
-
-        override fun setMotorMode(motor: Int, mode: DcMotor.RunMode) {}
-
-        override fun getMotorMode(motor: Int): DcMotor.RunMode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-
-        override fun setMotorPower(motor: Int, power: Double) {}
-
-        override fun getMotorPower(motor: Int): Double = 0.0
-
-        override fun isBusy(motor: Int): Boolean = false
-
-        override fun setMotorZeroPowerBehavior(
-            motor: Int,
-            zeroPowerBehavior: DcMotor.ZeroPowerBehavior
-        ) {}
-
-        override fun getMotorZeroPowerBehavior(motor: Int): DcMotor.ZeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
-
-        override fun getMotorPowerFloat(motor: Int): Boolean = false
-
-        override fun setMotorTargetPosition(motor: Int, position: Int) {}
-
-        override fun getMotorTargetPosition(motor: Int): Int = 0
-
-        override fun getMotorCurrentPosition(motor: Int): Int = 0
-
-    }
+    override fun getController(): DcMotorController = controller
 
     override fun getPortNumber(): Int = 0
 

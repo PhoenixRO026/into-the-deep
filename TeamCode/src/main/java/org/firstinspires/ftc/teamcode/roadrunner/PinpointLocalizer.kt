@@ -5,7 +5,9 @@ import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Vector2d
 import com.acmerobotics.roadrunner.ftc.RawEncoder
+import com.qualcomm.hardware.lynx.LynxDcMotorController
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.configuration.LynxConstants
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
@@ -26,18 +28,27 @@ class PinpointLocalizer @JvmOverloads constructor(
 
     private var currentPose: Pose2d = initPose
     val odo: GoBildaPinpointDriver = hardwareMap.get(GoBildaPinpointDriver::class.java, "odo")
-    val encX = RawEncoder(fakeOdoMotor(
-        { odo.posX },
-        { odo.velX },
-        { odo.update() }
-    ))
-    val encY = RawEncoder(fakeOdoMotor(
-        { odo.posY },
-        { odo.velY },
-        { odo.update() }
-    ))
+
+    val encX: RawEncoder
+    val encY: RawEncoder
 
     init {
+        val motorController = hardwareMap.getAll(LynxDcMotorController::class.java).first {
+            LynxConstants.isEmbeddedSerialNumber(it.serialNumber)
+        }
+        encX = RawEncoder(fakeOdoMotor(
+            { odo.posX },
+            { odo.velX },
+            { odo.update() },
+            motorController
+        ))
+        encY = RawEncoder(fakeOdoMotor(
+            { odo.posY },
+            { odo.velY },
+            { odo.update() },
+            motorController
+        ))
+
         odo.setOffsets(
             PinpointConfig.xOffset,
             PinpointConfig.yOffset
