@@ -91,7 +91,7 @@ class CraneTele : LinearOpMode() {
             robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
             //INTAKE
-            /*robot.intake.extendoPower = pad1Triggers
+            robot.intake.extendoPower = pad1Triggers
             robot.intake.sweeperPower = if (gamepad2.x) -1.0 else gamepad2.left_trigger.toDouble()
             robot.intake.boxTiltSpeed = when {
                 gamepad2.dpad_up -> 1.0
@@ -102,7 +102,7 @@ class CraneTele : LinearOpMode() {
                 gamepad2.dpad_right -> 1.0
                 gamepad2.dpad_left -> -1.0
                 else -> 0.0
-            }*/
+            }
 
             //LIFT
             robot.lift.power = pad2RightStickY + 0.15

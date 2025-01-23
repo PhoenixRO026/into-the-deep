@@ -114,7 +114,7 @@ class Intake(
         set(value) {
             servoBoxTilt.position = value
             _boxTiltTargetPos = servoBoxTilt.position
-            boxTiltSpeed = 0.0
+            boxTiltSpeed = 0.1
         }
 
     private var _boxTiltTargetPos = servoBoxTilt.position
@@ -125,10 +125,10 @@ class Intake(
         get() = _boxTiltTargetPos
         set(value) {
             _boxTiltTargetPos = value
-            boxTiltSpeed = 0.0
+            boxTiltSpeed = 0.1
         }
 
-    var boxTiltSpeed: Double = 0.0
+    var boxTiltSpeed: Double = 0.1
         set(value) {
             field = value.coerceIn(-1.0, 1.0)
         }

@@ -2,18 +2,22 @@ package org.firstinspires.ftc.teamcode.tele
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.SequentialAction
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.robot.Robot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
+import kotlin.math.abs
 
 @TeleOp
 class CraniTele : LinearOpMode() {
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
         val values = robotValuesTransilvaniaCollege
+        var emergencyMode : Int = 0
 
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
@@ -53,7 +57,7 @@ class CraniTele : LinearOpMode() {
             if (gamepad1.y)
                 robot.drive.resetFieldCentric()
 
-            robot.drive.isSlowMode = gamepad1.left_trigger >= 0.2
+            robot.drive.isSlowMode = gamepad1.right_trigger >= 0.2
 
             robot.drive.driveFieldCentric(
                 pad1LeftStickY,
@@ -65,47 +69,47 @@ class CraniTele : LinearOpMode() {
             if (gamepad2.right_bumper) {
                 robot.outtake.armTargetToSpecimen()
             } else if (gamepad2.left_bumper) {
-                robot.lift.targetPosition = 339
+                robot.lift.targetPosition = 295
+                robot.intake.intakeUp()
+                robot.intake.boxUp()
+                robot.outtake.clawPos = 1.0
                 robot.outtake.armTargetToIntake()
+                robot.outtake.clawPos = 0.0
             } else if (gamepad2.left_trigger >= 0.3) {
                 robot.outtake.armTargetToRobot()
             }
             robot.outtake.extendoPower = pad2LeftStickY
 
-            robot.outtake.elbowSpeed = when {
-                gamepad2.y -> 1.0
-                gamepad2.a -> -1.0
-                else -> 0.0
-            }
-            robot.outtake.wristSpeed = when {
-                gamepad2.dpad_left -> -1.0
-                gamepad2.dpad_right -> 1.0
-                else -> 0.0
-            }
             robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
             //INTAKE
             robot.intake.extendoPower = pad1Triggers
-            robot.intake.sweeperPower = if (gamepad2.x) -1.0 else gamepad2.left_trigger.toDouble()
-            if (gamepad2.dpad_up){
+            robot.intake.sweeperPower = when {
+                gamepad1.right_bumper -> 1.0
+                gamepad1.left_bumper -> -1.0
+                else -> 0.0
+            }
+
+
+            if (gamepad2.dpad_right){
                 robot.intake.boxUp()
             }
-            else if (gamepad2.dpad_down){
+            else if (gamepad2.dpad_left){
                 robot.intake.boxDown()
             }
-            /*
-            robot.intake.boxTiltSpeed = when {
-                gamepad2.dpad_up -> 1.0
-                gamepad2.dpad_up -> -1.0
-                else -> 0.0
-            }*/
 
             if(gamepad1.dpad_up){
                 robot.intake.intakeUp()
             }
             else if(gamepad1.dpad_down){
                 robot.intake.intakeDown()
-            }/*
+            }
+            /*
+            robot.intake.boxTiltSpeed = when {
+                gamepad2.dpad_up -> 1.0
+                gamepad2.dpad_up -> -1.0
+                else -> 0.0
+            }
             robot.intake.intakeTiltSpeed = when {
                 gamepad2.dpad_right -> 1.0
                 gamepad2.dpad_left -> -1.0
@@ -114,6 +118,55 @@ class CraniTele : LinearOpMode() {
 
             //LIFT
             robot.lift.power = pad2RightStickY + 0.15
+
+            //
+            ////////////////////////////////////////////////////////////////
+            //
+            /*EMERGENCY!!!!!!!*/
+            //
+            ////////////////////////////////////////////////////////////////
+            //
+
+            if (gamepad2.ps) {
+                emergencyMode = abs(emergencyMode-1)
+                sleep(100)
+            }
+
+            if (emergencyMode == 1){
+                //OUTTAKE
+                if (gamepad2.right_bumper) {
+                    robot.outtake.armTargetToSpecimen()
+                } else if (gamepad2.left_bumper) {
+                    robot.lift.targetPosition = 295
+                    robot.outtake.armTargetToIntake()
+                } else if (gamepad2.left_trigger >= 0.3) {
+                    robot.outtake.armTargetToRobot()
+                }
+                robot.outtake.extendoPower = pad2LeftStickY
+
+                robot.outtake.elbowSpeed = when {
+                    gamepad2.y -> 1.0
+                    gamepad2.a -> -1.0
+                    else -> 0.0
+                }
+                robot.outtake.wristSpeed = when {
+                    gamepad2.dpad_left -> -1.0
+                    gamepad2.dpad_right -> 1.0
+                    else -> 0.0
+                }
+                robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
+
+                robot.intake.boxTiltSpeed = when {
+                    gamepad2.dpad_up -> 1.0
+                    gamepad2.dpad_up -> -1.0
+                    else -> 0.0
+                }
+
+                //LIFT
+                robot.lift.power = pad2RightStickY + 0.15
+            }
+
+            /*END OF BACKUP*/
 
             robot.update()
 
