@@ -63,7 +63,7 @@ class Intake(
         }
 
     fun intakeDown() {
-        intakeTiltCurrentPos = 0.5106
+        intakeTiltCurrentPos = 0.49
     }
 
     fun intakeUp() {
@@ -125,10 +125,10 @@ class Intake(
         get() = _boxTiltTargetPos
         set(value) {
             _boxTiltTargetPos = value
-            boxTiltSpeed = 0.1
+            boxTiltSpeed = 0.0
         }
 
-    var boxTiltSpeed: Double = 0.1
+    var boxTiltSpeed: Double = 0.0
         set(value) {
             field = value.coerceIn(-1.0, 1.0)
         }

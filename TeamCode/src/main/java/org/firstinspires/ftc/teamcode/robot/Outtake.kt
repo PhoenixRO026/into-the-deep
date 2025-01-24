@@ -108,8 +108,10 @@ class Outtake(
 
     fun armTargetToIntake() {
         extendoTargetPos = values.extendoIntakePos
+        clawPos = 1.0
         shoulderTargetPos = values.shoulderIntakePos
         elbowTargetPos = values.elbowIntakePos
+        clawPos = 0.0
     }
 
     fun wristPosToMiddle() {

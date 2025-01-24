@@ -11,7 +11,7 @@ class OuttakeExtendoTuning : LinearOpMode() {
     @Config
     data object OuttakeExtendoTuningConfig {
         @JvmField
-        var targetDegrees = 0.0
+        var targetDegrees = 400.0
     }
 
     override fun runOpMode() {

@@ -26,7 +26,7 @@ class ServoTest : LinearOpMode() {
         val servo2 = hardwareMap.get(Servo::class.java, "servoL")
         val servorotate = hardwareMap.get(CRServo::class.java, "rotatie")*/
 
-        val servo = hardwareMap.get(Servo::class.java, "servoClaw")
+        val servo = hardwareMap.get(Servo::class.java, "servoShoulder")
         //val analogInput = hardwareMap.get(AnalogInput::class.java, "pos")
         //val extendServo2 = hardwareMap.get(Servo::class.java, "cTilt2")
         /*

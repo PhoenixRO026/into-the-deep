@@ -76,7 +76,13 @@ data class PIDController(
     }
 
     private fun calculateDerivative(error: Double, dt: Double): Double {
-        val derivative = (error - previousError) / dt
+        val newDt : Double
+        if (dt == 0.0){
+            newDt = 1.0
+        } else{
+            newDt = dt
+        }
+        val derivative = (error - previousError) / newDt
         return derivativeFilter.estimate(derivative)
     }
 

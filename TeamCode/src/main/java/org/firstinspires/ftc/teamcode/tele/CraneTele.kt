@@ -55,7 +55,7 @@ class CraneTele : LinearOpMode() {
             if (gamepad1.y)
                 robot.drive.resetFieldCentric()
 
-            robot.drive.isSlowMode = gamepad1.left_trigger >= 0.2
+            robot.drive.isSlowMode = gamepad1.right_trigger >= 0.2
 
             robot.drive.driveFieldCentric(
                 pad1LeftStickY,
@@ -64,14 +64,7 @@ class CraneTele : LinearOpMode() {
             )
 
             //OUTTAKE
-            if (gamepad2.right_bumper) {
-                robot.outtake.armTargetToSpecimen()
-            } else if (gamepad2.left_bumper) {
-                //robot.outtake.armTargetToPickup()
-            } /*else if (gamepad2.left_trigger >= 0.3) {
-                robot.outtake.shoulderTargetPos = 0.43
-                robot.outtake.elbowTargetPos = values.outtake.elbowPickupPos
-            }*/
+
             robot.outtake.extendoPower = pad2LeftStickY
             robot.outtake.shoulderSpeed = when {
                 gamepad2.dpad_up -> 1.0
@@ -92,15 +85,16 @@ class CraneTele : LinearOpMode() {
 
             //INTAKE
             robot.intake.extendoPower = pad1Triggers
-            robot.intake.sweeperPower = if (gamepad2.x) -1.0 else gamepad2.left_trigger.toDouble()
+            robot.intake.sweeperPower = if (gamepad1.x) -1.0 else gamepad1.left_trigger.toDouble()
+
             robot.intake.boxTiltSpeed = when {
-                gamepad2.dpad_up -> 1.0
-                gamepad2.dpad_up -> -1.0
+                gamepad2.right_bumper -> 1.0
+                gamepad2.left_bumper -> -1.0
                 else -> 0.0
             }
             robot.intake.intakeTiltSpeed = when {
-                gamepad2.dpad_right -> 1.0
-                gamepad2.dpad_left -> -1.0
+                gamepad1.dpad_right -> 1.0
+                gamepad1.dpad_left -> -1.0
                 else -> 0.0
             }
 

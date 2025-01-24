@@ -37,15 +37,15 @@ val robotValuesTransilvaniaCollege = RobotValues(
         elbowBasketPos = 0.478,
         wristMiddlPos = 0.476,
         // specimen
-        shoulderSpecimenPos = 0.1003,
-        elbowSpecimenPos = 0.6462,
+        shoulderSpecimenPos = 0.3733,
+        elbowSpecimenPos = 0.7506,
         //intake
-        extendoIntakePos = 440.29.deg,
-        shoulderIntakePos = 0.5477,
-        elbowIntakePos = 0.288,
+        extendoIntakePos = 465.38.deg,
+        shoulderIntakePos = 0.788,
+        elbowIntakePos = 0.3649,
         //robot
-        shoulderRobotPos = 0.2269,
-        elbowRobotPos = 0.4733,
+        shoulderRobotPos = 0.6404,
+        elbowRobotPos = 0.5159,
         extendForHang = 0.0,
         elbowWaitingPos = 0.5,
         shoulderWaitingPos = 0.5
