@@ -32,9 +32,9 @@ class Outtake(
 
     init {
         OuttakeConfig.extendoController = PIDController(
-            kP = 0.0,
-            kD = 0.0,
-            kI = 0.0,
+            kP = 0.8,
+            kD = 0.3,
+            kI = 0.00001,
             timeKeep = timeKeep
         )
     }

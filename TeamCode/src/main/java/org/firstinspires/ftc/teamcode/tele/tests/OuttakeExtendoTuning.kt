@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.tele.tests
 
+import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.lib.units.deg
 import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -15,6 +17,7 @@ class OuttakeExtendoTuning : LinearOpMode() {
     }
 
     override fun runOpMode() {
+        telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
         val config = testsRobotHardwareConfig
         val values = testsRobotValues
 
@@ -39,7 +42,7 @@ class OuttakeExtendoTuning : LinearOpMode() {
             outtake.update()
 
             telemetry.addData("Config name", config.name)
-
+            telemetry.addData("target pos", outtake.extendoTargetPos.asDeg%360)
             telemetry.addData("extendo pos degrees", outtake.extendoPos.asDeg)
             telemetry.addData("extendo power", outtake.extendoPower)
 
