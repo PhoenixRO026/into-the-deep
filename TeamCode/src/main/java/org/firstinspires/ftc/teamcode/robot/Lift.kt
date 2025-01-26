@@ -33,9 +33,9 @@ class Lift(
 
     init {
         LiftConfig.liftController = PIDController(
-            kP = 0.0155,
-            kD = 0.0005,
-            kI = 0.0035,
+            kP = 0.016,
+            kD = 0.0006,
+            kI = 0.04,
             timeKeep = timeKeep
         )
     }

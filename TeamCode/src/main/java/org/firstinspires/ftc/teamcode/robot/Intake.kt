@@ -114,7 +114,7 @@ class Intake(
         set(value) {
             servoBoxTilt.position = value
             _boxTiltTargetPos = servoBoxTilt.position
-            boxTiltSpeed = 0.1
+            boxTiltSpeed = 0.0
         }
 
     private var _boxTiltTargetPos = servoBoxTilt.position
