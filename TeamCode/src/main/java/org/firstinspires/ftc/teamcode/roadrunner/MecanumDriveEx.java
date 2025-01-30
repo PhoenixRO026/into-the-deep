@@ -78,7 +78,7 @@ public final class MecanumDriveEx {
                 IMUConfigKt.toRevUSBDirection(robotHardwareConfig.getDrive().getImu().getUsbDirection());
 
         // drive model parameters
-        public double inPerTick = 0.0382892057;
+        public double inPerTick = 1.0 / 25.4;
         public double lateralInPerTick = inPerTick;
         public double trackWidthTicks = 0;
 

@@ -71,7 +71,8 @@ class CraniTele : LinearOpMode() {
                 if (gamepad2.right_bumper) {
                     robot.outtake.armTargetToSpecimen()
                 } else if (gamepad2.left_bumper) {
-                    robot.lift.liftToPosAction(338)
+                    //robot.lift.liftToPosAction(338)   // DONT USE ACTIONS IN TELE
+                    robot.lift.targetPosition = 338
                     robot.intake.intakeUp()
                     robot.intake.boxUp()
                     robot.outtake.armTargetToIntake()
