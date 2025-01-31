@@ -68,17 +68,23 @@ class CraniTele : LinearOpMode() {
 
             if(emergencyMode == 0) {
                 //OUTTAKE
-                if (gamepad2.right_bumper) {
+
+                if (gamepad2.left_bumper) {
                     robot.outtake.armTargetToSpecimen()
-                } else if (gamepad2.left_bumper) {
+                }
+                else if (gamepad2.right_bumper){
                     robot.lift.liftToPosAction(338)
                     robot.intake.intakeUp()
                     robot.intake.boxUp()
                     robot.outtake.armTargetToIntake()
-                } else if (gamepad2.left_trigger >= 0.3) {
-                    robot.outtake.armTargetToRobot()
                 }
-                robot.outtake.extendoPower = pad2LeftStickY
+                else if (gamepad2.left_trigger >= 0.2) {
+                    robot.intake.sweeperPower = -gamepad2.left_stick_y.toDouble()
+                }
+
+                else{
+                    robot.outtake.extendoPower = pad2LeftStickY
+                }
 
                 robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
@@ -95,12 +101,13 @@ class CraniTele : LinearOpMode() {
                 robot.intake.intakeDown()
             }
             //INTAKE
-            robot.intake.extendoPower = pad1Triggers
-            robot.intake.sweeperPower = when {
+            robot.intake.extendoPower =when {
                 gamepad1.right_bumper -> 1.0
                 gamepad1.left_bumper -> -1.0
                 else -> 0.0
             }
+            //robot.intake.sweeperPower = pad1Triggers
+
             //LIFT
             robot.lift.power = pad2RightStickY + 0.15
 

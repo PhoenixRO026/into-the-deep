@@ -107,7 +107,7 @@ class Outtake(
     }
 
     fun armTargetToIntake() {
-        extendoTargetPos = values.extendoIntakePos
+        //extendoTargetPos = values.extendoIntakePos
         clawPos = 1.0
         shoulderTargetPos = values.shoulderIntakePos
         elbowTargetPos = values.elbowIntakePos
