@@ -1,17 +1,23 @@
-package org.firstinspires.ftc.teamcode.tele
+package org.firstinspires.ftc.teamcode.tele.tests
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+import com.acmerobotics.roadrunner.InstantAction
+import com.acmerobotics.roadrunner.SequentialAction
+import com.lib.units.SleepAction
+import com.lib.units.deg
+import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
 import org.firstinspires.ftc.teamcode.library.TimeKeep
-import org.firstinspires.ftc.teamcode.robot.TeleRobot
+import org.firstinspires.ftc.teamcode.robot.Robot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 import kotlin.math.abs
 
 @TeleOp
-class CraniTele : LinearOpMode() {
+class TestTele : LinearOpMode() {
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
         val values = robotValuesTransilvaniaCollege
@@ -24,7 +30,7 @@ class CraniTele : LinearOpMode() {
         telemetry.update()
 
         val timeKeep = TimeKeep()
-        val robot = TeleRobot(hardwareMap, config, values, timeKeep, telemetry)
+        val robot = Robot(hardwareMap, config, values, timeKeep)
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("READY!")
@@ -51,6 +57,8 @@ class CraniTele : LinearOpMode() {
             val pad2RightStickY = -gamepad2.right_stick_y.toDouble()
             val pad2RightStickX = gamepad2.right_stick_x.toDouble()
 
+            //val pad2LeftBumper = gamepad2.left_bumper
+
             //DRIVE
             if (gamepad1.y)
                 robot.drive.resetFieldCentric()
@@ -66,32 +74,47 @@ class CraniTele : LinearOpMode() {
 
             if(emergencyMode == 0) {
                 //OUTTAKE
-
-                if (gamepad2.left_bumper) {
+                if (gamepad2.right_bumper) {
                     robot.outtake.armTargetToSpecimen()
                 }
-                else if (gamepad2.right_bumper){
-                    //robot.lift.liftToPosAction(338)   // DONT USE ACTIONS IN TELE
-                    robot.lift.targetPosition = 338
+                else if(gamepad2.left_bumper) {
+                    //robot.lift.liftToPosAction(682)
+                    robot.lift.liftToPosAction(680)
+                    /*robot.intake.intakeUp()
+                    robot.intake.boxUp()*/
+                    robot.outtake.armTargetToIntake()
+                }
+
+                /* else if (gamepad2.left_bumper) {
+                    robot.lift.liftToPosAction(338)
                     robot.intake.intakeUp()
                     robot.intake.boxUp()
                     robot.outtake.armTargetToIntake()
+                }*/ else if (gamepad2.left_trigger >= 0.2/* && gamepad2.left_stick_y>=0.1*/) {
+                    //robot.outtake.armTargetToRobot()
+                    robot.intake.sweeperPower = gamepad2.left_stick_y.toDouble()
                 }
-                else if (gamepad2.left_trigger >= 0.2) {
-                    robot.intake.sweeperPower = -gamepad2.left_stick_y.toDouble()
-                }
-
-                else{
+                else {
                     robot.outtake.extendoPower = pad2LeftStickY
                 }
-
                 robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
+                if (gamepad2.a) {
+                    robot.outtake.armTargetToRobot()
+                }
+
+                if (gamepad2.x) {
+                    SequentialAction(
+                        robot.outtake.extendoToPosAction(500.deg),
+                        SleepAction(0.1.s))
+                }
                 if (gamepad2.dpad_right) {
                     robot.intake.boxUp()
                 } else if (gamepad2.dpad_left) {
                     robot.intake.boxDown()
                 }
+
+
             }
             if(gamepad1.dpad_up){
                 robot.intake.intakeUp()
@@ -100,13 +123,12 @@ class CraniTele : LinearOpMode() {
                 robot.intake.intakeDown()
             }
             //INTAKE
-            robot.intake.extendoPower =when {
+            robot.intake.extendoPower = pad1Triggers
+            /*robot.intake.sweeperPower = when {
                 gamepad1.right_bumper -> 1.0
                 gamepad1.left_bumper -> -1.0
                 else -> 0.0
-            }
-            //robot.intake.sweeperPower = pad1Triggers
-
+            }*/
             //LIFT
             robot.lift.power = pad2RightStickY + 0.15
 
@@ -161,6 +183,7 @@ class CraniTele : LinearOpMode() {
             robot.update()
 
             robot.addTelemetry(telemetry)
+            telemetry.addData("x pressed", gamepad2.x)
             telemetry.update()
         }
     }
