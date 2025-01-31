@@ -27,16 +27,13 @@ class Outtake(
     @Config
     data object OuttakeConfig {
         @JvmField
-        var extendoController: PIDController? = null
-    }
-
-    init {
-        OuttakeConfig.extendoController = PIDController(
-            kP = 0.8,
-            kD = 0.3,
-            kI = 0.00001,
-            timeKeep = timeKeep
+        var extendoController: PIDController = PIDController(
+            kP = 2.5,
+            kD = 0.05,
+            kI = 0.1
         )
+        @JvmField
+        var kF: Double = 0.0
     }
 
     enum class MODE {
@@ -212,7 +209,7 @@ class Outtake(
     fun update() {
         servoExtendo.update()
         if (currentMode == MODE.RUN_TO_POSITION)
-            extendoPower = OuttakeConfig.extendoController?.calculate(extendoPos.asRev, extendoTargetPos.asRev) ?: 0.0
+            extendoPower = OuttakeConfig.extendoController.calculate(extendoPos.asRev, extendoTargetPos.asRev, timeKeep.deltaTime) + OuttakeConfig.kF
         moveShoulder()
         moveElbow()
         moveWrist()

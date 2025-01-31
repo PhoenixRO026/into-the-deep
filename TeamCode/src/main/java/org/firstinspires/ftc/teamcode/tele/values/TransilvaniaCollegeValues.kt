@@ -27,7 +27,7 @@ val robotValuesTransilvaniaCollege = RobotValues(
         extendoLim = 1545
     ),
     outtake = OuttakeValues(
-        shoulderMaxTravelDuration = 4.s,
+        shoulderMaxTravelDuration = 3.s,
         elbowMaxTravelDuration = 3.s,
         wristMaxTravelDuration = 3.s,
         clawMaxTravelDuration = 5.s,

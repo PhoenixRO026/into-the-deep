@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.library.controller
 
+import com.lib.units.Duration
 import com.lib.units.ms
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import kotlin.math.absoluteValue
@@ -21,7 +22,6 @@ data class PIDController(
     @JvmField var kP: Double = 0.0,
     @JvmField var kI: Double = 0.0,
     @JvmField var kD: Double = 0.0,
-    private val timeKeep: TimeKeep,
     @JvmField var integralSumLimit: Double = 0.0,
     @JvmField var newTargetReset: Boolean = true,
     @JvmField var derivativeFilter: LowPassFilter = LowPassFilter(),
@@ -41,9 +41,7 @@ data class PIDController(
     val derivativeKD get() = derivative * kD
     val integralSumKI get() = integralSum * kI
 
-    fun calculate(position: Double, target: Double): Double {
-        val dt = timeKeep.deltaTime
-
+    fun calculate(position: Double, target: Double, dt: Duration): Double {
         val error = target - position
 
         innerDerivative = calculateDerivative(error, dt.asS)

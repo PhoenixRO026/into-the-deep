@@ -5,10 +5,12 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
+import org.firstinspires.ftc.teamcode.library.buttons.ButtonReader
 import org.firstinspires.ftc.teamcode.robot.TeleRobot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 @TeleOp
 class CraniTele : LinearOpMode() {
@@ -38,6 +40,8 @@ class CraniTele : LinearOpMode() {
         robot.outtake.clawPos = 1.0
 
         robot.intake.intakeTiltCurrentPos = 0.5106
+
+        val emergencyButton = ButtonReader { gamepad2.ps }
 
         while (isStarted && !isStopRequested) {
             timeKeep.resetDeltaTime()
@@ -108,7 +112,8 @@ class CraniTele : LinearOpMode() {
             //robot.intake.sweeperPower = pad1Triggers
 
             //LIFT
-            robot.lift.power = pad2RightStickY + 0.15
+            if (pad2RightStickY.absoluteValue > 0.05)
+                robot.lift.power = pad2RightStickY
 
             //
             ////////////////////////////////////////////////////////////////
@@ -118,9 +123,8 @@ class CraniTele : LinearOpMode() {
             ////////////////////////////////////////////////////////////////
             //
 
-            if (gamepad2.ps) {
+            if (emergencyButton.wasJustPressed()) {
                 emergencyMode = abs(emergencyMode-1)
-                sleep(100)
             }
 
             if (emergencyMode == 1){

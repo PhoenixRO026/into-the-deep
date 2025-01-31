@@ -97,7 +97,7 @@ class CraneTele : LinearOpMode() {
             }
 
             //LIFT
-            robot.lift.power = pad2RightStickY + 0.15
+            robot.lift.power = pad2RightStickY
 
             robot.update()
 

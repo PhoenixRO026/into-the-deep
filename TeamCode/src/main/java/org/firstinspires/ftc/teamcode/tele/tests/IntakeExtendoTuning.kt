@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.tele.tests
 
+import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
@@ -14,6 +16,7 @@ class IntakeExtendoTuning : LinearOpMode() {
     }
 
     override fun runOpMode() {
+        telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
         val config = testsRobotHardwareConfig
         val values = testsRobotValues
 
@@ -35,6 +38,7 @@ class IntakeExtendoTuning : LinearOpMode() {
             telemetry.addData("Config name", config.name)
 
             telemetry.addData("extendo pos", intake.extendoPosition)
+            telemetry.addData("extendo target pos", intake.extendoTargetPosition)
             telemetry.addData("extendo power", intake.extendoPower)
 
             telemetry.addData("delta time ms", timeKeep.deltaTime.asMs)

@@ -27,21 +27,18 @@ class Intake(
     @Config
     data object IntakeConfig {
         @JvmField
-        var extendoController: PIDController? = null
+        var extendoController: PIDController = PIDController(
+            kP = 0.02,
+            kD = 0.0,
+            kI = 0.004
+        )
+        @JvmField
+        var kF: Double = 0.0
     }
 
     enum class MODE {
         RUN_TO_POSITION,
         RAW_POWER
-    }
-
-    init {
-        IntakeConfig.extendoController = PIDController(
-            kP = 0.0,
-            kD = 0.0,
-            kI = 0.0,
-            timeKeep = timeKeep
-        )
     }
 
     private var extendoMode = MODE.RAW_POWER
@@ -92,7 +89,7 @@ class Intake(
 
     }
 
-    var _extendoPower
+    private var _extendoPower
         get() = motorExtendoIntake.power
         set(value) {
             motorExtendoIntake.power = value
@@ -166,7 +163,7 @@ class Intake(
         moveIntakeTilt()
 
         if (extendoMode == MODE.RUN_TO_POSITION)
-            _extendoPower = IntakeConfig.extendoController?.calculate(extendoPosition.toDouble(), extendoTargetPosition.toDouble()) ?: 0.0
+            _extendoPower = IntakeConfig.extendoController.calculate(extendoPosition.toDouble(), extendoTargetPosition.toDouble(), timeKeep.deltaTime) + IntakeConfig.kF
     }
 
     private fun moveBoxTilt() {

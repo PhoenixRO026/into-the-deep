@@ -18,26 +18,23 @@ class Lift(
     hardwareMap: HardwareMap,
     config: LiftHardwareConfig,
     private val values: LiftValues,
-    timeKeep: TimeKeep
+    private val timeKeep: TimeKeep
 ) {
     @Config
     data object LiftConfig {
         @JvmField
-        var liftController: PIDController? = null
+        var liftController: PIDController = PIDController(
+            kP = 0.01,
+            kD = 0.0005,
+            kI = 0.009,
+        )
+        @JvmField
+        var kF: Double = 0.18
     }
 
     enum class MODE {
         RUN_TO_POSITION,
         RAW_POWER
-    }
-
-    init {
-        LiftConfig.liftController = PIDController(
-            kP = 0.016,
-            kD = 0.0006,
-            kI = 0.04,
-            timeKeep = timeKeep
-        )
     }
 
     private var currentMode = MODE.RAW_POWER
@@ -79,7 +76,7 @@ class Lift(
     var power
         get() = _power
         set(value) {
-            _power = value
+            _power = value + LiftConfig.kF
             currentMode = MODE.RAW_POWER
         }
 
@@ -89,6 +86,6 @@ class Lift(
     
     fun update() {
         if (currentMode == MODE.RUN_TO_POSITION)
-            _power = LiftConfig.liftController?.calculate(position.toDouble(), targetPosition.toDouble()) ?: 0.0
+            _power = LiftConfig.liftController.calculate(position.toDouble(), targetPosition.toDouble(), timeKeep.deltaTime) + LiftConfig.kF
     }
 }

@@ -64,9 +64,9 @@ class BlueLeft : LinearOpMode() {
             .splineToLinearHeading(Pose(first_yellow.position, first_yellow.heading), -90.0.deg)
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
-                InstantAction{ robot.intake._extendoPower = 1.0},
+                InstantAction{ robot.intake.extendoPower = 1.0},
                 SleepAction(1.s),
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             //.waitSeconds(3.0)
@@ -87,9 +87,9 @@ class BlueLeft : LinearOpMode() {
             .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
-                InstantAction{ robot.intake._extendoPower = 1.0},
+                InstantAction{ robot.intake.extendoPower = 1.0},
                 SleepAction(1.s),
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             //.waitSeconds(3.0)
@@ -110,9 +110,9 @@ class BlueLeft : LinearOpMode() {
             .splineToLinearHeading(Pose(last_yellow.position, last_yellow.heading), -90.0.deg)
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
-                InstantAction{ robot.intake._extendoPower = 1.0},
+                InstantAction{ robot.intake.extendoPower = 1.0},
                 SleepAction(1.s),
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             //.waitSeconds(3.0)

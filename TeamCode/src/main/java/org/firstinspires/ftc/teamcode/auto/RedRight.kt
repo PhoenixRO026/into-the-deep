@@ -79,51 +79,51 @@ class RedRight : LinearOpMode() {
             .lineToXLinearHeading(34.0,Math.toRadians(45.0))
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
-                InstantAction{ robot.intake._extendoPower = 1.0},
+                InstantAction{ robot.intake.extendoPower = 1.0},
                 SleepAction(1.s),
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             .turnTo(Math.toRadians(-50.0))
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 SleepAction(1.s),
-                InstantAction{ robot.intake._extendoPower = 1.0},
+                InstantAction{ robot.intake.extendoPower = 1.0},
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             .setTangent(Math.toRadians(0.0))
             .lineToXLinearHeading(40.0,Math.toRadians(35.0))
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
-                InstantAction{ robot.intake._extendoPower = 1.0},
+                InstantAction{ robot.intake.extendoPower = 1.0},
                 SleepAction(1.s),
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             .turnTo(Math.toRadians(-50.0))
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 SleepAction(1.s),
-                InstantAction{ robot.intake._extendoPower = 1.0},
+                InstantAction{ robot.intake.extendoPower = 1.0},
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             .setTangent(0.0)
             .lineToXLinearHeading(50.0,Math.toRadians(35.0))
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
-                InstantAction{ robot.intake._extendoPower = 1.0},
+                InstantAction{ robot.intake.extendoPower = 1.0},
                 SleepAction(1.s),
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             .turnTo(Math.toRadians(-90.0))
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 SleepAction(1.s),
-                InstantAction{ robot.intake._extendoPower = 1.0},
+                InstantAction{ robot.intake.extendoPower = 1.0},
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             .setTangent(Math.toRadians(180.0))
@@ -132,7 +132,7 @@ class RedRight : LinearOpMode() {
             .afterTime(0.0,SequentialAction(
                 InstantAction{robot.outtake.clawPos = 1.0},
                 //robot.outtake.shoudlerToPosAction(values.outtake.shoulderPickupPos), //pickup=back?
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos)
             ))
             .strafeTo(scoring.position)
@@ -151,7 +151,7 @@ class RedRight : LinearOpMode() {
             .afterTime(0.0,SequentialAction(
                 InstantAction{robot.outtake.clawPos = 1.0},
                 //robot.outtake.shoudlerToPosAction(values.outtake.shoulderPickupPos), //pickup=baxk?
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos)
             ))
             .strafeTo(scoring.position)
@@ -171,7 +171,7 @@ class RedRight : LinearOpMode() {
             .afterTime(0.0,SequentialAction(
                 InstantAction{robot.outtake.clawPos = 1.0},
                 //robot.outtake.shoudlerToPosAction(values.outtake.shoulderPickupPos), //pickup=baxk?
-                InstantAction{ robot.intake._extendoPower = 0.0},
+                InstantAction{ robot.intake.extendoPower = 0.0},
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos)
             ))
             .strafeTo(scoring.position)

@@ -42,7 +42,7 @@ class OuttakeExtendoTuning : LinearOpMode() {
             outtake.update()
 
             telemetry.addData("Config name", config.name)
-            telemetry.addData("target pos", outtake.extendoTargetPos.asDeg%360)
+            telemetry.addData("target pos", outtake.extendoTargetPos.asDeg)
             telemetry.addData("extendo pos degrees", outtake.extendoPos.asDeg)
             telemetry.addData("extendo power", outtake.extendoPower)
 
