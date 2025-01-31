@@ -33,9 +33,13 @@ val robotValuesTransilvaniaCollege = RobotValues(
         clawMaxTravelDuration = 5.s,
         //clawOpenPos = 0.6,
         //clawClosePos = 0.353,
-        shoulderBasketPos = 0.71,
-        elbowBasketPos = 0.478,
         wristMiddlPos = 0.476,
+        //basket
+        shoulderBasketPos = 0.4045,
+        elbowBasketPos = 0.7172,
+        //bar
+        shoulderBarPos = 0.8476,
+        elbowBarPos = 0.8459,
         // specimen
         shoulderSpecimenPos = 0.3733,
         elbowSpecimenPos = 0.7506,

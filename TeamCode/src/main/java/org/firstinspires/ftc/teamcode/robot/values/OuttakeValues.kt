@@ -10,9 +10,13 @@ data class OuttakeValues(
     val clawMaxTravelDuration: Duration,
     //val clawOpenPos: Double,
     //val clawClosePos: Double,
+    val wristMiddlPos: Double,
+    //basket pos
     val shoulderBasketPos: Double,
     val elbowBasketPos: Double,
-    val wristMiddlPos: Double,
+    // bar pos
+    val shoulderBarPos : Double = 0.5,
+    val elbowBarPos : Double = 0.5,
     //specimen pos
     val shoulderSpecimenPos: Double,
     val elbowSpecimenPos: Double,
