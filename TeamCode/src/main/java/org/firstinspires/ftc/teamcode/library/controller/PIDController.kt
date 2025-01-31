@@ -76,14 +76,11 @@ data class PIDController(
     }
 
     private fun calculateDerivative(error: Double, dt: Double): Double {
-        val newDt : Double
-        if (dt == 0.0){
-            newDt = 1.0
-        } else{
-            newDt = dt
-        }
-        val derivative = (error - previousError) / newDt
-        return derivativeFilter.estimate(derivative)
+        val derivative = (error - previousError) / dt
+        return if (derivative.isFinite())
+            derivativeFilter.estimate(derivative)
+        else
+            0.0
     }
 
     private fun crossOverDetected(error: Double): Boolean {
