@@ -114,6 +114,11 @@ class Outtake(
         clawPos = 0.0
     }
 
+    fun armTargetToBar() {
+        shoulderTargetPos = values.shoulderBarPos
+        elbowTargetPos = values.elbowBarPos
+    }
+
     fun wristPosToMiddle() {
         wristCurrentPos = values.wristMiddlPos
     }
