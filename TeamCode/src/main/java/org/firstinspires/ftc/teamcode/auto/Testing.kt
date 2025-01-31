@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 @Autonomous
 class Testing : LinearOpMode() {
     private val startPose = Pose(0.0.inch, 0.0.inch, 0.0.deg)
+    private val newPose = Pose(12.0.inch, 25.0.inch, 0.0.deg)
 
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
@@ -43,7 +44,7 @@ class Testing : LinearOpMode() {
             .setTangent(0.0)
             .turn(1080.deg)
             .setTangent(0.0)
-            .lineToX(10.inch)
+            .splineTo(newPose.position, newPose.heading)
             .setTangent(0.0)
             .turn(180.deg)
             .build()

@@ -49,8 +49,8 @@ class BlueLeft : LinearOpMode() {
             .lineToY(47.0)
             .setTangent(Math.toRadians(-135.0))
             .lineToXLinearHeading(basket.position.x, basket.heading)
-            //.waitSeconds(3.0)
-            .afterTime(0.0, SequentialAction(
+            .waitSeconds(3.0)
+            /*.afterTime(0.0, SequentialAction(
                 robot.lift.liftToPosAction(values.lift.basketPos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
                 robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos),
@@ -59,7 +59,7 @@ class BlueLeft : LinearOpMode() {
                 robot.outtake.elbowToPosAction(values.outtake.elbowWaitingPos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos),
                 robot.lift.liftToPosAction(values.lift.inRobot),
-            ))
+            ))*/
             .setTangent(Math.toRadians(-90.0))
             .splineToLinearHeading(Pose(first_yellow.position, first_yellow.heading), -90.0.deg)
             .afterTime(0.0, SequentialAction(
