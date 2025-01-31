@@ -48,6 +48,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.library.config.IMUConfigKt;
@@ -231,11 +232,19 @@ public final class MecanumDriveEx {
         }
     }
 
-    public MecanumDriveEx(HardwareMap hardwareMap, Pose pose) {
-        this(hardwareMap, pose.getPose2d());
+    public MecanumDriveEx(HardwareMap hardwareMap, Pose pose, Telemetry telemetry) {
+        this(hardwareMap, pose.getPose2d(), telemetry);
     }
 
-    public MecanumDriveEx(HardwareMap hardwareMap, Pose2d pose) {
+    public MecanumDriveEx(HardwareMap hardwareMap, Pose pose) {
+        this(hardwareMap, pose.getPose2d(), null);
+    }
+
+    public MecanumDriveEx(HardwareMap hardwareMap, Pose2d pose2d) {
+        this(hardwareMap, pose2d, null);
+    }
+
+    public MecanumDriveEx(HardwareMap hardwareMap, Pose2d pose, Telemetry telemetry) {
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
 
         for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
@@ -268,7 +277,7 @@ public final class MecanumDriveEx {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        localizer = new PinpointLocalizer(hardwareMap, pose);
+        localizer = new PinpointLocalizer(hardwareMap, pose, telemetry);
 
         FlightRecorder.write("MECANUM_PARAMS", PARAMS);
     }

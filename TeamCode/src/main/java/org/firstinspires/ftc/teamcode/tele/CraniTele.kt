@@ -2,12 +2,10 @@ package org.firstinspires.ftc.teamcode.tele
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
-import com.acmerobotics.roadrunner.Action
-import com.acmerobotics.roadrunner.SequentialAction
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
-import org.firstinspires.ftc.teamcode.robot.Robot
+import org.firstinspires.ftc.teamcode.robot.TeleRobot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 import kotlin.math.abs
@@ -26,7 +24,7 @@ class CraniTele : LinearOpMode() {
         telemetry.update()
 
         val timeKeep = TimeKeep()
-        val robot = Robot(hardwareMap, config, values, timeKeep)
+        val robot = TeleRobot(hardwareMap, config, values, timeKeep, telemetry)
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("READY!")

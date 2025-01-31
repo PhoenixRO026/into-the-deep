@@ -6,17 +6,13 @@ import com.acmerobotics.roadrunner.ftc.DriveViewFactory
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.acmerobotics.roadrunner.ftc.MidpointTimer
 import com.acmerobotics.roadrunner.ftc.TuningFiles
-import com.qualcomm.hardware.lynx.LynxDcMotorController
-import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.qualcomm.robotcore.util.SerialNumber
 import kotlin.math.min
 
 private class MutableSignal(
     val times: MutableList<Double> = mutableListOf(),
     val values: MutableList<Double> = mutableListOf()
 )
-
 
 class ForwardRampLoggerEx(val dvf: DriveViewFactory) : LinearOpMode() {
     companion object {
@@ -35,7 +31,7 @@ class ForwardRampLoggerEx(val dvf: DriveViewFactory) : LinearOpMode() {
             "Only run this op mode if you're using dead wheels."
         }
 
-        view.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL)
+        //view.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL)
 
         val data = object {
             val type = view.type
@@ -61,14 +57,15 @@ class ForwardRampLoggerEx(val dvf: DriveViewFactory) : LinearOpMode() {
             data.voltages.values.add(view.voltageSensor.voltage)
             data.voltages.times.add(t.addSplit())
 
-            val encTimes = view.resetAndBulkRead(t)
+            //val encTimes = view.resetAndBulkRead(t)
 
             for (i in view.forwardEncs.indices) {
                 recordEncoderData(
                         view.forwardEncs[i],
-                        encTimes,
+                        //encTimes,
                         data.forwardEncPositions[i],
-                        data.forwardEncVels[i]
+                        data.forwardEncVels[i],
+                        t
                 )
             }
 
@@ -88,13 +85,13 @@ class ForwardRampLoggerEx(val dvf: DriveViewFactory) : LinearOpMode() {
 }
 
 // designed for manual bulk caching
-private fun recordEncoderData(e: Encoder, ts: Map<SerialNumber, Double>, ps: MutableSignal, vs: MutableSignal) {
-    val sn = (e.controller as LynxDcMotorController).serialNumber
+private fun recordEncoderData(e: Encoder, /*ts: Map<SerialNumber, Double>,*/ ps: MutableSignal, vs: MutableSignal, t: MidpointTimer) {
+    //val sn = (e.controller as LynxDcMotorController).serialNumber
     val p = e.getPositionAndVelocity()
 
-    ps.times.add(ts[sn]!!)
+    ps.times.add(/*ts[sn]!!*/t.addSplit())
     ps.values.add(p.position.toDouble())
 
-    vs.times.add(ts[sn]!!)
+    vs.times.add(/*ts[sn]!!*/t.addSplit())
     vs.values.add(p.velocity.toDouble())
 }

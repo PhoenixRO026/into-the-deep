@@ -16,11 +16,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDriveEx
-import org.firstinspires.ftc.teamcode.robot.Robot
+import org.firstinspires.ftc.teamcode.robot.AutoRobot
+import org.firstinspires.ftc.teamcode.robot.TeleRobot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
-import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigWonder
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
-import org.firstinspires.ftc.teamcode.tele.values.robotValuesWonder
 
 @Autonomous
 class BlueLeft : LinearOpMode() {
@@ -35,15 +34,15 @@ class BlueLeft : LinearOpMode() {
         val values = robotValuesTransilvaniaCollege
 
         val dash = FtcDashboard.getInstance()
-        telemetry = MultipleTelemetry(telemetry, dash.telemetry)
+        telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("INITIALIZING")
         telemetry.update()
 
         val timeKeep = TimeKeep()
-        val robot = Robot(hardwareMap, config, values, timeKeep)
-        val mecanumDrive = MecanumDriveEx(hardwareMap, startPose.pose2d)
+        val robot = AutoRobot(hardwareMap, config, values, timeKeep, startPose, telemetry)
+        val mecanumDrive = robot.roadRunnerDrive
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(Math.toRadians(-90.0))
@@ -137,6 +136,8 @@ class BlueLeft : LinearOpMode() {
         telemetry.update()
 
         waitForStart()
+
+        telemetry.update()
 
         val canvas = Canvas()
         action.preview(canvas)

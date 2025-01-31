@@ -133,11 +133,11 @@ public final class TuningOpModes {
                     perpEncs.add(dl.perp);
                 } else if (md.localizer instanceof PinpointLocalizer) {
                     PinpointLocalizer dl = (PinpointLocalizer) md.localizer;
-                    RobotLog.addGlobalWarningMessage(
+                    /*RobotLog.addGlobalWarningMessage(
                             "Disabling Pinpoint IMU. Perform a power cycle (turn the robot off and back on again) to reset it before running Feedback Tuner, LocalizationTest, or an auto (Angular Scalar now 0, previously %f)",
                             dl.getOdo().getYawScalar()
                     );
-                    dl.getOdo().setYawScalar(0.0);
+                    dl.getOdo().setYawScalar(0.0);*/
                     dl.getOdo().resetPosAndIMU();
                     parEncs.add(dl.getEncX());
                     perpEncs.add(dl.getEncY());

@@ -1,20 +1,25 @@
 package org.firstinspires.ftc.teamcode.robot
 
+import com.lib.units.Pose
 import com.lib.units.rad
 import com.lib.units.s
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.library.TimeKeep
+import org.firstinspires.ftc.teamcode.roadrunner.Localizer
+import org.firstinspires.ftc.teamcode.roadrunner.MecanumDriveEx
 import org.firstinspires.ftc.teamcode.robot.config.RobotHardwareConfig
 import org.firstinspires.ftc.teamcode.robot.values.RobotValues
 
-class Robot(
+class AutoRobot(
     hardwareMap: HardwareMap,
     private val config: RobotHardwareConfig,
     values: RobotValues,
-    private val timeKeep: TimeKeep
+    private val timeKeep: TimeKeep,
+    pose: Pose,
+    telemetry: Telemetry? = null,
 ) {
-    val drive = Drive(hardwareMap, config.drive, values.drive)
+    val roadRunnerDrive = MecanumDriveEx(hardwareMap, pose, telemetry)
     val intake = Intake(hardwareMap, config.intake, values.intake, timeKeep)
     val lift = Lift(hardwareMap, config.lift, values.lift, timeKeep)
     val outtake = Outtake(hardwareMap, config.outtake, values.outtake, timeKeep)
@@ -31,7 +36,7 @@ class Robot(
         telemetry.addData("delta time ms", timeKeep.deltaTime.asMs)
         telemetry.addData("fps", 1.s / timeKeep.deltaTime)
         telemetry.addLine("DRIVE:")
-        telemetry.addData("yaw degs", drive.yaw.rad.asDeg)
+        telemetry.addData("yaw degs", roadRunnerDrive.localizer.pose.heading.toDouble().rad.asDeg)
         telemetry.addLine("OUTTAKE:")
         telemetry.addData("outtake extendo pos", outtake.extendoPos)
         telemetry.addData("outtake extendo power", outtake.extendoPower)

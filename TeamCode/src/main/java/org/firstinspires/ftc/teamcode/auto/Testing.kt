@@ -14,7 +14,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDriveEx
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointLocalizer
-import org.firstinspires.ftc.teamcode.robot.Robot
+import org.firstinspires.ftc.teamcode.robot.AutoRobot
+import org.firstinspires.ftc.teamcode.robot.TeleRobot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 
@@ -27,16 +28,15 @@ class Testing : LinearOpMode() {
         val values = robotValuesTransilvaniaCollege
 
         val dash = FtcDashboard.getInstance()
-        telemetry = MultipleTelemetry(telemetry, dash.telemetry)
+        telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("INITIALIZING")
         telemetry.update()
 
         val timeKeep = TimeKeep()
-        val robot = Robot(hardwareMap, config, values, timeKeep)
-        val mecanumDrive = MecanumDriveEx(hardwareMap, startPose.pose2d)
-        val pinPointLocalizer = PinpointLocalizer(hardwareMap, startPose.pose2d)
+        val robot = AutoRobot(hardwareMap, config, values, timeKeep, startPose, telemetry)
+        val mecanumDrive = robot.roadRunnerDrive
         var currPose = startPose
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
@@ -70,7 +70,7 @@ class Testing : LinearOpMode() {
 
             robot.update()
 
-            currPose = pinPointLocalizer.getPose().pose
+            currPose = mecanumDrive.localizer.pose.pose
 
             robot.addTelemetry(telemetry)
             telemetry.addData("X pos", currPose.position.x)

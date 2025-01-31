@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.ftc.RawEncoder
 import com.qualcomm.hardware.lynx.LynxDcMotorController
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants
+import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
@@ -16,14 +17,15 @@ import org.firstinspires.ftc.teamcode.library.pinpoint.fakeOdoMotor
 
 class PinpointLocalizer @JvmOverloads constructor(
     hardwareMap: HardwareMap,
-    initPose: Pose2d = Pose2d(0.0, 0.0, 0.0)
+    initPose: Pose2d = Pose2d(0.0, 0.0, 0.0),
+    val telemetry: Telemetry? = null
 ): Localizer {
     @Config
     data object PinpointConfig {
         @JvmField
-        var xOffset = 24.0
+        var xOffset = 23.0
         @JvmField
-        var yOffset = 12.4
+        var yOffset = -115.0
     }
 
     private var currentPose: Pose2d = initPose
@@ -58,7 +60,22 @@ class PinpointLocalizer @JvmOverloads constructor(
             GoBildaPinpointDriver.EncoderDirection.FORWARD,
             GoBildaPinpointDriver.EncoderDirection.REVERSED
         )
+
+        /*val initLine = telemetry?.addLine("Reseting pinpoint")
+        telemetry?.update()
         odo.resetPosAndIMU()
+
+        while (odo.deviceStatus != GoBildaPinpointDriver.DeviceStatus.READY) {
+            try {
+                Thread.sleep(10)
+            } catch (e: InterruptedException) {
+                Thread.currentThread().interrupt()
+            }
+        }
+        telemetry?.removeLine(initLine)
+        telemetry?.addLine("Pinpoint initialized")
+        telemetry?.update()*/
+
         odo.setPosition(Pose2D(DistanceUnit.INCH, initPose.position.x, initPose.position.y, AngleUnit.RADIANS, initPose.heading.toDouble()))
     }
 
