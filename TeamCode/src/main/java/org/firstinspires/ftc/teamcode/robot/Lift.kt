@@ -76,7 +76,10 @@ class Lift(
     var power
         get() = _power
         set(value) {
-            _power = value + LiftConfig.kF
+            if (currentMode == MODE.RUN_TO_POSITION && value == 0.0)
+                return
+
+            _power = if (value < 0.0) value else value + LiftConfig.kF
             currentMode = MODE.RAW_POWER
         }
 
