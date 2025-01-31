@@ -122,8 +122,7 @@ class CraniTele : LinearOpMode() {
             //robot.intake.sweeperPower = pad1Triggers
 
             //LIFT
-            if (pad2RightStickY.absoluteValue > 0.05)
-                robot.lift.power = pad2RightStickY
+            robot.lift.power = pad2RightStickY
 
             //
             ////////////////////////////////////////////////////////////////

@@ -98,6 +98,9 @@ class Intake(
     var extendoPower
         get() = _extendoPower
         set(value) {
+            if (extendoMode == MODE.RUN_TO_POSITION && value == 0.0)
+                return
+
             val newPower = if (extendoPosition >= values.extendoLim) value.coerceAtMost(0.0) else value
             _extendoPower = newPower
             extendoMode = MODE.RAW_POWER

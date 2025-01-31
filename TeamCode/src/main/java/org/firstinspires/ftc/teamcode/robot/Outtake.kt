@@ -125,6 +125,9 @@ class Outtake(
     var extendoPower
         get() = _extendoPower
         set(value) {
+            if (currentMode == MODE.RUN_TO_POSITION && value == 0.0)
+                return
+
             _extendoPower = value
             currentMode = MODE.RAW_POWER
         }
