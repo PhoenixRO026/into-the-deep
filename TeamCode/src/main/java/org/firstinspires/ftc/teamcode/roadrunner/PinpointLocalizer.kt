@@ -76,6 +76,14 @@ class PinpointLocalizer @JvmOverloads constructor(
         telemetry?.addLine("Pinpoint initialized")
         telemetry?.update()*/
 
+        odo.resetPosAndIMU()
+
+        try {
+            Thread.sleep(300)
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
+        }
+
         odo.setPosition(Pose2D(DistanceUnit.INCH, initPose.position.x, initPose.position.y, AngleUnit.RADIANS, initPose.heading.toDouble()))
     }
 

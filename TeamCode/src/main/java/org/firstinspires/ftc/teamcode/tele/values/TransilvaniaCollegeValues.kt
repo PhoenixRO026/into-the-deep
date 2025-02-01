@@ -14,8 +14,9 @@ val robotValuesTransilvaniaCollege = RobotValues(
     ),
     lift = LiftValues(
         highPos = 0,
-        basketPos = 2488,
-        secondBar = 0,
+        basketPos = 2397,
+        secondBar = 493,
+        secondBar_up = 1324,
         inRobot = 0,
         onHangBar = 0
     ),
