@@ -22,12 +22,12 @@ import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvani
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 
 @Autonomous
-class BlueLeft : LinearOpMode() {
-    private val startPose = Pose(47.0.inch, 61.0.inch, -90.0.deg)
-    private val  basket = Pose(55.0.inch, 55.0.inch, -135.0.deg)
-    private val  first_yellow = Pose(47.0.inch, 47.0.inch, -90.0.deg)
-    private val  mid_yellow = Pose(47.0.inch, 47.0.inch, -60.0.deg)
-    private val  last_yellow = Pose(55.0.inch, 47.0.inch, -60.0.deg)
+class RedLeft : LinearOpMode() {
+    private val startPose = Pose(-47.0.inch, -61.0.inch, 90.0.deg)
+    private val  basket = Pose(-55.0.inch, -55.0.inch, 45.0.deg)
+    private val  first_yellow = Pose(-47.0.inch, -47.0.inch, 90.0.deg)
+    private val  mid_yellow = Pose(-47.0.inch, -47.0.inch, 120.0.deg)
+    private val  last_yellow = Pose(-55.0.inch, -47.0.inch, 120.0.deg)
 
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
@@ -45,9 +45,42 @@ class BlueLeft : LinearOpMode() {
         val mecanumDrive = robot.roadRunnerDrive
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-            .setTangent(Math.toRadians(-90.0))
+            .setTangent(-90.0.deg + 180.0.deg)
+            .lineToY(-47.0)
+            .setTangent(-135.0.deg + 180.0.deg)
+            .lineToXLinearHeading(basket.position.x, basket.heading)
+            .waitSeconds(3.0)
+            .setTangent(-90.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(first_yellow.position, first_yellow.heading), -90.0.deg + 180.0.deg)
+            .waitSeconds(3.0)
+            .setTangent(-135.0.deg + 180.0.deg)
+            .lineToXLinearHeading(basket.position.x, basket.heading)
+
+            .waitSeconds(3.0)
+            .setTangent(-135.0.deg + 180.0.deg)
+            .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
+
+            .waitSeconds(3.0)
+            .setTangent(45.0.deg + 180.0.deg)
+            .lineToXLinearHeading(basket.position.x, basket.heading)
+
+            .waitSeconds(3.0)
+            .setTangent(180.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(last_yellow.position, last_yellow.heading), -90.0.deg + 180.0.deg)
+
+            .waitSeconds(3.0)
+            .setTangent(90.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+            .waitSeconds(3.0)
+            .build()
+
+
+
+
+
+/*.setTangent(-90.0.deg + 180.0.deg)
             .lineToY(47.0)
-            .setTangent(Math.toRadians(-135.0))
+            .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
             .waitSeconds(3.0)
             .afterTime(0.0, SequentialAction(
@@ -60,8 +93,8 @@ class BlueLeft : LinearOpMode() {
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos),
                 robot.lift.liftToPosAction(values.lift.inRobot),
             ))
-            .setTangent(Math.toRadians(-90.0))
-            .splineToLinearHeading(Pose(first_yellow.position, first_yellow.heading), -90.0.deg)
+            .setTangent(-90.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(first_yellow.position, first_yellow.heading), -90.0.deg + 180.0.deg)
             .afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
                 InstantAction{ robot.intake.extendoPower = 1.0},
@@ -70,7 +103,7 @@ class BlueLeft : LinearOpMode() {
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))
             .waitSeconds(3.0)
-            .setTangent(Math.toRadians(-135.0))
+            .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
             /*.afterTime(0.0, SequentialAction(
                 robot.lift.liftToPosAction(values.lift.basketPos),
@@ -83,7 +116,7 @@ class BlueLeft : LinearOpMode() {
                 robot.lift.liftToPosAction(values.lift.inRobot),
             ))*/
             .waitSeconds(3.0)
-            .setTangent(Math.toRadians(-135.0))
+            .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
             /*.afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
@@ -93,7 +126,7 @@ class BlueLeft : LinearOpMode() {
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))*/
             .waitSeconds(3.0)
-            .setTangent(Math.toRadians(45.0))
+            .setTangent(45.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
             /*.afterTime(0.0, SequentialAction(
                 robot.lift.liftToPosAction(values.lift.basketPos),
@@ -106,8 +139,8 @@ class BlueLeft : LinearOpMode() {
                 robot.lift.liftToPosAction(values.lift.inRobot),
             ))*/
             .waitSeconds(3.0)
-            .setTangent(Math.toRadians(180.0))
-            .splineToLinearHeading(Pose(last_yellow.position, last_yellow.heading), -90.0.deg)
+            .setTangent(180.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(last_yellow.position, last_yellow.heading), -90.0.deg + 180.0.deg)
             /*.afterTime(0.0, SequentialAction(
                 robot.intake.extendoToPosAction(values.intake.extendoLimit),
                 InstantAction{ robot.intake.extendoPower = 1.0},
@@ -116,8 +149,8 @@ class BlueLeft : LinearOpMode() {
                 robot.intake.extendoToPosAction(values.intake.extendoInBot)
             ))*/
             .waitSeconds(3.0)
-            .setTangent(Math.toRadians(90.0))
-            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg)
+            .setTangent(90.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
             /*.afterTime(0.0, SequentialAction(
                 robot.lift.liftToPosAction(values.lift.basketPos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
@@ -129,7 +162,7 @@ class BlueLeft : LinearOpMode() {
                 robot.lift.liftToPosAction(values.lift.inRobot),
             ))*/
             .waitSeconds(3.0)
-            .build()
+            .build()*/
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("READY!")

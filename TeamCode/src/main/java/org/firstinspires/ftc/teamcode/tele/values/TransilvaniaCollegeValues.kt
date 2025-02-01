@@ -14,18 +14,19 @@ val robotValuesTransilvaniaCollege = RobotValues(
     ),
     lift = LiftValues(
         highPos = 0,
-        basketPos = 2397,
+        basketPos = 2980,
         secondBar = 493,
-        secondBar_up = 1324,
+        secondBarUp = 1324,
         inRobot = 0,
         onHangBar = 0
     ),
     intake = IntakeValues(
         boxTiltMaxTravelDuration = 5.s,
         intakeTiltMaxTravelDuration = 5.s,
-        extendoLimit = 0,
+        extendoLimit = 1424,
         extendoInBot = 0,
-        extendoLim = 1545
+        extendoLim = 1545,
+        extendoAuto = 1237,
     ),
     outtake = OuttakeValues(
         shoulderMaxTravelDuration = 3.s,
@@ -34,7 +35,7 @@ val robotValuesTransilvaniaCollege = RobotValues(
         clawMaxTravelDuration = 5.s,
         //clawOpenPos = 0.6,
         //clawClosePos = 0.353,
-        wristMiddlPos = 0.476,
+        wristMiddlPos = 0.5133,
         //basket
         shoulderBasketPos = 0.4045,
         elbowBasketPos = 0.7172,
@@ -42,8 +43,8 @@ val robotValuesTransilvaniaCollege = RobotValues(
         shoulderBarPos = 0.8476,
         elbowBarPos = 0.8459,
         // specimen
-        shoulderSpecimenPos = 0.3733,
-        elbowSpecimenPos = 0.7506,
+        shoulderSpecimenPos = 0.3472,
+        elbowSpecimenPos = 0.7511,
         //intake
         extendoIntakePos = 465.38.deg,
         shoulderIntakePos = 0.788,

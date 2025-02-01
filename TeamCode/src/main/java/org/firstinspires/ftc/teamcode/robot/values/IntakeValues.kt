@@ -7,5 +7,6 @@ data class IntakeValues(
     val intakeTiltMaxTravelDuration: Duration,
     val extendoInBot: Int,
     val extendoLimit: Int,
-    val extendoLim: Int
+    val extendoLim: Int,
+    val extendoAuto: Int
 )

@@ -86,12 +86,13 @@ class CraniTele : LinearOpMode() {
                 }
                 else if (gamepad2.left_trigger >= 0.2) {
                     robot.intake.sweeperPower = -gamepad2.left_stick_y.toDouble()
-                    if (gamepad2.left_bumper){
-                        robot.outtake.armTargetToSpecimen()
-                    }
+
                 }
                 else if (gamepad2.y) {
                     robot.outtake.armTargetToBar()
+                }
+                if (gamepad2.b){
+                    robot.outtake.armTargetToSpecimen()
                 }
                 if(gamepad2.left_trigger <= 0.2) {
                     robot.outtake.extendoPower = pad2LeftStickY

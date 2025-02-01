@@ -16,17 +16,14 @@ import com.lib.units.pose
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
-import org.firstinspires.ftc.teamcode.roadrunner.MecanumDriveEx
-import org.firstinspires.ftc.teamcode.roadrunner.PinpointLocalizer
 import org.firstinspires.ftc.teamcode.robot.AutoRobot
-import org.firstinspires.ftc.teamcode.robot.TeleRobot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 
 @Autonomous
-class Preload : LinearOpMode() {
-    private val startPose = Pose(47.0.inch, 61.0.inch, -90.0.deg)
-    private val  basket = Pose(55.0.inch, 55.0.inch, -135.0.deg)
+class PreloadRedLeft : LinearOpMode() {
+    val startPose = Pose(-47.0.inch, -61.0.inch, 90.0.deg)
+    val  basket = Pose(-55.0.inch, -55.0.inch, 45.0.deg)
 
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
@@ -45,26 +42,26 @@ class Preload : LinearOpMode() {
         var currPose = startPose
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-            .setTangent(Math.toRadians(-90.0))
-            .lineToY(47.0)
-            .setTangent(Math.toRadians(-135.0))
+            .setTangent(Math.toRadians(90.0))
+            .lineToY(-47.0)
+            .setTangent(Math.toRadians(45.0))
             .lineToXLinearHeading(basket.position.x, basket.heading)
             .waitSeconds(3.0)
             .afterTime(0.0, SequentialAction(
                 robot.lift.liftToPosAction(values.lift.basketPos),
-                SleepAction(1000.ms),
+                SleepAction(100.ms),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
-                SleepAction(1000.ms),
+                SleepAction(100.ms),
                 robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos),
-                SleepAction(1000.ms),
+                SleepAction(100.ms),
                 InstantAction{robot.outtake.clawPos = 0.0},
-                SleepAction(1000.ms),
+                SleepAction(100.ms),
                 InstantAction{robot.outtake.clawPos = 1.0},
-                SleepAction(1000.ms),
+                SleepAction(100.ms),
                 robot.outtake.elbowToPosAction(values.outtake.elbowWaitingPos),
-                SleepAction(1000.ms),
+                SleepAction(100.ms),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderWaitingPos),
-                SleepAction(1000.ms),
+                SleepAction(100.ms),
                 robot.lift.liftToPosAction(values.lift.inRobot),
             )
             )
