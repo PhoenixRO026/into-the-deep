@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.InstantAction
+import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.roadrunner_ext.ex
 import com.lib.units.Pose
@@ -43,6 +44,37 @@ class RedLeft : LinearOpMode() {
         val timeKeep = TimeKeep()
         val robot = AutoRobot(hardwareMap, config, values, timeKeep, startPose, telemetry)
         val mecanumDrive = robot.roadRunnerDrive
+
+
+        val scoreBasket : SequentialAction = SequentialAction(
+            robot.lift.liftToPosAction(values.lift.basketPos),
+            ParallelAction(
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
+                robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos)
+            ),
+            InstantAction{robot.outtake.clawPos = 0.0},
+            InstantAction{robot.outtake.clawPos = 1.0},
+            ParallelAction(
+                robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
+                robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos)
+            ),
+            robot.lift.liftToPosAction(values.lift.inRobot),
+            )
+
+        val getSample : SequentialAction = SequentialAction(
+            ParallelAction(
+                InstantAction{ robot.intake.boxDown()},
+                InstantAction{ robot.intake.intakeDown()}
+            ),
+            InstantAction{ robot.intake.sweeperPower = 1.0},
+            robot.intake.extendoToPosAction(values.intake.extendoLimit),
+            robot.intake.extendoToPosAction(values.intake.extendoInBot),
+            InstantAction{ robot.intake.sweeperPower = 0.0},
+            ParallelAction(
+                InstantAction{ robot.intake.boxUp()},
+                InstantAction{ robot.intake.intakeUp()}
+            ),
+        )
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(-90.0.deg + 180.0.deg)

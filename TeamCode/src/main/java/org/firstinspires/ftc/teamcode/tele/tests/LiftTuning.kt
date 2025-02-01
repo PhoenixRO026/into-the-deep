@@ -13,7 +13,6 @@ class LiftTuning : LinearOpMode() {
     data object LiftTuningConfig {
         @JvmField
         var targetPos = 0
-        var kP = 0
     }
 
     override fun runOpMode() {
@@ -33,6 +32,7 @@ class LiftTuning : LinearOpMode() {
             timeKeep.resetDeltaTime()
 
             lift.targetPosition = LiftTuningConfig.targetPos
+
 
 
             lift.update()
