@@ -36,6 +36,8 @@ class CraneAuto : LinearOpMode() {
         val robot = AutoRobot(hardwareMap, config, values, timeKeep, startPose, telemetry)
         val mecanumDrive = robot.roadRunnerDrive
 
+        robot.intake.intakeUp()
+
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .lineToX(20.inch)
             .build()

@@ -1,7 +1,6 @@
 @file:JvmName("MeepMeep")
 package com.meep
 
-import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.roadrunner_ext.ex
@@ -19,9 +18,10 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder
 fun main() {
     System.setProperty("sun.java2d.opengl", "true")
 
-    val startPose = Pose(10.0.inch, -57.0.inch, 90.0.deg)
-    val wallGrab = Pose(33.0.inch, -53.0.inch, 90.0.deg)
-    val scoring = Pose(10.0.inch, -36.0.inch, 90.0.deg)
+    val startPose = Pose(-47.0.inch, -61.0.inch, -90.0.deg)
+    val  basket = Pose(-55.0.inch, -55.0.inch, 45.0.deg)
+    val pivot = Pose(-55.0.inch, -50.0.inch, -135.deg)
+
 
     val meepMeep = MeepMeep(600)
 
@@ -31,54 +31,38 @@ fun main() {
             .build()
 
     myBot.runAction(myBot.drive.actionBuilder(startPose.pose2d).ex()
-        ///PRELOAD
         .setTangent(Math.toRadians(90.0))
-        .lineToY(-36.0.inch)
+        .splineTo(pivot.position, pivot.heading)
+        .waitSeconds(3.0)
 
-        .setTangent(Math.toRadians(-90.0))
-        .lineToY(-40.0.inch)
+        .lineToY(-47.0)
+        .setTangent(-135.0.deg + 180.0.deg)
+        .lineToXLinearHeading(basket.position.x, basket.heading)
+        .waitSeconds(3.0)
+        .setTangent(-90.0.deg + 180.0.deg)
 
-        .setTangent(Math.toRadians(0.0))
-        .lineToXLinearHeading(34.0,Math.toRadians(45.0))
 
-        .turnTo(Math.toRadians(-50.0))
+        .waitSeconds(3.0)
+        .setTangent(-135.0.deg + 180.0.deg)
+        .lineToXLinearHeading(basket.position.x, basket.heading)
 
-        .setTangent(Math.toRadians(0.0))
-        .lineToXLinearHeading(40.0,Math.toRadians(35.0))
+        .waitSeconds(3.0)
+        .setTangent(-135.0.deg + 180.0.deg)
 
-        .turnTo(Math.toRadians(-50.0))
 
-        .setTangent(0.0)
-        .lineToXLinearHeading(50.0,Math.toRadians(35.0))
+        .waitSeconds(3.0)
+        .setTangent(45.0.deg + 180.0.deg)
+        .lineToXLinearHeading(basket.position.x, basket.heading)
 
-        .turnTo(Math.toRadians(-90.0))
+        .waitSeconds(3.0)
+        .setTangent(180.0.deg + 180.0.deg)
 
-        .setTangent(Math.toRadians(180.0))
 
-        .strafeTo(wallGrab.position)
-
-        .strafeTo(scoring.position)
-
-        .lineToY(-40.0.inch)
-
-        .strafeTo(wallGrab.position)
-
-        .strafeTo(scoring.position)
-
-        .lineToY(-40.0.inch)
-
-        .strafeTo(wallGrab.position)
-
-        .strafeTo(scoring.position)
-
-        .lineToY(-40.0.inch)
-/*
-        .strafeTo(wallGrab.position)
-
-        .strafeTo(scoring.position)
-
-        .lineToY(-40.0.inch)
-        */.build()
+        .waitSeconds(3.0)
+        .setTangent(90.0.deg + 180.0.deg)
+        .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+        .waitSeconds(3.0)
+        .build()
     )
 
     meepMeep.setBackground(Background.FIELD_INTO_THE_DEEP_JUICE_DARK)

@@ -108,6 +108,7 @@ val robotHardwareConfigTransilvaniaCollege = RobotHardwareConfig(
             pwmRange = ServoConfig.PWMRange.DEFAULT,
             rangeScale = 0.0..1.0
         ),
+
     ),
     outtake = OuttakeHardwareConfig(
         servoExtendo = ServoConfig(

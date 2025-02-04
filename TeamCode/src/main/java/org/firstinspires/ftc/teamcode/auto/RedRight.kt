@@ -67,13 +67,13 @@ class RedRight : LinearOpMode() {
 
         val getSample : SequentialAction = SequentialAction(
             InstantAction{ robot.intake.extendoPower = 1.0},
-            robot.intake.extendoToPosAction(values.intake.extendoLimit),
+            robot.intake.extendoToPosAction(values.intake.extendoLim),
             robot.intake.extendoToPosAction(values.intake.extendoInBot),
             InstantAction{ robot.intake.extendoPower = 0.0}
         )
 
         val ejectSample : SequentialAction = SequentialAction(
-            robot.intake.extendoToPosAction(values.intake.extendoLimit),
+            robot.intake.extendoToPosAction(values.intake.extendoLim),
             InstantAction{ robot.intake.extendoPower = 1.0},
             SleepAction(1.s),
             robot.intake.extendoToPosAction(values.intake.extendoInBot),

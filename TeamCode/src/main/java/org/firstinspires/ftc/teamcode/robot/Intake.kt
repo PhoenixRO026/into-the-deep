@@ -64,7 +64,7 @@ class Intake(
     }
 
     fun intakeUp() {
-        intakeTiltCurrentPos = 0.6794
+        intakeTiltCurrentPos = 0.6589
     }
 
     fun boxDown() {

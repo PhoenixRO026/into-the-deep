@@ -33,5 +33,5 @@ data class OuttakeValues(
     //random pos
     val extendoOutPos: Double = 0.0,
     val elbowWaitingPos: Double,
-    val shoulderWaitingPos: Double,
+    val shoulderWaitingPos: Double
 )

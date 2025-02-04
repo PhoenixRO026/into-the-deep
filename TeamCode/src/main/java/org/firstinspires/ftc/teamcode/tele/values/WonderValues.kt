@@ -23,7 +23,6 @@ val robotValuesWonder = RobotValues(
     intake = IntakeValues(
         boxTiltMaxTravelDuration = 5.s,
         intakeTiltMaxTravelDuration = 5.s,
-        extendoLimit = 0,
         extendoInBot = 0,
         extendoLim = 0,
         extendoAuto = 0
@@ -48,6 +47,8 @@ val robotValuesWonder = RobotValues(
         elbowRobotPos = 0.4733,
         extendoRobotPos = 0.0,
         elbowWaitingPos = 0.5,
-        shoulderWaitingPos = 0.5
+        shoulderWaitingPos = 0.5,
+        //extendoInRobo = 400.0.deg,
+        //extendoMaxim = 1.deg
     )
 )

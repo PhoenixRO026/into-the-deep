@@ -41,6 +41,8 @@ class PreloadBlueLeft : LinearOpMode() {
         val mecanumDrive = robot.roadRunnerDrive
         var currPose = startPose
 
+        robot.intake.intakeUp()
+
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(Math.toRadians(-90.0))
             .lineToY(47.0)

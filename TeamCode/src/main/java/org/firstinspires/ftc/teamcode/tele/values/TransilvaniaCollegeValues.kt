@@ -18,14 +18,16 @@ val robotValuesTransilvaniaCollege = RobotValues(
         secondBar = 493,
         secondBarUp = 1324,
         inRobot = 0,
-        onHangBar = 0
+        onHangBar = 0,
+        liftWaitingPos = 817,
+        liftIntakePos = 318
     ),
     intake = IntakeValues(
         boxTiltMaxTravelDuration = 5.s,
         intakeTiltMaxTravelDuration = 5.s,
-        extendoLimit = 1424,
+        //extendoLimit = 1424,
         extendoInBot = 0,
-        extendoLim = 1545,
+        extendoLim = 1424,
         extendoAuto = 1237,
     ),
     outtake = OuttakeValues(

@@ -47,18 +47,34 @@ class RedLeft : LinearOpMode() {
 
 
         val scoreBasket : SequentialAction = SequentialAction(
+            robot.lift.liftToPosAction(values.lift.liftWaitingPos),
+            SleepAction(5.s),
+            InstantAction{robot.outtake.clawPos = 1.0},
+            robot.outtake.elbowToPosAction(values.outtake.elbowIntakePos),
+            robot.outtake.shoudlerToPosAction(values.outtake.shoulderIntakePos),
+            robot.outtake.extendoToPosAction(values.outtake.extendoIntakePos),
+            SleepAction(5.s),
+            robot.lift.liftToPosAction(values.lift.liftIntakePos),
+            SleepAction(5.s),
+            InstantAction{robot.outtake.clawPos = 0.0},
+            SleepAction(5.s),
             robot.lift.liftToPosAction(values.lift.basketPos),
-            ParallelAction(
+            SleepAction(5.s),
+            SequentialAction(
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
                 robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos)
             ),
-            InstantAction{robot.outtake.clawPos = 0.0},
+
             InstantAction{robot.outtake.clawPos = 1.0},
-            ParallelAction(
+            SleepAction(5.s),
+            SequentialAction(
                 robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos)
             ),
+            SleepAction(5.s),
+            InstantAction{robot.outtake.clawPos = 0.0},
             robot.lift.liftToPosAction(values.lift.inRobot),
+            robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos)
             )
 
         val getSample : SequentialAction = SequentialAction(
@@ -67,7 +83,7 @@ class RedLeft : LinearOpMode() {
                 InstantAction{ robot.intake.intakeDown()}
             ),
             InstantAction{ robot.intake.sweeperPower = 1.0},
-            robot.intake.extendoToPosAction(values.intake.extendoLimit),
+            robot.intake.extendoToPosAction(values.intake.extendoLim),
             robot.intake.extendoToPosAction(values.intake.extendoInBot),
             InstantAction{ robot.intake.sweeperPower = 0.0},
             ParallelAction(
@@ -79,13 +95,33 @@ class RedLeft : LinearOpMode() {
         ///
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-            .setTangent(-90.0.deg + 180.0.deg)
+            //.afterTime(0.0, robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos))
+            .afterTime(0.0, getSample)
+            /*.waitSeconds(5.0)
+            .afterTime(0.0,scoreBasket)*/
+
+            /*.setTangent(-90.0.deg + 180.0.deg)
             .lineToY(-47.0)
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
             .waitSeconds(3.0)
             .setTangent(-90.0.deg + 180.0.deg)
             .splineToLinearHeading(Pose(first_yellow.position, first_yellow.heading), -90.0.deg + 180.0.deg)
+
+            .afterTime(0.0, SequentialAction(
+                InstantAction{robot.intake.intakeDown()},
+                InstantAction{robot.intake.boxDown()},
+                robot.intake.extendoToPosAction(values.intake.extendoLimit),
+                InstantAction{ robot.intake.extendoPower = 1.0},
+                InstantAction{robot.intake.sweeperPower=1.0},
+
+                SleepAction(1.s),
+                InstantAction{robot.intake.sweeperPower=0.0},
+                InstantAction{robot.intake.intakeUp()},
+                robot.intake.extendoToPosAction(values.intake.extendoInBot),
+                InstantAction{robot.intake.boxUp()}
+            ))
+
             .waitSeconds(3.0)
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
@@ -105,7 +141,7 @@ class RedLeft : LinearOpMode() {
             .waitSeconds(3.0)
             .setTangent(90.0.deg + 180.0.deg)
             .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
-            .waitSeconds(3.0)
+            .waitSeconds(3.0)*/
             .build()
 
 

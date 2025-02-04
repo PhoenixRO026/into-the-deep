@@ -22,8 +22,8 @@ import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 
 @Autonomous
 class PreloadRedLeft : LinearOpMode() {
-    val startPose = Pose(-47.0.inch, -61.0.inch, 90.0.deg)
-    val  basket = Pose(-55.0.inch, -55.0.inch, 45.0.deg)
+    val startPose = Pose(-47.0.inch, -61.0.inch, -90.0.deg)
+    val pivot = Pose(-55.0.inch, -50.0.inch, -135.deg)
 
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
@@ -43,11 +43,9 @@ class PreloadRedLeft : LinearOpMode() {
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(Math.toRadians(90.0))
-            .lineToY(-47.0)
-            .setTangent(Math.toRadians(45.0))
-            .lineToXLinearHeading(basket.position.x, basket.heading)
+            .splineTo(pivot.position, pivot.heading)
             .waitSeconds(3.0)
-            .afterTime(0.0, SequentialAction(
+            /*.afterTime(0.0, SequentialAction(
                 robot.lift.liftToPosAction(values.lift.basketPos),
                 SleepAction(100.ms),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
@@ -64,7 +62,7 @@ class PreloadRedLeft : LinearOpMode() {
                 SleepAction(100.ms),
                 robot.lift.liftToPosAction(values.lift.inRobot),
             )
-            )
+            )*/
             .build()
 
         telemetry.addData("Config name", config.name)
