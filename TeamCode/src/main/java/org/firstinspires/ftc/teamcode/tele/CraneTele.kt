@@ -63,7 +63,11 @@ class CraneTele : LinearOpMode() {
 
             //OUTTAKE
 
-            robot.outtake.extendoPower = pad2LeftStickY
+            robot.outtake.extendoSpeed = when {
+                pad2LeftStickY >= 0.2 -> 1.0
+                pad2LeftStickY <= -0.2 -> -1.0
+                else -> 0.0
+            }
             robot.outtake.shoulderSpeed = when {
                 gamepad2.dpad_up -> 1.0
                 gamepad2.dpad_down -> -1.0

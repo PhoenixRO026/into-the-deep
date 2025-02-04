@@ -77,6 +77,7 @@ class CraniTele : LinearOpMode() {
                 else if (gamepad2.right_bumper){
                     //robot.lift.liftToPosAction(338)   // DONT USE ACTIONS IN TELE
                     //robot.lift.targetPosition = 338
+                    robot.outtake.extendoTargetToIntake()
                     robot.intake.intakeUp()
                     robot.intake.boxUp()
                     robot.outtake.armTargetToIntake()
@@ -94,8 +95,12 @@ class CraniTele : LinearOpMode() {
                 if (gamepad2.b){
                     robot.outtake.armTargetToSpecimen()
                 }
-                if(gamepad2.left_trigger <= 0.2) {
-                    robot.outtake.extendoPower = pad2LeftStickY
+
+                if(gamepad2.dpad_up){
+                    robot.outtake.extendoTargetToMax()
+                }
+                else if(gamepad2.dpad_down){
+                    robot.outtake.extendoTargetToRobot()
                 }
 
                 robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
@@ -140,7 +145,11 @@ class CraniTele : LinearOpMode() {
             if (emergencyMode == 1){
                 //OUTTAKE
 
-                robot.outtake.extendoPower = pad2LeftStickY
+                robot.outtake.extendoSpeed = when {
+                    pad2LeftStickY >= 0.2 -> 1.0
+                    pad2LeftStickY <= -0.2 -> -1.0
+                    else -> 0.0
+                }
 
                 robot.outtake.shoulderSpeed = when {
                     gamepad2.right_bumper -> -1.0

@@ -80,15 +80,18 @@ class MotorsTestTele : LinearOpMode() {
             //TESTING THE OUTTAKE EXTENDO
 
             if(gamepad2.y){
-                robot.outtake.extendoTargetPos = 435.7.deg
+                robot.outtake.extendoTargetPos = values.outtake.extendoRobotPos
             }
             if (gamepad2.a){
                 //robot.outtake.extendo
             }
 
             //OUTTAKE EXTENDO MANUAL:
-            robot.outtake.extendoPower = pad2LeftStickY
-
+            robot.outtake.extendoSpeed = when {
+                pad2LeftStickY >= 0.2 -> 1.0
+                pad2LeftStickY <= -0.2 -> -1.0
+                else -> 0.0
+            }
             //LIFT MANUAL:
             robot.lift.power = pad2RightStickY
 

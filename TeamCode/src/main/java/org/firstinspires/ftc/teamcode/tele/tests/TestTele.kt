@@ -93,7 +93,7 @@ class TestTele : LinearOpMode() {
                     robot.intake.sweeperPower = gamepad2.left_stick_y.toDouble()
                 }
                 else {
-                    robot.outtake.extendoPower = pad2LeftStickY
+                    robot.outtake.extendoSpeed = pad2LeftStickY
                 }
                 robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
@@ -103,7 +103,7 @@ class TestTele : LinearOpMode() {
 
                 if (gamepad2.x) {
                     SequentialAction(
-                        robot.outtake.extendoToPosAction(500.deg),
+                        robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
                         SleepAction(0.1.s))
                 }
                 if (gamepad2.dpad_right) {
@@ -146,7 +146,7 @@ class TestTele : LinearOpMode() {
             if (emergencyMode == 1){
                 //OUTTAKE
 
-                robot.outtake.extendoPower = pad2LeftStickY
+                robot.outtake.extendoCurrentPos = pad2LeftStickY
 
                 robot.outtake.shoulderSpeed = when {
                     gamepad2.right_bumper -> -1.0

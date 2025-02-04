@@ -61,7 +61,7 @@ class BlueLeftPreload : LinearOpMode() {
             .lineToX(25.0)
             .afterTime(0.0, SequentialAction(
                 robot.lift.liftToPosAction(values.lift.onHangBar),
-                robot.outtake.extendoToPosAction(values.outtake.extendForHang.deg)
+                robot.outtake.extendoToPosAction(values.outtake.extendoOutPos)
             ))
             .build()
 

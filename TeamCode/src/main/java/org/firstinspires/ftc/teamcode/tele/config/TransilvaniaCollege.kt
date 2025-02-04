@@ -110,10 +110,11 @@ val robotHardwareConfigTransilvaniaCollege = RobotHardwareConfig(
         ),
     ),
     outtake = OuttakeHardwareConfig(
-        servoExtendo = AnalogEncoderCRServoConfig(
-            servoDeviceName = "servoExtendoOuttake",
-            encoderDeviceName = "encoderExtendoOuttake",
-            direction = AnalogEncoderCRServoConfig.Direction.FORWARD,
+        servoExtendo = ServoConfig(
+            deviceName = "servoExtendoOuttake",
+            direction = ServoConfig.Direction.FORWARD,
+            pwmRange = ServoConfig.PWMRange.DEFAULT,
+            rangeScale = 0.0..1.0
         ),
         servoShoulder = ServoConfig(
             deviceName = "servoShoulder",

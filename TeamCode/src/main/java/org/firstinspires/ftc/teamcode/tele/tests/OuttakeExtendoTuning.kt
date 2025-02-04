@@ -37,14 +37,14 @@ class OuttakeExtendoTuning : LinearOpMode() {
         while (opModeIsActive()) {
             timeKeep.resetDeltaTime()
 
-            outtake.extendoTargetPos = OuttakeExtendoTuningConfig.targetDegrees.deg
+            //outtake.extendoTargetPos = OuttakeExtendoTuningConfig.targetDegrees.deg
 
             outtake.update()
 
             telemetry.addData("Config name", config.name)
-            telemetry.addData("target pos", outtake.extendoTargetPos.asDeg)
-            telemetry.addData("extendo pos degrees", outtake.extendoPos.asDeg)
-            telemetry.addData("extendo power", outtake.extendoPower)
+            //telemetry.addData("target pos", outtake.extendoTargetPos.asDeg)
+            //telemetry.addData("extendo pos degrees", outtake.extendoPos.asDeg)
+            //telemetry.addData("extendo power", outtake.extendoPower)
 
             telemetry.addData("delta time ms", timeKeep.deltaTime.asMs)
             telemetry.addData("fps", 1.s / timeKeep.deltaTime)

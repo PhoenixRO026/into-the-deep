@@ -13,19 +13,19 @@ class AnalogEncoderTest : LinearOpMode() {
         val config = robotHardwareConfigWonder.outtake.servoExtendo
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
         val timeKeep = TimeKeep()
-        val servo = AnalogEncoderServo(hardwareMap, config.encoderDeviceName, config.servoDeviceName)
+        //val servo = AnalogEncoderServo(hardwareMap, config.encoderDeviceName, config.servoDeviceName)
 
         waitForStart()
 
         while (opModeIsActive()) {
             timeKeep.resetDeltaTime()
-            servo.update()
+            //servo.update()
 
-            servo.power = -gamepad1.left_stick_y.toDouble()
+            //servo.power = -gamepad1.left_stick_y.toDouble()
 
-            telemetry.addData("servo pos", servo.rotations.asRev)
-            telemetry.addData("voltage", servo.voltage)
-            telemetry.addData("change count", servo.changeCount)
+            //telemetry.addData("servo pos", servo.rotations.asRev)
+            //telemetry.addData("voltage", servo.voltage)
+            //telemetry.addData("change count", servo.changeCount)
             telemetry.addData("fps", 1.s / timeKeep.deltaTime)
             telemetry.addData("delta time ms", timeKeep.deltaTime.asMs)
             telemetry.update()

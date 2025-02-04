@@ -40,13 +40,13 @@ val robotValuesWonder = RobotValues(
         shoulderSpecimenPos = 0.0, // specimen
         elbowSpecimenPos = 0.2412,
         //intake
-        extendoIntakePos = 435.7.deg,
+        extendoIntakePos = 0.5,
         shoulderIntakePos = 0.44,
         elbowIntakePos = 0.0,
         //robot
         shoulderRobotPos = 0.2269,
         elbowRobotPos = 0.4733,
-        extendForHang = 0.0,
+        extendoRobotPos = 0.0,
         elbowWaitingPos = 0.5,
         shoulderWaitingPos = 0.5
     )

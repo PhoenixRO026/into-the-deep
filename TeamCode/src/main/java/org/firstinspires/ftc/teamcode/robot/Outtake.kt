@@ -24,7 +24,7 @@ class Outtake(
     private val values: OuttakeValues,
     private val timeKeep: TimeKeep
 ) {
-    @Config
+    /*@Config
     data object OuttakeConfig {
         @JvmField
         var extendoController: PIDController = PIDController(
@@ -39,17 +39,18 @@ class Outtake(
     enum class MODE {
         RUN_TO_POSITION,
         RAW_POWER
-    }
+    }*/
 
-    private var currentMode = MODE.RAW_POWER
+    //private var currentMode = MODE.RAW_POWER
 
-    private val servoExtendo: AnalogEncoderServo = hardwareMap.createAnalogEncoderCRServ(config.servoExtendo)
+    //private val servoExtendo: AnalogEncoderServo = hardwareMap.createAnalogEncoderCRServ(config.servoExtendo)
+    private val servoExtendo: Servo = hardwareMap.createServoWithConfig(config.servoExtendo)
     private val servoShoulder: Servo = hardwareMap.createServoWithConfig(config.servoShoulder)
     private val servoElbow: Servo = hardwareMap.createServoWithConfig(config.servoElbow)
     private val servoWrist: Servo = hardwareMap.createServoWithConfig(config.servoWrist)
     private val servoClaw: Servo = hardwareMap.createServoWithConfig(config.servoClaw)
 
-    fun extendoToPosAction(pos: Angle) = object : Action {
+    fun extendoToPosAction(pos: Double) = object : Action {
         var init = true
 
         override fun run(p: TelemetryPacket): Boolean {
@@ -58,7 +59,8 @@ class Outtake(
                 extendoTargetPos = pos
             }
 
-            return abs(extendoPos - extendoTargetPos) > 5.deg
+            return extendoTargetPos != extendoCurrentPos
+            //return abs(extendoPos - extendoTargetPos) > 5.deg
         }
     }
 
@@ -86,6 +88,18 @@ class Outtake(
 
             return elbowTargetPos != elbowCurrentPos
         }
+    }
+
+    fun extendoTargetToIntake(){
+        extendoTargetPos = values.extendoIntakePos
+    }
+
+    fun extendoTargetToRobot(){
+        extendoTargetPos = values.extendoRobotPos
+    }
+
+    fun extendoTargetToMax(){
+        extendoTargetPos = values.extendoOutPos
     }
 
     fun armTargetToBasket() {
@@ -120,8 +134,8 @@ class Outtake(
         wristCurrentPos = values.wristMiddlPos
     }
 
-    var _extendoPower by servoExtendo::power
-
+    //var _extendoPower by servoExtendo::power
+    /*
     var extendoPower
         get() = _extendoPower
         set(value) {
@@ -138,6 +152,29 @@ class Outtake(
         set(value) {
             field = value
             currentMode = MODE.RUN_TO_POSITION
+        }*/
+    var extendoCurrentPos
+        get() = servoShoulder.position
+        set(value) {
+            servoShoulder.position = value
+            _shoulderTargetPos = servoShoulder.position
+            shoulderSpeed = 0.0
+        }
+
+    private var _extendoTargetPos = servoExtendo.position
+        set(value) {
+            field = value.coerceIn(0.0, 1.0)
+        }
+    var extendoTargetPos
+        get() = _extendoTargetPos
+        set(value) {
+            _extendoTargetPos = value
+            extendoSpeed = 0.0
+        }
+
+    var extendoSpeed: Double = 0.0
+        set(value) {
+            field = value.coerceIn(-1.0, 1.0)
         }
 
     var shoulderCurrentPos
@@ -215,12 +252,29 @@ class Outtake(
     var clawPos by servoClaw::position
 
     fun update() {
-        servoExtendo.update()
+        /*servoExtendo.update()
         if (currentMode == MODE.RUN_TO_POSITION)
-            extendoPower = OuttakeConfig.extendoController.calculate(extendoPos.asRev, extendoTargetPos.asRev, timeKeep.deltaTime) + OuttakeConfig.kF
+            extendoPower = OuttakeConfig.extendoController.calculate(extendoPos.asRev, extendoTargetPos.asRev, timeKeep.deltaTime) + OuttakeConfig.kF*/
+        moveExtendo()
         moveShoulder()
         moveElbow()
         moveWrist()
+    }
+
+    private fun moveExtendo() {
+        if (extendoSpeed != 0.0) {
+            servoExtendo.position += timeKeep.deltaTime / values.extendoMaxTravelDuration * extendoSpeed
+            _extendoTargetPos = extendoCurrentPos
+            return
+        }
+        val error = extendoTargetPos - extendoCurrentPos
+        if (error == 0.0) return
+        val step = timeKeep.deltaTime / values.extendoMaxTravelDuration
+        if (abs(error) < step) {
+            servoExtendo.position = extendoTargetPos
+        } else {
+            servoExtendo.position += error.sign * step
+        }
     }
 
     private fun moveWrist() {

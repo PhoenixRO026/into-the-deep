@@ -29,6 +29,7 @@ val robotValuesTransilvaniaCollege = RobotValues(
         extendoAuto = 1237,
     ),
     outtake = OuttakeValues(
+        extendoMaxTravelDuration = 3.s,
         shoulderMaxTravelDuration = 3.s,
         elbowMaxTravelDuration = 3.s,
         wristMaxTravelDuration = 3.s,
@@ -46,13 +47,15 @@ val robotValuesTransilvaniaCollege = RobotValues(
         shoulderSpecimenPos = 0.3472,
         elbowSpecimenPos = 0.7511,
         //intake
-        extendoIntakePos = 465.38.deg,
+        extendoIntakePos = 0.25,
         shoulderIntakePos = 0.788,
         elbowIntakePos = 0.3649,
         //robot
         shoulderRobotPos = 0.6404,
         elbowRobotPos = 0.5159,
-        extendForHang = 0.0,
+        extendoRobotPos = 0.0,
+        //random
+        extendoOutPos = 0.465,
         elbowWaitingPos = 0.5,
         shoulderWaitingPos = 0.5
     )
