@@ -14,7 +14,7 @@ import kotlin.math.abs
 import kotlin.math.absoluteValue
 
 @TeleOp
-class CraniTele : LinearOpMode() {
+class CraniTeleManual : LinearOpMode() {
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
         val values = robotValuesTransilvaniaCollege
@@ -70,90 +70,6 @@ class CraniTele : LinearOpMode() {
                 -pad1RightStickX
             )
 
-
-            if(emergencyMode == 0) {
-                //OUTTAKE
-
-                if (gamepad2.left_bumper) {
-                    robot.outtake.armTargetToBasket()
-                }
-                else if (gamepad2.right_bumper){
-                    //robot.lift.liftToPosAction(338)   // DONT USE ACTIONS IN TELE
-                    //robot.lift.targetPosition = 338
-
-
-                    robot.lift.targetPosition = 1000
-                    robot.intake.intakeUp()
-                    robot.intake.boxUp()
-                    robot.outtake.extendoTargetPos = values.outtake.extendoIntakePos
-
-                    robot.outtake.armTargetToIntake()
-
-                    //robot.lift.targetPosition = 300
-
-
-
-                    //robot.outtake.clawPos = 0.0
-                }
-                else if (gamepad2.a){
-                    robot.outtake.armTargetToSpecimen()
-                }
-                else if (gamepad2.y) {
-                    robot.outtake.armTargetToBar()
-                }
-                else if (gamepad2.left_trigger>=0.2){
-                    robot.intake.sweeperPower = pad2LeftStickY
-                }
-
-                if (gamepad2.dpad_up){
-                    robot.outtake.extendoTargetPos = values.outtake.extendoOutPos
-                }
-
-                if (gamepad2.dpad_down){
-                    robot.outtake.extendoTargetPos = values.outtake.extendoRobotPos
-                }
-
-                /*
-                                if(gamepad2.dpad_up){
-                                    robot.outtake.extendoTargetToMax()
-                                }
-                                else if(gamepad2.dpad_down){
-                                    robot.outtake.extendoTargetToRobot()
-                                }*/
-                if (gamepad2.b){
-                    robot.outtake.armTargetToRobot()
-                }
-
-
-
-
-                //robot.intake.sweeperPower = pad1Triggers
-
-                robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
-
-                if (gamepad2.dpad_right) {
-                    robot.intake.boxUp()
-                } else if (gamepad2.dpad_left) {
-                    robot.intake.boxDown()
-                }
-            }
-
-
-            if(gamepad1.dpad_up){
-                robot.intake.intakeUp()
-            }
-            else if(gamepad1.dpad_down){
-                robot.intake.intakeDown()
-            }
-            //INTAKE
-            robot.intake.extendoPower =when {
-                gamepad1.right_bumper -> 1.0
-                gamepad1.left_bumper -> -1.0
-                else -> 0.0
-            }
-            //LIFT
-            robot.lift.power = pad2RightStickY
-
             //
             ////////////////////////////////////////////////////////////////
             //
@@ -166,7 +82,7 @@ class CraniTele : LinearOpMode() {
                 emergencyMode = abs(emergencyMode-1)
             }
 
-            if (emergencyMode == 1){
+
                 //OUTTAKE
 
                 robot.outtake.extendoSpeed = when {
@@ -201,7 +117,7 @@ class CraniTele : LinearOpMode() {
 
 
                 //LIFT
-                robot.lift.power = pad2RightStickY + 0.15
+                robot.lift.power = pad2RightStickY
             }
 
             /*END OF BACKUP*/
@@ -210,6 +126,5 @@ class CraniTele : LinearOpMode() {
 
             robot.addTelemetry(telemetry)
             telemetry.update()
-        }
     }
 }

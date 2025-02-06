@@ -50,7 +50,7 @@ class TeleRobot(
         telemetry.addLine("DRIVE:")
         telemetry.addData("yaw degs", drive.yaw.rad.asDeg)
         telemetry.addLine("OUTTAKE:")
-        telemetry.addData("outtake extendo pos", outtake.extendoTargetPos)
+        telemetry.addData("outtake extendo pos", outtake.extendoCurrentPos)
         telemetry.addData("outtake extendo speed", outtake.extendoSpeed)
         telemetry.addData("shoulder pos", outtake.shoulderCurrentPos)
         telemetry.addData("elbow pos", outtake.elbowCurrentPos)

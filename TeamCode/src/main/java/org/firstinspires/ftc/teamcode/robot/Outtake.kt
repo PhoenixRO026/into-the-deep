@@ -122,7 +122,7 @@ class Outtake(
         clawPos = 1.0
         shoulderTargetPos = values.shoulderIntakePos
         elbowTargetPos = values.elbowIntakePos
-        clawPos = 0.0
+        //clawPos = 0.0
     }
 
     fun armTargetToBar() {
@@ -154,11 +154,11 @@ class Outtake(
             currentMode = MODE.RUN_TO_POSITION
         }*/
     var extendoCurrentPos
-        get() = servoShoulder.position
+        get() = servoExtendo.position
         set(value) {
-            servoShoulder.position = value
-            _shoulderTargetPos = servoShoulder.position
-            shoulderSpeed = 0.0
+            servoExtendo.position = value
+            _extendoTargetPos = servoExtendo.position
+            extendoSpeed = 0.0
         }
 
     private var _extendoTargetPos = servoExtendo.position

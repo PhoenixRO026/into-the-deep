@@ -19,6 +19,8 @@ val robotValuesWonder = RobotValues(
         secondBarUp = 1324,
         inRobot = 0,
         onHangBar = 0,
+        liftWaitingPos = 0,
+        liftIntakePos = 0
     ),
     intake = IntakeValues(
         boxTiltMaxTravelDuration = 5.s,

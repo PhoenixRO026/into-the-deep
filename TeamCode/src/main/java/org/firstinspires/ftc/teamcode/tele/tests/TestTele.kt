@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.tele.tests
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.units.SleepAction
 import com.lib.units.deg
@@ -55,6 +57,28 @@ class TestTele : LinearOpMode() {
             val pad2RightStickY = -gamepad2.right_stick_y.toDouble()
             val pad2RightStickX = gamepad2.right_stick_x.toDouble()
 
+            var launchAction: Action? = null
+
+            fun launch() {
+                launchAction = SequentialAction(
+                    /*
+                    robot.lift.targetPosition = 1000,
+                    robot.intake.intakeUp(),
+                    robot.intake.boxUp(),
+                    robot.outtake.extendoTargetPos = values.outtake.extendoIntakePos,
+
+                    robot.outtake.armTargetToIntake(),
+
+                    robot.lift.targetPosition = 300,
+*/
+                robot.lift.liftToPosAction(1000),
+                    SleepAction(2.0.s),
+                    robot.lift.liftToPosAction(1000)
+
+                )
+
+            }
+
             //val pad2LeftBumper = gamepad2.left_bumper
 
             //DRIVE
@@ -72,63 +96,15 @@ class TestTele : LinearOpMode() {
 
             if(emergencyMode == 0) {
                 //OUTTAKE
-                if (gamepad2.right_bumper) {
-                    robot.outtake.armTargetToSpecimen()
-                }
-                else if(gamepad2.left_bumper) {
-                    //robot.lift.liftToPosAction(682)
-                    robot.lift.liftToPosAction(680)
-                    /*robot.intake.intakeUp()
-                    robot.intake.boxUp()*/
-                    robot.outtake.armTargetToIntake()
-                }
-
-                /* else if (gamepad2.left_bumper) {
-                    robot.lift.liftToPosAction(338)
-                    robot.intake.intakeUp()
-                    robot.intake.boxUp()
-                    robot.outtake.armTargetToIntake()
-                }*/ else if (gamepad2.left_trigger >= 0.2/* && gamepad2.left_stick_y>=0.1*/) {
-                    //robot.outtake.armTargetToRobot()
-                    robot.intake.sweeperPower = gamepad2.left_stick_y.toDouble()
-                }
-                else {
-                    robot.outtake.extendoSpeed = pad2LeftStickY
-                }
-                robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
-
-                if (gamepad2.a) {
-                    robot.outtake.armTargetToRobot()
-                }
-
-                if (gamepad2.x) {
-                    SequentialAction(
-                        robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
-                        SleepAction(0.1.s))
-                }
-                if (gamepad2.dpad_right) {
-                    robot.intake.boxUp()
-                } else if (gamepad2.dpad_left) {
-                    robot.intake.boxDown()
-                }
+                if (gamepad2.right_bumper){
+                    //robot.lift.liftToPosAction(338)   // DONT USE ACTIONS IN TELE
+                    //robot.lift.targetPosition = 338
 
 
+
+                    //robot.outtake.clawPos = 0.0
+                }
             }
-            if(gamepad1.dpad_up){
-                robot.intake.intakeUp()
-            }
-            else if(gamepad1.dpad_down){
-                robot.intake.intakeDown()
-            }
-            //INTAKE
-            robot.intake.extendoPower = pad1Triggers
-            /*robot.intake.sweeperPower = when {
-                gamepad1.right_bumper -> 1.0
-                gamepad1.left_bumper -> -1.0
-                else -> 0.0
-            }*/
-            //LIFT
-            robot.lift.power = pad2RightStickY + 0.15
 
             //
             ////////////////////////////////////////////////////////////////
@@ -137,44 +113,6 @@ class TestTele : LinearOpMode() {
             //
             ////////////////////////////////////////////////////////////////
             //
-
-            if (gamepad2.ps) {
-                emergencyMode = abs(emergencyMode-1)
-                sleep(100)
-            }
-
-            if (emergencyMode == 1){
-                //OUTTAKE
-
-                robot.outtake.extendoCurrentPos = pad2LeftStickY
-
-                robot.outtake.shoulderSpeed = when {
-                    gamepad2.right_bumper -> -1.0
-                    gamepad2.left_bumper -> 1.0
-                    else -> 0.0
-                }
-
-                robot.outtake.elbowSpeed = when {
-                    gamepad2.y -> 1.0
-                    gamepad2.a -> -1.0
-                    else -> 0.0
-                }
-                robot.outtake.wristSpeed = when {
-                    gamepad2.dpad_left -> -1.0
-                    gamepad2.dpad_right -> 1.0
-                    else -> 0.0
-                }
-                robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
-
-                robot.intake.boxTiltSpeed = when {
-                    gamepad2.dpad_up -> 1.0
-                    gamepad2.dpad_up -> -1.0
-                    else -> 0.0
-                }
-
-                //LIFT
-                robot.lift.power = pad2RightStickY + 0.15
-            }
 
             /*END OF BACKUP*/
 

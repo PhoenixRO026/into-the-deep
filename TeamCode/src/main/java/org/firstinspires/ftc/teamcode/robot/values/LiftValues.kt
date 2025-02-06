@@ -7,6 +7,6 @@ data class LiftValues(
     val inRobot: Int,
     val onHangBar: Int,
     val secondBarUp: Int,
-    val liftWaitingPos: Int = 5,
-    val liftIntakePos: Int = 5
+    val liftWaitingPos: Int,
+    val liftIntakePos: Int
 )
