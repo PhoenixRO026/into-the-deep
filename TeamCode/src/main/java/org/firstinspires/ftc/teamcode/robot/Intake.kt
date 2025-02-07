@@ -60,11 +60,15 @@ class Intake(
         }
 
     fun intakeDown() {
-        intakeTiltCurrentPos = 0.49
+        intakeTiltCurrentPos = 0.67
     }
 
     fun intakeUp() {
-        intakeTiltCurrentPos = 0.6589
+        intakeTiltCurrentPos = 0.0
+    }
+
+    fun intakeSample() {
+        intakeTiltCurrentPos = 0.5472
     }
 
     fun boxDown() {

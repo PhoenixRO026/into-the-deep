@@ -47,6 +47,7 @@ class CraniTele : LinearOpMode() {
         val emergencyButton = ButtonReader { gamepad2.ps }
 
         while (isStarted && !isStopRequested) {
+            emergencyButton.readValue()
             timeKeep.resetDeltaTime()
             val pad1LeftStickY = -gamepad1.left_stick_y.toDouble()
             val pad1LeftStickX = gamepad1.left_stick_x.toDouble()
@@ -201,7 +202,7 @@ class CraniTele : LinearOpMode() {
 
 
                 //LIFT
-                robot.lift.power = pad2RightStickY + 0.15
+                robot.lift.power = pad2RightStickY
             }
 
             /*END OF BACKUP*/
@@ -209,6 +210,8 @@ class CraniTele : LinearOpMode() {
             robot.update()
 
             robot.addTelemetry(telemetry)
+
+            telemetry.addData("emergency mode value",emergencyMode)
             telemetry.update()
         }
     }
