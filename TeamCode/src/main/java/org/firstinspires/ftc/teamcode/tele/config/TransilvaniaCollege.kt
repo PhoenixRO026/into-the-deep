@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.tele.config
 
 import org.firstinspires.ftc.teamcode.library.config.AnalogEncoderCRServoConfig
+import org.firstinspires.ftc.teamcode.library.config.ColorSensorConfig
 import org.firstinspires.ftc.teamcode.library.config.EncoderConfig
 import org.firstinspires.ftc.teamcode.library.config.IMUConfig
 import org.firstinspires.ftc.teamcode.library.config.MotorConfig
@@ -108,6 +109,9 @@ val robotHardwareConfigTransilvaniaCollege = RobotHardwareConfig(
             pwmRange = ServoConfig.PWMRange.DEFAULT,
             rangeScale = 0.0..1.0
         ),
+        intakeColorSensor = ColorSensorConfig(
+            deviceName = "intakeColorSensor"
+        )
 
     ),
     outtake = OuttakeHardwareConfig(
