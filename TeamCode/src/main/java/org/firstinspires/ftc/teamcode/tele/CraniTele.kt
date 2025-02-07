@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.tele
 
+import android.app.Activity
+import android.graphics.Color
+import android.view.View
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.roadrunner.Action
@@ -20,7 +23,9 @@ class CraniTele : LinearOpMode() {
         val values = robotValuesTransilvaniaCollege
         var emergencyMode : Int = 0
 
-
+        val hsvValues = floatArrayOf(0f, 0f, 0f)
+        val valuesColor = hsvValues
+        val SCALE_FACTOR = 255.0
 
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
@@ -30,6 +35,9 @@ class CraniTele : LinearOpMode() {
 
         val timeKeep = TimeKeep()
         val robot = TeleRobot(hardwareMap, config, values, timeKeep, telemetry)
+
+        val relativeLayoutId = hardwareMap.appContext.resources.getIdentifier("RelativeLayout", "id", hardwareMap.appContext.packageName)
+        val relativeLayout = (hardwareMap.appContext as Activity).findViewById<View>(relativeLayoutId)
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("READY!")
@@ -58,6 +66,13 @@ class CraniTele : LinearOpMode() {
             val pad2LeftStickX = gamepad2.left_stick_x.toDouble()
             val pad2RightStickY = -gamepad2.right_stick_y.toDouble()
             val pad2RightStickX = gamepad2.right_stick_x.toDouble()
+
+            Color.RGBToHSV(
+                (robot.intake.intakeColorSensor.red() * SCALE_FACTOR).toInt(),
+                (robot.intake.intakeColorSensor.green() * SCALE_FACTOR).toInt(),
+                (robot.intake.intakeColorSensor.blue() * SCALE_FACTOR).toInt(),
+                hsvValues
+            )
 
             //DRIVE
             if (gamepad1.y)

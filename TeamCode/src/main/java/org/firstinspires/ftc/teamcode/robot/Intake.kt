@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ftc.Encoder
+import com.qualcomm.robotcore.hardware.ColorSensor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
@@ -47,10 +48,10 @@ class Intake(
 
     private val motorExtendoIntake: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorExtendoIntake)
     private val motorSweeper: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorSweeper)
-    val servoIntakeTilt: Servo = hardwareMap.createServoWithConfig(config.servoIntakeTilt)
+    private val servoIntakeTilt: Servo = hardwareMap.createServoWithConfig(config.servoIntakeTilt)
     private val servoBoxTilt: Servo = hardwareMap.createServoWithConfig(config.servoBoxTilt)
     private val encoderExtendo: Encoder = hardwareMap.createEncoderUsingConfig(config.encoderExtendo)
-    private val intakeColorSensor: NormalizedColorSensor = hardwareMap.createColorSensorWithConfig(config.intakeColorSensor)
+    val intakeColorSensor: ColorSensor = hardwareMap.createColorSensorWithConfig(config.intakeColorSensor)
 
     private var extendoOffset = 0
 
@@ -62,28 +63,21 @@ class Intake(
             extendoMode = MODE.RUN_TO_POSITION
         }
 
-    fun readColor(): String {
-        val colorValues = FloatArray(3)
-        intakeColorSensor.getNormalizedColors().let {
-            colorValues[0] = it.red
-            colorValues[1] = it.green
-            colorValues[2] = it.blue
-        }
-
-        val red = colorValues[0]
-        val green = colorValues[1]
-        val blue = colorValues[2]
-
-        return when {
-            red > 0.5 && green < 0.4 && blue < 0.4 -> "Red"
-            blue > 0.5 && red < 0.4 && green < 0.4 -> "Blue"
-            red > 0.4 && green > 0.4 && blue < 0.3 -> "Yellow"
-            else -> "None"
-        }
+    fun readColor(hue : Int): String{
+        if (hue in 54..57)
+            return "None"
+        if (hue in 19..25)
+            return "Red"
+        else if (hue in 220..225)
+            return "Blue"
+        else if (hue in 60..85)
+            return "Yellow"
+        else
+            return "None"
     }
 
-    fun shouldStopIntake(side: String): Boolean{
-        var color: String = readColor()
+    fun shouldStopIntake(side: String, hue: Int): Boolean{
+        var color: String = readColor(hue)
         var shouldSwitch : Boolean = false
         var finalDecision : Boolean = false
         if(servoIntakeTilt.position == 0.49){
@@ -120,15 +114,11 @@ class Intake(
 
 
     fun intakeDown() {
-        intakeTiltCurrentPos = 0.67
+        intakeTiltCurrentPos = 0.4761
     }
 
     fun intakeUp() {
         intakeTiltCurrentPos = 0.0
-    }
-
-    fun intakeSample() {
-        intakeTiltCurrentPos = 0.5472
     }
 
     fun boxDown() {

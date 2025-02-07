@@ -99,7 +99,7 @@ val robotHardwareConfigTransilvaniaCollege = RobotHardwareConfig(
         ),
         servoIntakeTilt = ServoConfig(
             deviceName = "servoIntakeTilt",
-            direction = ServoConfig.Direction.REVERSE,
+            direction = ServoConfig.Direction.FORWARD,
             pwmRange = ServoConfig.PWMRange.DEFAULT,
             rangeScale = 0.0..1.0
         ),
