@@ -59,7 +59,7 @@ class CraniTele : LinearOpMode() {
                 InstantAction{robot.outtake.clawPos=1.0},
                 robot.lift.liftToPosAction(values.lift.liftWaitingPos),
                 ParallelAction(
-                    robot.outtake.shoudlerToPosAction(values.outtake.elbowIntakePos),
+                    robot.outtake.shoudlerToPosAction(values.outtake.shoulderIntakePos),
                     robot.outtake.elbowToPosAction(values.outtake.elbowIntakePos)
                 ),
                 //SleepAction(2.0.s),
@@ -148,15 +148,13 @@ class CraniTele : LinearOpMode() {
                 }
                 else if (gamepad2.right_bumper){
                     getSampleFromIntake()
+
                 }
                 else if (gamepad2.a){
                     robot.outtake.armTargetToSpecimen()
                 }
                 else if (gamepad2.y) {
                     robot.outtake.armTargetToBar()
-                }
-                else if (gamepad2.left_trigger>=0.2){
-                    robot.intake.sweeperPower = pad2LeftStickY
                 }
 
                 if (gamepad2.dpad_up){
@@ -192,6 +190,9 @@ class CraniTele : LinearOpMode() {
                 }
             }
 
+            if (gamepad1.left_trigger >= 0.2) {
+                robot.intake.sweeperPower = pad1LeftStickY
+            }
 
             if(gamepad1.dpad_up){
                 robot.intake.intakeUp()
