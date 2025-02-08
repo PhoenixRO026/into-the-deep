@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot
 
+import android.graphics.Color
 import android.view.WindowInsets.Side
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
@@ -80,16 +81,16 @@ class Intake(
         var color: String = readColor(hue)
         var shouldSwitch : Boolean = false
         var finalDecision : Boolean = false
-        if(servoIntakeTilt.position == 0.49){
+        if(servoIntakeTilt.position == 0.4761){
             shouldSwitch = false
         }
-        else if(servoIntakeTilt.position == 0.6589){
+        else if(servoIntakeTilt.position == 0.04 ){
             shouldSwitch = true
         }
         if(color == "None"){
             finalDecision = false
         }
-        else if (side == "RED"){
+        if (side == "RED"){
             if(color == "Red" || color == "Yellow"){
                 finalDecision = true
             }
@@ -111,14 +112,57 @@ class Intake(
         return finalDecision
     }
 
+    fun snatchSpecimen(hsvValues: FloatArray){
+        extendoTargetPosition = values.extendoLim
+        while (extendoPosition <= extendoTargetPosition){
+            if (shouldStopIntake("RED",hsvValues[0].toInt())){
+                sweeperPower = 0.0
+            }
+            else {
+                sweeperPower = 1.0
+            }
+            extendoPower = 1.0
+            Color.RGBToHSV(
+                (intakeColorSensor.red() * 255.0).toInt(),
+                (intakeColorSensor.green() * 255.0).toInt(),
+                (intakeColorSensor.blue() * 255.0).toInt(),
+                hsvValues
+            )
+        }
+        extendoTargetPosition = values.extendoInBot
+        while (extendoPosition >= extendoTargetPosition){
+            if (shouldStopIntake("RED",hsvValues[0].toInt())){
+                sweeperPower = 0.0
+            }
+            else {
+                sweeperPower = 1.0
+            }
+            extendoPower = -1.0
+            Color.RGBToHSV(
+                (intakeColorSensor.red() * 255.0).toInt(),
+                (intakeColorSensor.green() * 255.0).toInt(),
+                (intakeColorSensor.blue() * 255.0).toInt(),
+                hsvValues
+            )
+        }
+    }
 
+    fun kickSample(hsvValues: FloatArray){
+        intakeUp()
+        while (!shouldStopIntake("RED", hsvValues[0].toInt())){
+            if(shouldStopIntake("RED", hsvValues[0].toInt()))
+                sweeperPower = 0.04
+            else
+                sweeperPower = 1.0
+        }
+    }
 
     fun intakeDown() {
         intakeTiltCurrentPos = 0.4761
     }
 
     fun intakeUp() {
-        intakeTiltCurrentPos = 0.0
+        intakeTiltCurrentPos = 0.04
     }
 
     fun boxDown() {

@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.auto
 
+import android.app.Activity
+import android.graphics.Color
+import android.view.View
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
@@ -35,6 +38,10 @@ class RedLeft : LinearOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
         val values = robotValuesTransilvaniaCollege
 
+        val hsvValues = floatArrayOf(0f, 0f, 0f)
+        val valuesColor = hsvValues
+        val SCALE_FACTOR = 255.0
+
         val dash = FtcDashboard.getInstance()
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
@@ -42,106 +49,113 @@ class RedLeft : LinearOpMode() {
         telemetry.addLine("INITIALIZING")
         telemetry.update()
 
+        val relativeLayoutId = hardwareMap.appContext.resources.getIdentifier("RelativeLayout", "id", hardwareMap.appContext.packageName)
+        val relativeLayout = (hardwareMap.appContext as Activity).findViewById<View>(relativeLayoutId)
+
+
         val timeKeep = TimeKeep()
         val robot = AutoRobot(hardwareMap, config, values, timeKeep, startPose, telemetry)
         val mecanumDrive = robot.roadRunnerDrive
+        val hue = hsvValues[0].toInt()
 
 
         val grabSample: SequentialAction = SequentialAction(
             robot.lift.liftToPosAction(values.lift.liftWaitingPos),
-            SleepAction(1.s),
             InstantAction { robot.outtake.clawPos = 1.0 },
             ParallelAction(
                 robot.outtake.elbowToPosAction(values.outtake.elbowIntakePos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderIntakePos),
-                robot.outtake.extendoToPosAction(values.outtake.extendoIntakePos),
+                // robot.outtake.extendoToPosAction(values.outtake.extendoIntakePos),
             ),
-            SleepAction(1.s),
+            SleepAction(0.2.s),
             robot.lift.liftToPosAction(values.lift.liftIntakePos),
-            SleepAction(1.s),
+            SleepAction(1.5.s),
             InstantAction { robot.outtake.clawPos = 0.0 },
-            SleepAction(1.s),
+            SleepAction(0.5.s)
         )
         val scoreBasket: SequentialAction = SequentialAction(
+            ParallelAction(robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
+            robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
+            InstantAction{robot.outtake.clawPos = 0.0},),
             robot.lift.liftToPosAction(values.lift.basketPos),
-            SleepAction(1.s),
             ParallelAction(
                 robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
                 robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos)
             ),
-            SleepAction(1.s),
             InstantAction { robot.outtake.clawPos = 1.0 },
-            SleepAction(1.s),
+            SleepAction(0.1.s),
             ParallelAction(
                 robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos)
             ),
-            SleepAction(1.s),
             InstantAction { robot.outtake.clawPos = 0.0 },
             robot.lift.liftToPosAction(values.lift.inRobot),
             robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
-            SleepAction(2.s)
         )
 
         val getSample: SequentialAction = SequentialAction(
             robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
             robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
             robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
-            ParallelAction(
-                InstantAction { robot.intake.boxDown() },
-                InstantAction { robot.intake.intakeDown() }
-            ),
+            InstantAction { robot.intake.intakeDown()},
             //SleepAction(5.s),
-            InstantAction { robot.intake.sweeperPower = 1.0 },
-            robot.intake.extendoToPosAction(values.intake.extendoLim),
+            InstantAction { robot.intake.snatchSpecimen(hsvValues) },
+            SleepAction(1.s),
             robot.intake.extendoToPosAction(values.intake.extendoInBot),
-            InstantAction { robot.intake.sweeperPower = 0.0 },
-            ParallelAction(
-                InstantAction { robot.intake.boxUp() },
-                InstantAction { robot.intake.intakeUp() }
-            ),
-            SleepAction(2.s),
+            InstantAction { robot.intake.intakeUp() },
+            SleepAction(1.s),
+            InstantAction { robot.intake.kickSample(hsvValues)},
+            SleepAction(1.s),
+            InstantAction { robot.intake.sweeperPower = 0.0 }
         )
         ///+2
         ///
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-            //.afterTime(0.0, SequentialAction(getSample, grabSample, scoreBasket))
+
             .setTangent(-90.0.deg + 180.0.deg)
             .splineTo(pivot.position, pivot.heading)
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
-            .waitSeconds(3.0)
+
+            .afterTime(0.0,SequentialAction(scoreBasket))
+            .waitSeconds(8.s)
             .setTangent(-90.0.deg + 180.0.deg)
             .splineToLinearHeading(
                 Pose(first_yellow.position, first_yellow.heading),
                 -90.0.deg + 180.0.deg
             )
 
-            .waitSeconds(3.0)
+            .afterTime(0.0,SequentialAction(getSample))
+            .waitSeconds(6.s)
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
 
-            .waitSeconds(3.0)
+            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
+            .waitSeconds(10.s)
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
 
-            .waitSeconds(3.0)
+            .afterTime(0.0,SequentialAction(getSample))
+            .waitSeconds(6.s)
             .setTangent(45.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
 
-            .waitSeconds(3.0)
+            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
+            .waitSeconds(10.s)
             .setTangent(180.0.deg + 180.0.deg)
             .splineToLinearHeading(
                 Pose(last_yellow.position, last_yellow.heading),
                 -90.0.deg + 180.0.deg
             )
 
-            .waitSeconds(3.0)
+            .afterTime(0.0,SequentialAction(getSample))
+            .waitSeconds(6.s)
             .setTangent(90.0.deg + 180.0.deg)
             .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
-            .waitSeconds(3.0)
+            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
+            .waitSeconds(6.s)
             .build()
 
         telemetry.addData("Config name", config.name)
@@ -160,6 +174,13 @@ class RedLeft : LinearOpMode() {
         while (isStarted && !isStopRequested && running) {
             timeKeep.resetDeltaTime()
 
+            Color.RGBToHSV(
+                (robot.intake.intakeColorSensor.red() * SCALE_FACTOR).toInt(),
+                (robot.intake.intakeColorSensor.green() * SCALE_FACTOR).toInt(),
+                (robot.intake.intakeColorSensor.blue() * SCALE_FACTOR).toInt(),
+                hsvValues
+            )
+
             val packet = TelemetryPacket()
             packet.fieldOverlay().operations.addAll(canvas.operations)
 
@@ -168,7 +189,12 @@ class RedLeft : LinearOpMode() {
 
             robot.update()
 
-            robot.addTelemetry(telemetry)
+            //robot.addTelemetry(telemetry)
+            telemetry.addData("red side", robot.intake.shouldStopIntake("RED", hsvValues[0].toInt()))
+            telemetry.addData("blue side", robot.intake.shouldStopIntake("BLUE", hsvValues[0].toInt()))
+            telemetry.addData("Red", robot.intake.intakeColorSensor.red())
+            telemetry.addData("Green", robot.intake.intakeColorSensor.green())
+            telemetry.addData("Blue", robot.intake.intakeColorSensor.blue())
             telemetry.update()
         }
     }

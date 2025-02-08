@@ -80,6 +80,7 @@ class SensorREVColorDistanceBasic : LinearOpMode() {
             //telemetry.addData("Distance (cm)", String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)))
             telemetry.addData("red side", robot.intake.shouldStopIntake("RED", hsvValues[0].toInt()))
             telemetry.addData("blue side", robot.intake.shouldStopIntake("BLUE", hsvValues[0].toInt()))
+            telemetry.addData("tilt pos", robot.intake.intakeTiltCurrentPos)
             telemetry.addData("interval", interval.toString())
             telemetry.addData("Alpha", sensorColor.alpha())
             telemetry.addData("Red", sensorColor.red())
