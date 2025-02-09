@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode.roadrunner;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.PinpointView;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.Objects;
@@ -18,8 +22,10 @@ public final class PinpointLocalizer implements Localizer {
     }
 
     public static Params PARAMS = new Params();
+    public final PinpointView view;
 
     private final GoBildaPinpointDriver driver;
+
     private Pose2d txWorldPinpoint;
     private Pose2d txPinpointRobot = new Pose2d(0, 0, 0);
 
@@ -44,6 +50,8 @@ public final class PinpointLocalizer implements Localizer {
         driver.resetPosAndIMU();
 
         txWorldPinpoint = initialPose;
+
+        view = getView();
     }
 
     @Override
@@ -66,5 +74,36 @@ public final class PinpointLocalizer implements Localizer {
             return new PoseVelocity2d(robotVelocity, driver.getHeadingVelocity());
         }
         return new PoseVelocity2d(new Vector2d(0, 0), 0);
+    }
+
+    private PinpointView getView() {
+        return new PinpointView() {
+            @Override
+            public void update() {
+                driver.update();
+            }
+
+            @Override
+            public int getParEncoderPosition() {
+                return driver.getEncoderX();
+            }
+
+            @Override
+            public int getPerpEncoderPosition() {
+                return driver.getEncoderY();
+            }
+
+            @Override
+            public float getHeadingVelocity() {
+                return (float) driver.getHeadingVelocity();
+            }
+
+            //NOTE: not used by tuning
+            @Override
+            public void setParDirection(@NonNull DcMotorSimple.Direction direction) {}
+
+            @Override
+            public void setPerpDirection(@NonNull DcMotorSimple.Direction direction) {}
+        };
     }
 }

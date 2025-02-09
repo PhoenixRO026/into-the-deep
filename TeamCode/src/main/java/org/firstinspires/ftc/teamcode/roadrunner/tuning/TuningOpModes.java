@@ -10,12 +10,15 @@ import com.acmerobotics.roadrunner.ftc.DriveType;
 import com.acmerobotics.roadrunner.ftc.DriveView;
 import com.acmerobotics.roadrunner.ftc.DriveViewFactory;
 import com.acmerobotics.roadrunner.ftc.Encoder;
+import com.acmerobotics.roadrunner.ftc.EncoderRef;
 import com.acmerobotics.roadrunner.ftc.ForwardPushTest;
 import com.acmerobotics.roadrunner.ftc.ForwardRampLogger;
 import com.acmerobotics.roadrunner.ftc.LateralPushTest;
 import com.acmerobotics.roadrunner.ftc.LateralRampLogger;
 import com.acmerobotics.roadrunner.ftc.ManualFeedforwardTuner;
 import com.acmerobotics.roadrunner.ftc.MecanumMotorDirectionDebugger;
+import com.acmerobotics.roadrunner.ftc.PinpointEncoderGroup;
+import com.acmerobotics.roadrunner.ftc.PinpointView;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
@@ -23,12 +26,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.PinpointLocalizer;
 import org.firstinspires.ftc.teamcode.roadrunner.TankDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.ThreeDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.roadrunner.TwoDeadWheelLocalizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public final class TuningOpModes {
@@ -75,6 +80,39 @@ public final class TuningOpModes {
                     TwoDeadWheelLocalizer dl = (TwoDeadWheelLocalizer) md.localizer;
                     parEncs.add(dl.par);
                     perpEncs.add(dl.perp);
+                } else if (md.localizer instanceof PinpointLocalizer) {
+                    PinpointLocalizer dl = (PinpointLocalizer) md.localizer;
+                    PinpointView view = dl.view;
+                    PinpointEncoderGroup pinpointEncoderGroup = new PinpointEncoderGroup(view);
+                    EncoderRef pinpointParEncoderRef = new EncoderRef(0, 0);
+                    EncoderRef pinpointPerpEncoderRef = new EncoderRef(0, 1);
+
+                    return new DriveView(
+                            DriveType.MECANUM,
+                            MecanumDrive.PARAMS.inPerTick,
+                            MecanumDrive.PARAMS.maxWheelVel,
+                            MecanumDrive.PARAMS.minProfileAccel,
+                            MecanumDrive.PARAMS.maxProfileAccel,
+                            Collections.singletonList(pinpointEncoderGroup),
+                            Arrays.asList(
+                                    md.leftFront,
+                                    md.leftBack
+                            ),
+                            Arrays.asList(
+                                    md.rightFront,
+                                    md.rightBack
+                            ),
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            Collections.singletonList(pinpointParEncoderRef),
+                            Collections.singletonList(pinpointPerpEncoderRef),
+                            md.lazyImu,
+                            md.voltageSensor,
+                            () -> new MotorFeedforward(MecanumDrive.PARAMS.kS,
+                                    MecanumDrive.PARAMS.kV / MecanumDrive.PARAMS.inPerTick,
+                                    MecanumDrive.PARAMS.kA / MecanumDrive.PARAMS.inPerTick),
+                            0
+                    );
                 } else {
                     throw new RuntimeException("unknown localizer: " + md.localizer.getClass().getName());
                 }
