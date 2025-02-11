@@ -65,7 +65,7 @@ class Intake(
         }
 
     fun readColor(hue : Int): String{
-        if (hue in 54..57)
+        if (hue in 130..140)
             return "None"
         if (hue in 19..25)
             return "Red"
@@ -81,7 +81,7 @@ class Intake(
         var color: String = readColor(hue)
         var shouldSwitch : Boolean = false
         var finalDecision : Boolean = false
-        if(servoIntakeTilt.position == 0.4761){
+        if(servoIntakeTilt.position == 0.477){
             shouldSwitch = false
         }
         else if(servoIntakeTilt.position == 0.04 ){
@@ -121,7 +121,7 @@ class Intake(
             else {
                 sweeperPower = 1.0
             }
-            extendoPower = 1.0
+            extendoPower = 0.9
             Color.RGBToHSV(
                 (intakeColorSensor.red() * 255.0).toInt(),
                 (intakeColorSensor.green() * 255.0).toInt(),
@@ -147,18 +147,18 @@ class Intake(
         }
     }
 
-    fun kickSample(hsvValues: FloatArray){
+    fun kickSample(hsvValues: FloatArray){// have to change for specimen auto
         intakeUp()
         while (!shouldStopIntake("RED", hsvValues[0].toInt())){
             if(shouldStopIntake("RED", hsvValues[0].toInt()))
-                sweeperPower = 0.04
+                sweeperPower = 0.0
             else
-                sweeperPower = 1.0
+                sweeperPower = 0.7
         }
     }
 
     fun intakeDown() {
-        intakeTiltCurrentPos = 0.4761
+        intakeTiltCurrentPos = 0.477
     }
 
     fun intakeUp() {

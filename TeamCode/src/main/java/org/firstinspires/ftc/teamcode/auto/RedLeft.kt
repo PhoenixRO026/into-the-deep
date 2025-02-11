@@ -30,7 +30,7 @@ class RedLeft : LinearOpMode() {
     private val startPose = Pose(-33.4.inch, -61.inch, 90.0.deg)
     private val pivot = Pose(-47.0.inch, -47.0.inch, 90.deg)
     private val  basket = Pose(-55.0.inch, -55.0.inch, 45.0.deg)
-    private val  first_yellow = Pose(-47.0.inch, -47.0.inch, 90.0.deg)
+    private val  first_yellow = Pose(-49.0.inch, -47.0.inch, 90.0.deg)
     private val  mid_yellow = Pose(-47.0.inch, -47.0.inch, 120.0.deg)
     private val  last_yellow = Pose(-55.0.inch, -47.0.inch, 120.0.deg)
 
@@ -59,13 +59,26 @@ class RedLeft : LinearOpMode() {
         val hue = hsvValues[0].toInt()
 
 
+        robot.outtake.extendoCurrentPos = values.outtake.extendoRobotPos
+        robot.intake.intakeUp()
+        robot.outtake.shoulderCurrentPos = values.outtake.shoulderRobotPos
+        robot.outtake.elbowCurrentPos = values.outtake.elbowRobotPos
+        robot.outtake.clawPos = 0.0
+
+        val initRobot: SequentialAction = SequentialAction(
+            InstantAction { robot.outtake.clawPos = 0.0},
+            robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
+            robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
+            InstantAction{ robot.intake.intakeUp() },
+        )
+
         val grabSample: SequentialAction = SequentialAction(
             robot.lift.liftToPosAction(values.lift.liftWaitingPos),
             InstantAction { robot.outtake.clawPos = 1.0 },
             ParallelAction(
                 robot.outtake.elbowToPosAction(values.outtake.elbowIntakePos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderIntakePos),
-                // robot.outtake.extendoToPosAction(values.outtake.extendoIntakePos),
+                 robot.outtake.extendoToPosAction(values.outtake.extendoIntakePos),
             ),
             SleepAction(0.2.s),
             robot.lift.liftToPosAction(values.lift.liftIntakePos),
@@ -83,12 +96,14 @@ class RedLeft : LinearOpMode() {
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
                 robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos)
             ),
+            SleepAction(1.s),
             InstantAction { robot.outtake.clawPos = 1.0 },
-            SleepAction(0.1.s),
+            SleepAction(0.5.s),
             ParallelAction(
                 robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos)
             ),
+            SleepAction(1.5.s),
             InstantAction { robot.outtake.clawPos = 0.0 },
             robot.lift.liftToPosAction(values.lift.inRobot),
             robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
@@ -96,9 +111,9 @@ class RedLeft : LinearOpMode() {
 
         val getSample: SequentialAction = SequentialAction(
             robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
+            InstantAction { robot.intake.intakeDown()},
             robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
             robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
-            InstantAction { robot.intake.intakeDown()},
             //SleepAction(5.s),
             InstantAction { robot.intake.snatchSpecimen(hsvValues) },
             SleepAction(1.s),
@@ -113,14 +128,21 @@ class RedLeft : LinearOpMode() {
         ///
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-
+            //.afterTime(0.0, SequentialAction(initRobot,getSample,grabSample,scoreBasket))
             .setTangent(-90.0.deg + 180.0.deg)
             .splineTo(pivot.position, pivot.heading)
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
 
             .afterTime(0.0,SequentialAction(scoreBasket))
-            .waitSeconds(8.s)
+
+            .waitSeconds(5.s)
+            .afterTime(0.1,ParallelAction(
+            robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
+            robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos)
+            ))
+            .afterTime(0.1,InstantAction{robot.intake.intakeDown()})
+
             .setTangent(-90.0.deg + 180.0.deg)
             .splineToLinearHeading(
                 Pose(first_yellow.position, first_yellow.heading),
@@ -136,26 +158,26 @@ class RedLeft : LinearOpMode() {
             .waitSeconds(10.s)
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
+            /*
+                        .afterTime(0.0,SequentialAction(getSample))
+                        .waitSeconds(6.s)
+                        .setTangent(45.0.deg + 180.0.deg)
+                        .lineToXLinearHeading(basket.position.x, basket.heading)
 
-            .afterTime(0.0,SequentialAction(getSample))
-            .waitSeconds(6.s)
-            .setTangent(45.0.deg + 180.0.deg)
-            .lineToXLinearHeading(basket.position.x, basket.heading)
+                        .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
+                        .waitSeconds(10.s)
+                        .setTangent(180.0.deg + 180.0.deg)
+                        .splineToLinearHeading(
+                            Pose(last_yellow.position, last_yellow.heading),
+                            -90.0.deg + 180.0.deg
+                        )
 
-            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
-            .waitSeconds(10.s)
-            .setTangent(180.0.deg + 180.0.deg)
-            .splineToLinearHeading(
-                Pose(last_yellow.position, last_yellow.heading),
-                -90.0.deg + 180.0.deg
-            )
-
-            .afterTime(0.0,SequentialAction(getSample))
-            .waitSeconds(6.s)
-            .setTangent(90.0.deg + 180.0.deg)
-            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
-            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
-            .waitSeconds(6.s)
+                        .afterTime(0.0,SequentialAction(getSample))
+                        .waitSeconds(6.s)
+                        .setTangent(90.0.deg + 180.0.deg)
+                        .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+                        .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
+                        .waitSeconds(6.s)*/
             .build()
 
         telemetry.addData("Config name", config.name)

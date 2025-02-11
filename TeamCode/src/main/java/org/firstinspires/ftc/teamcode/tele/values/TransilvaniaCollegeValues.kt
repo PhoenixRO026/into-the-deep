@@ -49,7 +49,7 @@ val robotValuesTransilvaniaCollege = RobotValues(
         shoulderSpecimenPos = 0.3022,
         elbowSpecimenPos = 0.6378,
         //intake
-        extendoIntakePos = 0.499,
+        extendoIntakePos =  0.58,
         shoulderIntakePos = 0.7273,
         elbowIntakePos = 0.2486,
         //robot
