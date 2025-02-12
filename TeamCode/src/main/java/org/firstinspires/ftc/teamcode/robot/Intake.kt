@@ -64,58 +64,57 @@ class Intake(
             extendoMode = MODE.RUN_TO_POSITION
         }
 
-    fun readColor(hue : Int): String{
-        if (hue in 130..140)
+    fun readColor(hue : Float): String{
+        if (hue in 120.0..160.0)
             return "None"
-        if (hue in 19..25)
+        if (hue in 5.0..35.0)
             return "Red"
-        else if (hue in 220..225)
+        else if (hue in 205.0..235.0)
             return "Blue"
-        else if (hue in 60..85)
+        else if (hue in 60.0..90.0)
             return "Yellow"
         else
-            return "None"
+            return "HAU BAU"
     }
 
-    fun shouldStopIntake(side: String, hue: Int): Boolean{
+    fun shouldStopIntake(side: String, hue: Float, onlyColored: Boolean): Boolean{
+        //////////////////////////////////////////INIT AND BASE CONDITIONS
         var color: String = readColor(hue)
-        var shouldSwitch : Boolean = false
-        var finalDecision : Boolean = false
-        if(servoIntakeTilt.position == 0.477){
-            shouldSwitch = false
-        }
-        else if(servoIntakeTilt.position == 0.04 ){
-            shouldSwitch = true
-        }
-        if(color == "None"){
-            finalDecision = false
-        }
-        if (side == "RED"){
-            if(color == "Red" || color == "Yellow"){
-                finalDecision = true
+        if (intakeTiltCurrentPos in 0.48..0.5){//down
+            if (side == "RED"){
+                if (color == "Red")//////////////////red only
+                    return true
+                if (!onlyColored){
+                    if (color == "Yellow")
+                        return true
+                }
+                return false
             }
-            else{
-                finalDecision = false
+            if (side == "BLUE") {
+                if (color == "Blue")//////////////////blue only
+                    return true
+                if (!onlyColored) {
+                    if (color == "Yellow")
+                        return true
+                }
+                return false
             }
+            if (color != "None" && color != "HAU BAU")
+                return false
         }
-        else{
-            if(color == "Blue" || color == "Yellow"){
-                finalDecision = true
-            }
-            else{
-                finalDecision = false
-            }
+        else{/////////////////////////////////////////up
+            if (color != "None" && color != "HAU BAU")
+                return true
+            else
+                return false
         }
-        if(shouldSwitch){
-            finalDecision = !finalDecision
-        }
-        return finalDecision
+        return true
     }
 
     fun snatchSpecimen(hsvValues: FloatArray){
         extendoTargetPosition = values.extendoLim
         while (extendoPosition <= extendoTargetPosition){
-            if (shouldStopIntake("RED",hsvValues[0].toInt())){
+            if (shouldStopIntake("RED",hsvValues[0], false)){
                 sweeperPower = 0.0
             }
             else {
@@ -131,7 +130,7 @@ class Intake(
         }
         extendoTargetPosition = values.extendoInBot
         while (extendoPosition >= extendoTargetPosition){
-            if (shouldStopIntake("RED",hsvValues[0].toInt())){
+            if (shouldStopIntake("RED",hsvValues[0], false)){
                 sweeperPower = 0.0
             }
             else {
@@ -149,8 +148,8 @@ class Intake(
 
     fun kickSample(hsvValues: FloatArray){// have to change for specimen auto
         intakeUp()
-        while (!shouldStopIntake("RED", hsvValues[0].toInt())){
-            if(shouldStopIntake("RED", hsvValues[0].toInt()))
+        while (!shouldStopIntake("RED", hsvValues[0], false)){
+            if(shouldStopIntake("RED", hsvValues[0], false))
                 sweeperPower = 0.0
             else
                 sweeperPower = 0.7
@@ -158,11 +157,11 @@ class Intake(
     }
 
     fun intakeDown() {
-        intakeTiltCurrentPos = 0.477
+        intakeTiltCurrentPos = values.intakeDownPos
     }
 
     fun intakeUp() {
-        intakeTiltCurrentPos = 0.04
+        intakeTiltCurrentPos = values.intakeUpPos
     }
 
     fun boxDown() {
