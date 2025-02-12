@@ -10,6 +10,8 @@ import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
+import com.lib.units.SleepAction
+import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
@@ -18,13 +20,14 @@ import org.firstinspires.ftc.teamcode.robot.TeleRobot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 @TeleOp
 class CraniTeleRed : LinearOpMode() {
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
         val values = robotValuesTransilvaniaCollege
-        var emergencyMode : Int = 0
+        var emergencyMode = 0
 
         val hsvValues = floatArrayOf(0f, 0f, 0f)
         val valuesColor = hsvValues
@@ -117,7 +120,7 @@ class CraniTeleRed : LinearOpMode() {
                 hsvValues
             )
 
-            //DRIVE
+            //////////////////////////////////////////////////////////DRIVE
             if (gamepad1.y)
                 robot.drive.resetFieldCentric()
 
@@ -127,25 +130,20 @@ class CraniTeleRed : LinearOpMode() {
                 pad1LeftStickY,
                 -pad1LeftStickX,
                 -pad1RightStickX
-            )
+            )///////////////////////////////////////////////////////////////
 
 
             if(emergencyMode == 0) {
-                //OUTTAKE
+                //////////////////////////////////////////////////////////////////OUTTAKE
+                /////////////////////////////////////ARM
 
-                if (robot.intake.shouldStopIntake("RED",hsvValues[0].toInt())){
-                    robot.intake.sweeperPower = 0.0
-                }
-                else {
-                    robot.intake.sweeperPower = 1.0
-                }
+                robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
                 if (gamepad2.left_bumper) {
                     robot.outtake.armTargetToBasket()
                 }
                 else if (gamepad2.right_bumper){
                     getSampleFromIntake()
-
                 }
                 else if (gamepad2.a){
                     robot.outtake.armTargetToSpecimen()
@@ -153,7 +151,10 @@ class CraniTeleRed : LinearOpMode() {
                 else if (gamepad2.y) {
                     robot.outtake.armTargetToBar()
                 }
-
+                else if (gamepad2.b){
+                    robot.outtake.armTargetToRobot()
+                }
+                ///////////////////////////////////////EXTENDO
                 if (gamepad2.dpad_up){
                     robot.outtake.extendoTargetPos = values.outtake.extendoOutPos
                 }
@@ -161,24 +162,13 @@ class CraniTeleRed : LinearOpMode() {
                 if (gamepad2.dpad_down){
                     robot.outtake.extendoTargetPos = values.outtake.extendoRobotPos
                 }
-
-                /*
-                                if(gamepad2.dpad_up){
-                                    robot.outtake.extendoTargetToMax()
-                                }
-                                else if(gamepad2.dpad_down){
-                                    robot.outtake.extendoTargetToRobot()
-                                }*/
-                if (gamepad2.b){
-                    robot.outtake.armTargetToRobot()
+                ////////////////////////////////////////////////////////////////////INTAKE
+                if (robot.intake.shouldStopIntake("BLUE",hsvValues[0], false)){
+                    robot.intake.sweeperPower = 0.0
                 }
-
-
-
-
-                //robot.intake.sweeperPower = pad1Triggers
-
-                robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
+                else {
+                    robot.intake.sweeperPower = 0.7
+                }
 
                 if (gamepad2.dpad_right) {
                     robot.intake.boxUp()
@@ -219,20 +209,17 @@ class CraniTeleRed : LinearOpMode() {
             }
 
             if (emergencyMode == 1){
-                //OUTTAKE
-
+                ///////////////////////////////////////////////OUTTAKE
                 robot.outtake.extendoSpeed = when {
                     pad2LeftStickY >= 0.2 -> 1.0
                     pad2LeftStickY <= -0.2 -> -1.0
                     else -> 0.0
                 }
-
                 robot.outtake.shoulderSpeed = when {
                     gamepad2.right_bumper -> -1.0
                     gamepad2.left_bumper -> 1.0
                     else -> 0.0
                 }
-
                 robot.outtake.elbowSpeed = when {
                     gamepad2.y -> 1.0
                     gamepad2.a -> -1.0
@@ -244,6 +231,8 @@ class CraniTeleRed : LinearOpMode() {
                     else -> 0.0
                 }
                 robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
+
+                ////////////////////////////////////////////////INTAKE
 
                 robot.intake.boxTiltSpeed = when {
                     gamepad2.dpad_up -> 1.0
@@ -265,6 +254,7 @@ class CraniTeleRed : LinearOpMode() {
             robot.addTelemetry(telemetry)
 
             telemetry.addData("emergency mode value",emergencyMode)
+            telemetry.addData("color: ", robot.intake.readColor(hsvValues[0]))
             telemetry.update()
         }
     }

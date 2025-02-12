@@ -29,6 +29,8 @@ val robotValuesTransilvaniaCollege = RobotValues(
         extendoInBot = 0,
         extendoLim = 1424,
         extendoAuto = 1237,
+        intakeUpPos = 0.04,
+        intakeDownPos = 0.49
     ),
     outtake = OuttakeValues(
         extendoMaxTravelDuration = 3.s,

@@ -60,6 +60,16 @@ class SensorREVColorDistanceBasic : LinearOpMode() {
                 robot.intake.intakeDown()
             }
 
+            if ( robot.intake.intakeTiltCurrentPos in 0.0..0.1 && hsvValues[0] in 120.0..160.0){
+                robot.intake.sweeperPower = 0.0
+            }
+            else if (robot.intake.shouldStopIntake("BLUE",hsvValues[0], false)){
+                robot.intake.sweeperPower = 0.0
+            }
+            else {
+                robot.intake.sweeperPower = 0.9
+            }
+
             Color.RGBToHSV(
                 (sensorColor.red() * SCALE_FACTOR).toInt(),
                 (sensorColor.green() * SCALE_FACTOR).toInt(),
@@ -78,8 +88,8 @@ class SensorREVColorDistanceBasic : LinearOpMode() {
             }
 
             //telemetry.addData("Distance (cm)", String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)))
-            telemetry.addData("red side", robot.intake.shouldStopIntake("RED", hsvValues[0].toInt()))
-            telemetry.addData("blue side", robot.intake.shouldStopIntake("BLUE", hsvValues[0].toInt()))
+            telemetry.addData("red side", robot.intake.shouldStopIntake("RED", hsvValues[0], false))
+            telemetry.addData("blue side", robot.intake.shouldStopIntake("BLUE", hsvValues[0], false))
             telemetry.addData("tilt pos", robot.intake.intakeTiltCurrentPos)
             telemetry.addData("interval", interval.toString())
             telemetry.addData("Alpha", sensorColor.alpha())

@@ -23,7 +23,7 @@ import kotlin.math.abs
 import kotlin.math.absoluteValue
 
 @TeleOp
-class CraniTeleBlue : LinearOpMode() {
+class CraniTeleSample : LinearOpMode() {
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
         val values = robotValuesTransilvaniaCollege
@@ -163,17 +163,11 @@ class CraniTeleBlue : LinearOpMode() {
                     robot.outtake.extendoTargetPos = values.outtake.extendoRobotPos
                 }
                 ////////////////////////////////////////////////////////////////////INTAKE
-                /*if (gamepad1.left_trigger >= 0.2) {
-                    robot.intake.sweeperPower = pad1LeftStickY
-                }*/
-                if ( robot.intake.intakeTiltCurrentPos  in 0.0..0.1 && hsvValues[0] in 120.0..160.0){
-                    robot.intake.sweeperPower = 0.0
-                }
-                else if (robot.intake.shouldStopIntake("BLUE",hsvValues[0], false)){
+                if (robot.intake.shouldStopIntake("BLUE",hsvValues[0], false)){
                     robot.intake.sweeperPower = 0.0
                 }
                 else {
-                        robot.intake.sweeperPower = 0.9
+                    robot.intake.sweeperPower = 0.7
                 }
 
                 if (gamepad2.dpad_right) {
@@ -181,6 +175,10 @@ class CraniTeleBlue : LinearOpMode() {
                 } else if (gamepad2.dpad_left) {
                     robot.intake.boxDown()
                 }
+            }
+
+            if (gamepad1.left_trigger >= 0.2) {
+                robot.intake.sweeperPower = pad1LeftStickY
             }
 
             if(gamepad1.dpad_up){
@@ -254,10 +252,9 @@ class CraniTeleBlue : LinearOpMode() {
             robot.update()
 
             robot.addTelemetry(telemetry)
-            telemetry.addData("color: ", robot.intake.readColor(hsvValues[0]))
-            telemetry.addData("hue: ", hsvValues[0])
 
             telemetry.addData("emergency mode value",emergencyMode)
+            telemetry.addData("color: ", robot.intake.readColor(hsvValues[0]))
             telemetry.update()
         }
     }

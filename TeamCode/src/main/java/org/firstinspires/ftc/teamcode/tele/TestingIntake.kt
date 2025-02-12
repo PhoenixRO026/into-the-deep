@@ -93,7 +93,7 @@ class TestingIntake : LinearOpMode() {
 
 
             if(emergencyMode == 0) {
-                if (robot.intake.shouldStopIntake("RED",hsvValues[0].toInt()))
+                if (robot.intake.shouldStopIntake("RED",hsvValues[0], false))
                     robot.intake.sweeperPower = 0.0
                 else {
                     robot.intake.sweeperPower = 1.0
