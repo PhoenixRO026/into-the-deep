@@ -43,9 +43,17 @@ class Lift(
     val motorLiftLeft: DcMotorEx = hardwareMap.createMotorUsingConfig(config.motorLiftLeft)
     private val encoder: Encoder = hardwareMap.createEncoderUsingConfig(config.encoder)
 
+    /*
+    private val encoderLiftRight: Encoder = hardwareMap.createEncoderUsingConfig(config.encoder)
+    private val encoderLiftLeft: Encoder = hardwareMap.createEncoderUsingConfig(config.encoder)
+    */
     private var offset = 0
 
     val position get() = encoder.getPositionAndVelocity().position - offset
+
+    /*val positionRight get() = encoderLiftRight.getPositionAndVelocity().position - offset
+    val positionLeft get() = encoderLiftLeft.getPositionAndVelocity().position - offset
+    */
     var targetPosition = position
         set(value) {
             field = value
