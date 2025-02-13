@@ -134,7 +134,6 @@ class RedLeft : LinearOpMode() {
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .afterTime(0.0,initRobot)
-            .waitSeconds(5.s)
             .setTangent(-90.0.deg + 180.0.deg)
             .splineTo(pivot.position, pivot.heading)
             .setTangent(-135.0.deg + 180.0.deg)
