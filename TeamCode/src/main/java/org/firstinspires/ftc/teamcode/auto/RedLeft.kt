@@ -133,7 +133,8 @@ class RedLeft : LinearOpMode() {
         ///
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-            //.afterTime(0.0, SequentialAction(initRobot,getSample,grabSample,scoreBasket))
+            .afterTime(0.0,initRobot)
+            .waitSeconds(5.s)
             .setTangent(-90.0.deg + 180.0.deg)
             .splineTo(pivot.position, pivot.heading)
             .setTangent(-135.0.deg + 180.0.deg)
@@ -158,14 +159,16 @@ class RedLeft : LinearOpMode() {
 
             .afterTime(0.0,SequentialAction(grabSample,scoreBasket))//////////////score first yellow
             .waitSeconds(10.s)
+
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
-            .afterTime(0.0,SequentialAction(getSample))
+            .afterTime(0.0,SequentialAction(getSample))///////////////////////get second yellow
+
             .waitSeconds(6.s)
             .setTangent(45.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
 
-            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
+            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))////////////score second yellow
             .waitSeconds(10.s)
             .setTangent(180.0.deg + 180.0.deg)
             .splineToLinearHeading(
@@ -173,11 +176,11 @@ class RedLeft : LinearOpMode() {
                 -90.0.deg + 180.0.deg
             )
 
-            .afterTime(0.0,SequentialAction(getSample))
+            .afterTime(0.0,SequentialAction(getSample))///////////////get last yellow
             .waitSeconds(6.s)
             .setTangent(90.0.deg + 180.0.deg)
             .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
-            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
+            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))//////////////////score last yellow
             .waitSeconds(6.s)
             .build()
 

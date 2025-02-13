@@ -157,20 +157,9 @@ class CraniTeleBlue : LinearOpMode() {
                 if (gamepad2.dpad_down){
                     robot.outtake.extendoTargetPos = values.outtake.extendoRobotPos
                 }
-
-                /*
-                                if(gamepad2.dpad_up){
-                                    robot.outtake.extendoTargetToMax()
-                                }
-                                else if(gamepad2.dpad_down){
-                                    robot.outtake.extendoTargetToRobot()
-                                }*/
                 if (gamepad2.b){
                     robot.outtake.armTargetToRobot()
                 }
-
-
-
 
                 //robot.intake.sweeperPower = pad1Triggers
 
@@ -183,10 +172,6 @@ class CraniTeleBlue : LinearOpMode() {
                 }
             }
 
-            if (gamepad1.left_trigger >= 0.2) {
-                robot.intake.sweeperPower = pad1LeftStickY
-            }
-
             if(gamepad1.dpad_up){
                 robot.intake.intakeUp()
             }
@@ -194,8 +179,10 @@ class CraniTeleBlue : LinearOpMode() {
                 robot.intake.intakeDown()
             }
             //INTAKE
-
-            if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
+            if (gamepad1.left_trigger >= 0.2) {
+                robot.intake.sweeperPower = pad1LeftStickY
+            }
+            else if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
                 if (robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){
                     robot.intake.sweeperPower = 0.0
                 }
@@ -208,7 +195,7 @@ class CraniTeleBlue : LinearOpMode() {
                     robot.intake.sweeperPower = 0.0
                 }
                 else {
-                    robot.intake.sweeperPower = 0.7
+                    robot.intake.sweeperPower = 0.85
                 }
             }
 

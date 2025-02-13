@@ -195,7 +195,7 @@ class CraniTeleRed : LinearOpMode() {
                     robot.intake.sweeperPower = 0.0
                 }
                 else {
-                    robot.intake.sweeperPower = 0.7
+                    robot.intake.sweeperPower = 0.85
                 }
             }
 

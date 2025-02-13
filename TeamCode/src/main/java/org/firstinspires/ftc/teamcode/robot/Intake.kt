@@ -113,7 +113,7 @@ class Intake(
 
     fun snatchSpecimen(hsvValues: FloatArray){
         extendoTargetPosition = values.extendoLim
-        while (extendoPosition <= extendoTargetPosition){
+        while (extendoPosition <= 600){
             if (shouldStopIntake("RED",hsvValues[0], false)){
                 sweeperPower = 0.0
             }
@@ -127,6 +127,10 @@ class Intake(
                 (intakeColorSensor.blue() * 255.0).toInt(),
                 hsvValues
             )
+            if (readColor(hsvValues[0]) == "Yellow"){
+                intakeUp()
+                break
+            }
         }
         extendoTargetPosition = values.extendoInBot
         while (extendoPosition >= extendoTargetPosition){
@@ -143,6 +147,9 @@ class Intake(
                 (intakeColorSensor.blue() * 255.0).toInt(),
                 hsvValues
             )
+            if (readColor(hsvValues[0]) == "Yellow"){
+                break
+            }
         }
     }
 
