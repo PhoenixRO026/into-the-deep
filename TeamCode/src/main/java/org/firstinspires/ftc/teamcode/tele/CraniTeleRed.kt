@@ -10,6 +10,8 @@ import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
+import com.lib.units.SleepAction
+import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
@@ -18,6 +20,7 @@ import org.firstinspires.ftc.teamcode.robot.TeleRobot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 @TeleOp
 class CraniTeleRed : LinearOpMode() {
@@ -133,13 +136,6 @@ class CraniTeleRed : LinearOpMode() {
             if(emergencyMode == 0) {
                 //OUTTAKE
 
-                if (robot.intake.shouldStopIntake("RED",hsvValues[0].toInt())){
-                    robot.intake.sweeperPower = 0.0
-                }
-                else {
-                    robot.intake.sweeperPower = 1.0
-                }
-
                 if (gamepad2.left_bumper) {
                     robot.outtake.armTargetToBasket()
                 }
@@ -161,20 +157,9 @@ class CraniTeleRed : LinearOpMode() {
                 if (gamepad2.dpad_down){
                     robot.outtake.extendoTargetPos = values.outtake.extendoRobotPos
                 }
-
-                /*
-                                if(gamepad2.dpad_up){
-                                    robot.outtake.extendoTargetToMax()
-                                }
-                                else if(gamepad2.dpad_down){
-                                    robot.outtake.extendoTargetToRobot()
-                                }*/
                 if (gamepad2.b){
                     robot.outtake.armTargetToRobot()
                 }
-
-
-
 
                 //robot.intake.sweeperPower = pad1Triggers
 
@@ -187,10 +172,6 @@ class CraniTeleRed : LinearOpMode() {
                 }
             }
 
-            if (gamepad1.left_trigger >= 0.2) {
-                robot.intake.sweeperPower = pad1LeftStickY
-            }
-
             if(gamepad1.dpad_up){
                 robot.intake.intakeUp()
             }
@@ -198,6 +179,26 @@ class CraniTeleRed : LinearOpMode() {
                 robot.intake.intakeDown()
             }
             //INTAKE
+            if (gamepad1.left_trigger >= 0.2) {
+                robot.intake.sweeperPower = pad1LeftStickY
+            }
+            else if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
+                if (robot.intake.shouldStopIntake("RED", hsvValues[0], false)){
+                    robot.intake.sweeperPower = 0.0
+                }
+                else {
+                    robot.intake.sweeperPower = 1.0
+                }
+            }
+            else{
+                if (robot.intake.shouldStopIntake("RED", hsvValues[0], false)){
+                    robot.intake.sweeperPower = 0.0
+                }
+                else {
+                    robot.intake.sweeperPower = 0.7
+                }
+            }
+
             robot.intake.extendoPower =when {
                 gamepad1.right_bumper -> 1.0
                 gamepad1.left_bumper -> -1.0

@@ -66,10 +66,15 @@ class RedLeft : LinearOpMode() {
         robot.outtake.clawPos = 0.0
 
         val initRobot: SequentialAction = SequentialAction(
-            InstantAction { robot.outtake.clawPos = 0.0},
+            InstantAction { robot.intake.intakeUp()},
+            robot.intake.extendoToPosAction(values.intake.extendoInBot),
+
             robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
             robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
-            InstantAction{ robot.intake.intakeUp() },
+
+            robot.lift.liftToPosAction(values.lift.inRobot),
+            robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
+            InstantAction { robot.outtake.clawPos = 0.0},
         )
 
         val grabSample: SequentialAction = SequentialAction(
@@ -134,7 +139,7 @@ class RedLeft : LinearOpMode() {
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
 
-            .afterTime(0.0,SequentialAction(scoreBasket))
+            .afterTime(0.0,SequentialAction(scoreBasket))///////////////////////// preload
 
             .waitSeconds(5.s)
             .afterTime(0.1,ParallelAction(
@@ -144,40 +149,36 @@ class RedLeft : LinearOpMode() {
             .afterTime(0.1,InstantAction{robot.intake.intakeDown()})
 
             .setTangent(-90.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(first_yellow.position, first_yellow.heading), -90.0.deg + 180.0.deg)
+
+            .afterTime(0.0,SequentialAction(getSample))///////////////////////get first yellow
+            .waitSeconds(6.s)
+            .setTangent(-135.0.deg + 180.0.deg)
+            .lineToXLinearHeading(basket.position.x, basket.heading)
+
+            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))//////////////score first yellow
+            .waitSeconds(10.s)
+            .setTangent(-135.0.deg + 180.0.deg)
+            .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
+            .afterTime(0.0,SequentialAction(getSample))
+            .waitSeconds(6.s)
+            .setTangent(45.0.deg + 180.0.deg)
+            .lineToXLinearHeading(basket.position.x, basket.heading)
+
+            .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
+            .waitSeconds(10.s)
+            .setTangent(180.0.deg + 180.0.deg)
             .splineToLinearHeading(
-                Pose(first_yellow.position, first_yellow.heading),
+                Pose(last_yellow.position, last_yellow.heading),
                 -90.0.deg + 180.0.deg
             )
 
             .afterTime(0.0,SequentialAction(getSample))
             .waitSeconds(6.s)
-            .setTangent(-135.0.deg + 180.0.deg)
-            .lineToXLinearHeading(basket.position.x, basket.heading)
-
+            .setTangent(90.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
             .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
-            .waitSeconds(10.s)
-            .setTangent(-135.0.deg + 180.0.deg)
-            .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
-            /*
-                        .afterTime(0.0,SequentialAction(getSample))
-                        .waitSeconds(6.s)
-                        .setTangent(45.0.deg + 180.0.deg)
-                        .lineToXLinearHeading(basket.position.x, basket.heading)
-
-                        .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
-                        .waitSeconds(10.s)
-                        .setTangent(180.0.deg + 180.0.deg)
-                        .splineToLinearHeading(
-                            Pose(last_yellow.position, last_yellow.heading),
-                            -90.0.deg + 180.0.deg
-                        )
-
-                        .afterTime(0.0,SequentialAction(getSample))
-                        .waitSeconds(6.s)
-                        .setTangent(90.0.deg + 180.0.deg)
-                        .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
-                        .afterTime(0.0,SequentialAction(grabSample,scoreBasket))
-                        .waitSeconds(6.s)*/
+            .waitSeconds(6.s)
             .build()
 
         telemetry.addData("Config name", config.name)
@@ -212,8 +213,8 @@ class RedLeft : LinearOpMode() {
             robot.update()
 
             //robot.addTelemetry(telemetry)
-            telemetry.addData("red side", robot.intake.shouldStopIntake("RED", hsvValues[0].toInt()))
-            telemetry.addData("blue side", robot.intake.shouldStopIntake("BLUE", hsvValues[0].toInt()))
+            telemetry.addData("red side", robot.intake.shouldStopIntake("RED", hsvValues[0], false))
+            telemetry.addData("blue side", robot.intake.shouldStopIntake("BLUE", hsvValues[0], false))
             telemetry.addData("Red", robot.intake.intakeColorSensor.red())
             telemetry.addData("Green", robot.intake.intakeColorSensor.green())
             telemetry.addData("Blue", robot.intake.intakeColorSensor.blue())
