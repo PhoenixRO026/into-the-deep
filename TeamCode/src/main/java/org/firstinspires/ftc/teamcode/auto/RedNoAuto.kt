@@ -95,8 +95,8 @@ class RedNoAuto : LinearOpMode() {
             robot.update()
 
             //robot.addTelemetry(telemetry)
-            telemetry.addData("red side", robot.intake.shouldStopIntake("RED", hsvValues[0].toInt()))
-            telemetry.addData("blue side", robot.intake.shouldStopIntake("BLUE", hsvValues[0].toInt()))
+            telemetry.addData("red side", robot.intake.shouldStopIntake("RED", hsvValues[0], false))
+            telemetry.addData("blue side", robot.intake.shouldStopIntake("BLUE", hsvValues[0], false))
             telemetry.addData("Red", robot.intake.intakeColorSensor.red())
             telemetry.addData("Green", robot.intake.intakeColorSensor.green())
             telemetry.addData("Blue", robot.intake.intakeColorSensor.blue())

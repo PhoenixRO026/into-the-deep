@@ -99,11 +99,11 @@ class Intake(
                 }
                 return false
             }
-            if (color != "None" && color != "HAU BAU")
+            if (color == "None" || color == "HAU BAU")
                 return false
         }
         else{/////////////////////////////////////////up
-            if (color != "None" && color != "HAU BAU")
+            if (color == "None" || color == "HAU BAU")
                 return true
             else
                 return false

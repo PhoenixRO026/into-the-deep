@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.buttons.ButtonReader
+import org.firstinspires.ftc.teamcode.robot.FunctionsForTele
 import org.firstinspires.ftc.teamcode.robot.TeleRobot
 import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvaniaCollege
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
@@ -23,7 +24,7 @@ import kotlin.math.abs
 import kotlin.math.absoluteValue
 
 @TeleOp
-class CraniTeleBlue : LinearOpMode() {
+class CraniTeleExperiment : LinearOpMode() {
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
         val values = robotValuesTransilvaniaCollege
@@ -42,6 +43,7 @@ class CraniTeleBlue : LinearOpMode() {
 
         val timeKeep = TimeKeep()
         val robot = TeleRobot(hardwareMap, config, values, timeKeep, telemetry)
+        val functions = FunctionsForTele(hardwareMap, config, values, timeKeep, telemetry)
 
         val relativeLayoutId = hardwareMap.appContext.resources.getIdentifier("RelativeLayout", "id", hardwareMap.appContext.packageName)
         val relativeLayout = (hardwareMap.appContext as Activity).findViewById<View>(relativeLayoutId)
@@ -51,25 +53,6 @@ class CraniTeleBlue : LinearOpMode() {
         telemetry.addData("Config name", config.name)
         telemetry.addLine("READY!")
         telemetry.update()
-
-
-
-        fun getSampleFromIntake() {
-            action = SequentialAction(
-                InstantAction{robot.outtake.clawPos=1.0},
-                robot.lift.liftToPosAction(values.lift.liftWaitingPos),
-                ParallelAction(
-                    robot.outtake.shoudlerToPosAction(values.outtake.shoulderIntakePos),
-                    robot.outtake.elbowToPosAction(values.outtake.elbowIntakePos)
-                ),
-                //SleepAction(2.0.s),
-                robot.lift.liftToPosAction(values.lift.liftIntakePos),
-                InstantAction{robot.outtake.clawPos=0.0},
-                //SleepAction(2.0.s),
-                robot.lift.liftToPosAction(values.lift.liftWaitingPos),
-            )
-        }
-
 
         fun updateAction(){
             action?.let {
@@ -91,12 +74,11 @@ class CraniTeleBlue : LinearOpMode() {
 
         waitForStart()
 
-        robot.outtake.shoulderCurrentPos = 0.6404
-        robot.outtake.elbowCurrentPos = 0.5159
+        robot.outtake.shoulderCurrentPos = values.outtake.shoulderRobotPos
+        robot.outtake.elbowCurrentPos = values.outtake.elbowRobotPos
         robot.outtake.wristPosToMiddle()
         robot.outtake.clawPos = 1.0
-
-        robot.intake.intakeTiltCurrentPos = 0.5106
+        robot.intake.intakeTiltCurrentPos = values.intake.intakeUpPos
 
         val emergencyButton = ButtonReader { gamepad2.ps }
 
@@ -137,11 +119,13 @@ class CraniTeleBlue : LinearOpMode() {
                 //OUTTAKE
 
                 if (gamepad2.left_bumper) {
-                    robot.outtake.armTargetToBasket()
+                    action = functions.liftSample
                 }
                 else if (gamepad2.right_bumper){
-                    getSampleFromIntake()
-
+                    action = functions.getSample
+                }
+                else if (gamepad2.b){
+                    action = functions.initRobot
                 }
                 else if (gamepad2.a){
                     robot.outtake.armTargetToSpecimen()
@@ -158,22 +142,6 @@ class CraniTeleBlue : LinearOpMode() {
                     robot.outtake.extendoTargetPos = values.outtake.extendoRobotPos
                 }
 
-                /*
-                                if(gamepad2.dpad_up){
-                                    robot.outtake.extendoTargetToMax()
-                                }
-                                else if(gamepad2.dpad_down){
-                                    robot.outtake.extendoTargetToRobot()
-                                }*/
-                if (gamepad2.b){
-                    robot.outtake.armTargetToRobot()
-                }
-
-
-
-
-                //robot.intake.sweeperPower = pad1Triggers
-
                 robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
                 if (gamepad2.dpad_right) {
@@ -183,20 +151,18 @@ class CraniTeleBlue : LinearOpMode() {
                 }
             }
 
+            if(gamepad1.dpad_up){
+                robot.intake.intakeDown()
+            }
+            else {
+                robot.intake.intakeUp()
+            }
+            //INTAKE
             if (gamepad1.left_trigger >= 0.2) {
                 robot.intake.sweeperPower = pad1LeftStickY
             }
-
-            if(gamepad1.dpad_up){
-                robot.intake.intakeUp()
-            }
-            else if(gamepad1.dpad_down){
-                robot.intake.intakeDown()
-            }
-            //INTAKE
-
-            if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
-                if (robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){
+            else if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
+                if (robot.intake.shouldStopIntake("RED", hsvValues[0], false)){
                     robot.intake.sweeperPower = 0.0
                 }
                 else {
@@ -204,7 +170,7 @@ class CraniTeleBlue : LinearOpMode() {
                 }
             }
             else{
-                if (robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){
+                if (robot.intake.shouldStopIntake("RED", hsvValues[0], false)){
                     robot.intake.sweeperPower = 0.0
                 }
                 else {
@@ -212,11 +178,13 @@ class CraniTeleBlue : LinearOpMode() {
                 }
             }
 
-            robot.intake.extendoPower =when {
-                gamepad1.right_bumper -> 1.0
-                gamepad1.left_bumper -> -1.0
-                else -> 0.0
+            if(gamepad1.right_bumper){
+                functions.intakeSubmersible
             }
+            else if(gamepad1.left_bumper){
+                functions.intakeRobot
+            }
+
             //LIFT
             robot.lift.power = pad2RightStickY
 
