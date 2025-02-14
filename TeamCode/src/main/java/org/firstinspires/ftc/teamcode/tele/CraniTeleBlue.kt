@@ -180,7 +180,7 @@ class CraniTeleBlue : LinearOpMode() {
             }
             //INTAKE
             if (gamepad1.left_trigger >= 0.2) {
-                robot.intake.sweeperPower = pad1LeftStickY
+                robot.intake.sweeperPower = 1.0
             }
             else if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
                 if (robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){

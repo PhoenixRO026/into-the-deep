@@ -49,45 +49,23 @@ class RedRight : LinearOpMode() {
         val mecanumDrive = robot.roadRunnerDrive
 
 
-        val scoreSpecimen : SequentialAction = SequentialAction(
-            robot.lift.liftToPosAction(values.lift.secondBar),
-            //robot.outtake.elbowToPosAction(values.outtake.elbowSpecimenPos),
-            robot.outtake.shoudlerToPosAction(values.outtake.shoulderBarPos),
-            robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
-            robot.lift.liftToPosAction(values.lift.secondBarUp),
-            InstantAction{robot.outtake.clawPos = 0.0},
-        )
-
-        val toRobot : SequentialAction = SequentialAction(
-            robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
-            robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
-            robot.lift.liftToPosAction(values.lift.inRobot),
-            InstantAction{robot.outtake.clawPos = 1.0}
-        )
-
-        val getSample : SequentialAction = SequentialAction(
-            InstantAction{ robot.intake.extendoPower = 1.0},
-            robot.intake.extendoToPosAction(values.intake.extendoLim),
-            robot.intake.extendoToPosAction(values.intake.extendoInBot),
-            InstantAction{ robot.intake.extendoPower = 0.0}
-        )
-
-        val ejectSample : SequentialAction = SequentialAction(
-            robot.intake.extendoToPosAction(values.intake.extendoLim),
-            InstantAction{ robot.intake.extendoPower = 1.0},
-            SleepAction(1.s),
-            robot.intake.extendoToPosAction(values.intake.extendoInBot),
-            InstantAction{ robot.intake.extendoPower = 0.0}
-        )
-
         val getSpecimen : SequentialAction = SequentialAction(
-            InstantAction{robot.outtake.clawPos = 1.0},
+            robot.lift.liftToPosAction(values.lift.inRobot),
+            InstantAction {robot.outtake.clawPos = 1.0},
             robot.outtake.shoudlerToPosAction(values.outtake.shoulderSpecimenPos),
             robot.outtake.elbowToPosAction(values.outtake.elbowSpecimenPos),
-            InstantAction{ robot.intake.extendoPower = 0.0},
-            robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
-            robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos)
-            )
+            SleepAction(1.0.s),
+            InstantAction {robot.outtake.clawPos = 0.0},
+        )
+
+        val scoreSpecimen = SequentialAction(
+            robot.lift.liftToPosAction(values.lift.secondBar),
+            robot.outtake.shoudlerToPosAction(values.outtake.shoulderBarPos),
+            robot.outtake.elbowToPosAction(values.outtake.elbowBarPos),
+            robot.outtake.extendoToPosAction(values.outtake.extendoOutPos),
+            SleepAction(0.5.s),
+            InstantAction {robot.outtake.clawPos = 1.0}
+        )
 
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
@@ -95,9 +73,9 @@ class RedRight : LinearOpMode() {
             .setTangent(Math.toRadians(90.0))
             .lineToY(-36.0.inch)
             .afterTime(0.0, scoreSpecimen)
-            .afterTime(0.0, toRobot)
+            .afterTime(0.0, getSpecimen)
 
-            .lineToY(-40.0.inch)
+            /*.lineToY(-40.0.inch)
             .setTangent(Math.toRadians(0.0))
             .lineToXLinearHeading(34.0,Math.toRadians(45.0))
             .afterTime(0.0, getSample)
@@ -135,7 +113,7 @@ class RedRight : LinearOpMode() {
             .strafeTo(scoring.position)
             .afterTime(0.0, scoreSpecimen)
             .lineToY(-40.0.inch)
-            .afterTime(0.0, toRobot)
+            .afterTime(0.0, toRobot)*/
             .build()
 
         telemetry.addData("Config name", config.name)

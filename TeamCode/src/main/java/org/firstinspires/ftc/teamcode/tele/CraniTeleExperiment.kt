@@ -119,13 +119,13 @@ class CraniTeleExperiment : LinearOpMode() {
                 //OUTTAKE
 
                 if (gamepad2.left_bumper) {
-                    action = functions.liftSample
+                    action = functions.liftSample()
                 }
                 else if (gamepad2.right_bumper){
-                    action = functions.getSample
+                    action = functions.getSample()
                 }
                 else if (gamepad2.b){
-                    action = functions.initRobot
+                    action = functions.initRobot()
                 }
                 else if (gamepad2.a){
                     robot.outtake.armTargetToSpecimen()
@@ -179,10 +179,10 @@ class CraniTeleExperiment : LinearOpMode() {
             }
 
             if(gamepad1.right_bumper){
-                functions.intakeSubmersible
+                action = functions.intakeSubmersible()
             }
             else if(gamepad1.left_bumper){
-                functions.intakeRobot
+                action = functions.intakeRobot()
             }
 
             //LIFT

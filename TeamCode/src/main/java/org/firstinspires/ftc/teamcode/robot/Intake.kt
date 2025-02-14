@@ -111,46 +111,29 @@ class Intake(
         return true
     }
 
-    fun snatchSpecimen(hsvValues: FloatArray){
+    fun snatchSpecimen(hsvValues: FloatArray) {
         extendoTargetPosition = values.extendoLim
         while (extendoPosition <= 600){
-            if (shouldStopIntake("RED",hsvValues[0], false)){
+            if (shouldStopIntake("RED", hsvValues[0], false)) {
                 sweeperPower = 0.0
-            }
-            else {
+            } else {
                 sweeperPower = 1.0
             }
-            extendoPower = 0.9
+            if (readColor(hsvValues[0])=="Yellow"){
+                sweeperPower=0.0
+                intakeDown()
+                break;
+            }
+            extendoPower = 0.8
             Color.RGBToHSV(
                 (intakeColorSensor.red() * 255.0).toInt(),
                 (intakeColorSensor.green() * 255.0).toInt(),
                 (intakeColorSensor.blue() * 255.0).toInt(),
                 hsvValues
             )
-            if (readColor(hsvValues[0]) == "Yellow"){
-                intakeUp()
-                break
-            }
         }
+        sweeperPower = 0.0
         extendoTargetPosition = values.extendoInBot
-        while (extendoPosition >= extendoTargetPosition){
-            if (shouldStopIntake("RED",hsvValues[0], false)){
-                sweeperPower = 0.0
-            }
-            else {
-                sweeperPower = 1.0
-            }
-            extendoPower = -1.0
-            Color.RGBToHSV(
-                (intakeColorSensor.red() * 255.0).toInt(),
-                (intakeColorSensor.green() * 255.0).toInt(),
-                (intakeColorSensor.blue() * 255.0).toInt(),
-                hsvValues
-            )
-            if (readColor(hsvValues[0]) == "Yellow"){
-                break
-            }
-        }
     }
 
     fun kickSample(hsvValues: FloatArray){// have to change for specimen auto
@@ -159,8 +142,15 @@ class Intake(
             if(shouldStopIntake("RED", hsvValues[0], false))
                 sweeperPower = 0.0
             else
-                sweeperPower = 0.7
+                sweeperPower = 0.85
+            Color.RGBToHSV(
+                (intakeColorSensor.red() * 255.0).toInt(),
+                (intakeColorSensor.green() * 255.0).toInt(),
+                (intakeColorSensor.blue() * 255.0).toInt(),
+                hsvValues
+            )
         }
+        sweeperPower = 0.0
     }
 
     fun intakeDown() {
@@ -168,15 +158,15 @@ class Intake(
     }
 
     fun intakeUp() {
-        intakeTiltCurrentPos = values.intakeUpPos
+    intakeTiltCurrentPos = values.intakeUpPos
     }
 
     fun boxDown() {
-        boxTiltCurrentPos = 0.5633
+    boxTiltCurrentPos = 0.5633
     }
 
     fun boxUp() {
-        boxTiltCurrentPos = 0.172
+    boxTiltCurrentPos = 0.172
     }
 
     fun extendoToPosAction(pos: Int) = object : Action {
@@ -192,10 +182,10 @@ class Intake(
     }
 
     private var _extendoPower
-        get() = motorExtendoIntake.power
-        set(value) {
-            motorExtendoIntake.power = value
-        }
+    get() = motorExtendoIntake.power
+    set(value) {
+        motorExtendoIntake.power = value
+    }
 
     var extendoPower
         get() = _extendoPower

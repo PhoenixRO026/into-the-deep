@@ -32,7 +32,7 @@ class FunctionsForTele(
     val lift = Lift(hardwareMap, config.lift, values.lift, timeKeep)
     val outtake = Outtake(hardwareMap, config.outtake, values.outtake, timeKeep)
 
-    val initRobot: SequentialAction = SequentialAction(
+    fun initRobot() = SequentialAction(
         InstantAction { outtake.clawPos = 0.0},
         outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
         outtake.elbowToPosAction(values.outtake.elbowRobotPos),
@@ -46,18 +46,18 @@ class FunctionsForTele(
         intake.extendoToPosAction(values.intake.extendoInBot),
     )
 
-    val intakeSubmersible = SequentialAction(
+    fun intakeSubmersible() = SequentialAction(
         InstantAction{intake.intakeUp()},
         intake.extendoToPosAction(values.intake.extendoLim),
     )
 
-    val intakeRobot = SequentialAction(
+    fun intakeRobot() = SequentialAction(
         InstantAction{intake.intakeUp()},
         SleepAction(0.7.s),
         intake.extendoToPosAction(values.intake.extendoInBot),
     )
 
-    val getSample = SequentialAction(
+    fun getSample() = SequentialAction(
             InstantAction{outtake.clawPos=1.0},
             lift.liftToPosAction(values.lift.liftWaitingPos),
             ParallelAction(
@@ -69,7 +69,7 @@ class FunctionsForTele(
             lift.liftToPosAction(values.lift.liftWaitingPos),
     )
 
-    val liftSample = SequentialAction(
+    fun liftSample() = SequentialAction(
         lift.liftToPosAction(values.lift.liftWaitingPos),
         lift.liftToPosAction(values.lift.basketPos),
         ParallelAction(
