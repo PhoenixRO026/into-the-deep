@@ -150,8 +150,8 @@ class RedLeft : LinearOpMode() {
 
             .afterTime(0.0,SequentialAction(getSample()))
             .waitSeconds(3.s)
-            .setTangent(-135.0.deg + 180.0.deg)
-            .lineToXLinearHeading(basket.position.x, basket.heading)
+            .setTangent(90.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
 
             .afterTime(0.0,grabSample())
             .waitSeconds(3.s)
