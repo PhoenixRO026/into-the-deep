@@ -27,10 +27,10 @@ import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 class RedLeft : LinearOpMode() {
     private val startPose = Pose(-33.4.inch, -61.inch, 90.0.deg)
     private val pivot = Pose(-47.0.inch, -47.0.inch, 90.deg)
-    private val  basket = Pose(-55.0.inch, -55.0.inch, 45.0.deg)
-    private val  first_yellow = Pose(-49.0.inch, -47.0.inch, 90.0.deg)
-    private val  mid_yellow = Pose(-50.0.inch, -47.0.inch, 110.0.deg)
-    private val  last_yellow = Pose(-47.0.inch, -35.0.inch, 155.0.deg)
+    private val  basket = Pose(-52.0.inch, -53.0.inch, 45.0.deg)
+    private val  first_yellow = Pose(-49.inch, -47.0.inch, 90.0.deg)
+    private val  mid_yellow = Pose(-53.2.inch, -44.0.inch, 105.0.deg)
+    private val  last_yellow = Pose(-47.0.inch, -34.0.inch, 155.0.deg)
 
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
@@ -139,7 +139,7 @@ class RedLeft : LinearOpMode() {
 
             .afterTime(0.0,scoreBasket())
 
-            .waitSeconds(3.s)
+            .waitSeconds(3.5.s)
             .afterTime(0.0,InstantAction{robot.intake.intakeDown()})
 
             .setTangent(-90.0.deg + 180.0.deg)
@@ -149,7 +149,7 @@ class RedLeft : LinearOpMode() {
             )
 
             .afterTime(0.0,SequentialAction(getSample()))
-            .waitSeconds(2.5.s)
+            .waitSeconds(3.s)
             .setTangent(-135.0.deg + 180.0.deg)
             .lineToXLinearHeading(basket.position.x, basket.heading)
 
@@ -157,29 +157,31 @@ class RedLeft : LinearOpMode() {
             .waitSeconds(3.s)
             .afterTime(0.0, scoreBasket())
 
-            .waitSeconds(3.0.s)
+            .waitSeconds(3.s)
             .setTangent(-135.0.deg + 180.0.deg)
-            .lineToXLinearHeading(mid_yellow.position.x, mid_yellow.heading)
+            .splineToLinearHeading(Pose(mid_yellow.position, mid_yellow.heading),
+                90.deg
+            )
 
-                .afterTime(0.0,SequentialAction(getSample()))
-                .waitSeconds(2.5.s)
-                .setTangent(45.0.deg + 180.0.deg)
-                .lineToXLinearHeading(basket.position.x, basket.heading)
+            .afterTime(0.0,SequentialAction(getSample()))
+            .waitSeconds(2.5.s)
+            .setTangent(90.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
 
-                .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
-                .waitSeconds(6.s)
-                .setTangent(180.0.deg + 180.0.deg)
-                .splineToLinearHeading(
-                    Pose(last_yellow.position, last_yellow.heading),
-                    -90.0.deg + 180.0.deg
-                )
+            .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
+            .waitSeconds(6.s)
+            .setTangent(180.0.deg + 180.0.deg)
+            .splineToLinearHeading(
+                Pose(last_yellow.position, last_yellow.heading),
+                -90.0.deg + 180.0.deg
+            )
 
-                .afterTime(0.0,SequentialAction(getSample()))
-                .waitSeconds(2.5.s)
-                .setTangent(90.0.deg + 180.0.deg)
-                .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
-                .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
-                .waitSeconds(7.s)
+            .afterTime(0.0,SequentialAction(getSample()))
+            .waitSeconds(2.5.s)
+            .setTangent(90.0.deg + 180.0.deg)
+            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+            .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
+            .waitSeconds(6.s)
             .build()
 
         telemetry.addData("Config name", config.name)

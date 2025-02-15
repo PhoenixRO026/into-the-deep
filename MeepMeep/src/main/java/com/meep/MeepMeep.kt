@@ -1,6 +1,8 @@
 @file:JvmName("MeepMeep")
 package com.meep
 
+import com.acmerobotics.roadrunner.InstantAction
+import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.Vector2d
@@ -19,12 +21,17 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder
 
 fun main() {
     System.setProperty("sun.java2d.opengl", "true")
-    val startPose = Pose(23.0.inch, -60.0.inch, 90.0.deg)
+    //val startPose = Pose(23.0.inch, -60.0.inch, 90.0.deg)
 
     val wallGrab = Pose2d(33.0, -53.0, 0.0)
     val scoring = Pose2d(10.0, -36.0, Math.toRadians(0.0))
 
-
+    val startPose = Pose(-33.4.inch, -61.inch, 90.0.deg)
+    val pivot = Pose(-47.0.inch, -47.0.inch, 90.deg)
+    val  basket = Pose(-52.0.inch, -53.0.inch, 45.0.deg)
+    val  first_yellow = Pose(-48.inch, -47.0.inch, 90.0.deg)
+    val  mid_yellow = Pose(-53.2.inch, -44.0.inch, 105.0.deg)
+    val  last_yellow = Pose(-47.0.inch, -35.0.inch, 155.0.deg)
 
     val meepMeep = MeepMeep(600)
 
@@ -34,28 +41,49 @@ fun main() {
             .build()
 
     myBot.runAction(myBot.drive.actionBuilder(startPose.pose2d).ex()
-        .setTangent(Math.toRadians(90.0))
-        .lineToY(-36.0.inch)
-        .lineToY(-40.0.inch)
-        .setTangent(Math.toRadians(0.0))
-        .lineToXLinearHeading(34.0,Math.toRadians(45.0))
-        .turnTo(Math.toRadians(-50.0))
-        .setTangent(Math.toRadians(0.0))
-        .lineToXLinearHeading(40.0,Math.toRadians(35.0))
-        .turnTo(Math.toRadians(-50.0))
-        .setTangent(0.0)
-        .lineToXLinearHeading(50.0,Math.toRadians(35.0))
-        .turnTo(Math.toRadians(-90.0))
-        .setTangent(Math.toRadians(180.0))
-        .strafeTo(wallGrab.position)
-        .strafeTo(scoring.position)
-        .lineToY(-40.0.inch)
-        .strafeTo(wallGrab.position)
-        .strafeTo(scoring.position)
-        .lineToY(-40.0.inch)
-        .strafeTo(wallGrab.position)
-        .strafeTo(scoring.position)
-        .lineToY(-40.0.inch)
+        .setTangent(-90.0.deg + 180.0.deg)
+        .splineTo(pivot.position, pivot.heading)
+        .setTangent(-135.0.deg + 180.0.deg)
+        .lineToXLinearHeading(basket.position.x, basket.heading)
+
+
+        .waitSeconds(3.s)
+
+        .setTangent(-90.0.deg + 180.0.deg)
+        .splineToLinearHeading(
+            Pose(first_yellow.position, first_yellow.heading),
+            -90.0.deg + 180.0.deg
+        )
+
+        .waitSeconds(2.5.s)
+        .setTangent(90.0.deg + 180.0.deg)
+        .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+
+        .waitSeconds(3.s)
+
+
+        .waitSeconds(3.s)
+        .setTangent(-135.0.deg + 180.0.deg)
+        .splineToLinearHeading(Pose(mid_yellow.position, mid_yellow.heading),
+            90.deg
+        )
+
+        .waitSeconds(2.5.s)
+        .setTangent(90.0.deg + 180.0.deg)
+        .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+
+        .waitSeconds(6.s)
+        .setTangent(180.0.deg + 180.0.deg)
+        .splineToLinearHeading(
+            Pose(last_yellow.position, last_yellow.heading),
+            -90.0.deg + 180.0.deg
+        )
+
+        .waitSeconds(2.5.s)
+        .setTangent(90.0.deg + 180.0.deg)
+        .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+
+        .waitSeconds(6.s)
         .build()
     )
 

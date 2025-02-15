@@ -48,6 +48,11 @@ class RedRight : LinearOpMode() {
         val robot = AutoRobot(hardwareMap, config, values, timeKeep, startPose, telemetry)
         val mecanumDrive = robot.roadRunnerDrive
 
+        robot.outtake.extendoCurrentPos = values.outtake.extendoRobotPos
+        robot.intake.intakeUp()
+        robot.outtake.shoulderCurrentPos = values.outtake.shoulderRobotPos
+        robot.outtake.elbowCurrentPos = values.outtake.elbowRobotPos
+        robot.outtake.clawPos = 0.0
 
         val getSpecimen : SequentialAction = SequentialAction(
             robot.lift.liftToPosAction(values.lift.inRobot),
@@ -64,16 +69,22 @@ class RedRight : LinearOpMode() {
             robot.outtake.elbowToPosAction(values.outtake.elbowBarPos),
             robot.outtake.extendoToPosAction(values.outtake.extendoOutPos),
             SleepAction(0.5.s),
-            InstantAction {robot.outtake.clawPos = 1.0}
+            //InstantAction {robot.outtake.clawPos = 1.0}
         )
 
 
         val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             ///PRELOAD
-            .setTangent(Math.toRadians(90.0))
-            .lineToY(-36.0.inch)
             .afterTime(0.0, scoreSpecimen)
-            .afterTime(0.0, getSpecimen)
+            .waitSeconds(3.5.s)
+            .setTangent(Math.toRadians(90.0))
+            .lineToY(-28.0.inch)
+            .afterTime(0.5,InstantAction{robot.outtake.clawPos = 1.0})
+            .waitSeconds(5.0.s)
+
+
+
+            //.afterTime(0.0, getSpecimen)
 
             /*.lineToY(-40.0.inch)
             .setTangent(Math.toRadians(0.0))

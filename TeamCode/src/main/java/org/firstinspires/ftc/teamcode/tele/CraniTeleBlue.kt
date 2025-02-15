@@ -149,6 +149,12 @@ class CraniTeleBlue : LinearOpMode() {
                 else if (gamepad2.y) {
                     robot.outtake.armTargetToBar()
                 }
+                else if (gamepad2.x){
+                    robot.lift.targetPosition = values.lift.secondBar
+                    robot.outtake.shoulderTargetPos = values.outtake.shoulderBarPos
+                    robot.outtake.elbowTargetPos = values.outtake.elbowBarPos
+                    robot.outtake.extendoTargetPos = values.outtake.extendoOutPos
+                }
 
                 if (gamepad2.dpad_up){
                     robot.outtake.extendoTargetPos = values.outtake.extendoOutPos
@@ -195,7 +201,7 @@ class CraniTeleBlue : LinearOpMode() {
                     robot.intake.sweeperPower = 0.0
                 }
                 else {
-                    robot.intake.sweeperPower = 0.85
+                    robot.intake.sweeperPower = 0.5
                 }
             }
 

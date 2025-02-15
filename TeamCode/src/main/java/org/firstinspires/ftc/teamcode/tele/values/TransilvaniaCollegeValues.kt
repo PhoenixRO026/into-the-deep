@@ -15,12 +15,12 @@ val robotValuesTransilvaniaCollege = RobotValues(
     lift = LiftValues(
         highPos = 0,
         basketPos = 2980,
-        secondBar = 493,
+        secondBar = 936,
         secondBarUp = 1324,
         inRobot = 0,
         onHangBar = 0,
-        liftWaitingPos = 560,
-        liftIntakePos = 490
+        liftWaitingPos = 568,
+        liftIntakePos = 425
     ),
     intake = IntakeValues(
         boxTiltMaxTravelDuration = 5.s,
@@ -45,8 +45,8 @@ val robotValuesTransilvaniaCollege = RobotValues(
         shoulderBasketPos = 0.4045,
         elbowBasketPos = 0.7172,
         //bar
-        shoulderBarPos = 0.8476,
-        elbowBarPos = 0.8459,
+        shoulderBarPos = 0.7474,
+        elbowBarPos = 0.864,
         // specimen
         shoulderSpecimenPos = 0.3022,
         elbowSpecimenPos = 0.6378,
