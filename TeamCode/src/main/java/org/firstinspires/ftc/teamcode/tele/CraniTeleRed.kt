@@ -98,10 +98,12 @@ class CraniTeleRed : LinearOpMode() {
 
         robot.intake.intakeTiltCurrentPos = 0.5106
 
+        val intakePosButton = ButtonReader { gamepad2.right_bumper}
         val emergencyButton = ButtonReader { gamepad2.ps }
 
         while (isStarted && !isStopRequested) {
             emergencyButton.readValue()
+            intakePosButton.readValue()
             timeKeep.resetDeltaTime()
             val pad1LeftStickY = -gamepad1.left_stick_y.toDouble()
             val pad1LeftStickX = gamepad1.left_stick_x.toDouble()
@@ -139,15 +141,25 @@ class CraniTeleRed : LinearOpMode() {
                 if (gamepad2.left_bumper) {
                     robot.outtake.armTargetToBasket()
                 }
-                else if (gamepad2.right_bumper){
-                    getSampleFromIntake()
-
+                else if (intakePosButton.wasJustPressed()){
+                    robot.intake.extendoTargetPosition = 0
+                    robot.outtake.clawPos=1.0
+                    robot.outtake.extendoTargetPos = values.outtake.extendoIntakePos
+                    robot.lift.targetPosition = values.lift.liftWaitingPos
+                    robot.outtake.shoulderTargetPos = values.outtake.shoulderIntakePos
+                    robot.outtake.elbowTargetPos = values.outtake.elbowIntakePos
+                    robot.lift.targetPosition = values.lift.liftIntakePos
                 }
                 else if (gamepad2.a){
                     robot.outtake.armTargetToSpecimen()
                 }
                 else if (gamepad2.y) {
+                    robot.outtake.elbowTargetPos = 0.894
+                    robot.outtake.shoulderTargetPos = 0.8694
+                }
+                else if (gamepad2.x){
                     robot.outtake.armTargetToBar()
+                    robot.lift.targetPosition = 936
                 }
 
                 if (gamepad2.dpad_up){
@@ -166,10 +178,14 @@ class CraniTeleRed : LinearOpMode() {
                 robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
                 if (gamepad2.dpad_right) {
-                    robot.intake.boxUp()
+                    robot.outtake.wristTargetPos = 0.493
                 } else if (gamepad2.dpad_left) {
-                    robot.intake.boxDown()
+                    robot.outtake.wristTargetPos = 0.0
                 }
+            }
+
+            if (gamepad1.a){
+                robot.intake.resetExtendoPosition()
             }
 
             if(gamepad1.dpad_up){
@@ -180,7 +196,7 @@ class CraniTeleRed : LinearOpMode() {
             }
             //INTAKE
             if (gamepad1.left_trigger >= 0.2) {
-                robot.intake.sweeperPower = 1.0
+                robot.intake.sweeperPower = -1.0
             }
             else if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
                 if (robot.intake.shouldStopIntake("RED", hsvValues[0], false)){
@@ -195,7 +211,7 @@ class CraniTeleRed : LinearOpMode() {
                     robot.intake.sweeperPower = 0.0
                 }
                 else {
-                    robot.intake.sweeperPower = 0.85
+                    robot.intake.sweeperPower = 0.5
                 }
             }
 

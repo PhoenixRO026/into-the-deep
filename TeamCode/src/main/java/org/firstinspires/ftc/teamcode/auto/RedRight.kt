@@ -37,9 +37,10 @@ class RedRight : LinearOpMode() {
         telemetry.addLine("INITIALIZING")
         telemetry.update()
 
-        val startPose = Pose2d(10.0.inch, -57.0.inch, 90.0.deg)
-        val submerssible = Pose2d(10.0.inch,-36.0.inch, 90.0.deg)
-        val take_specimen = Pose2d(38.0.inch,-50.0.inch, 0.0.deg)
+        val startPose = Pose(10.0.inch, -62.0.inch, 90.0.deg)
+        val pivot = Pose(35.0.inch,-38.0.inch, 45.0.deg)
+        val submerssible = Pose(10.0.inch,-38.0.inch, 90.0.deg)
+        val take_specimen = Pose(38.0.inch,-50.0.inch, 0.0.deg)
         val parking = Pose(58.0.inch, -55.0.inch, 0.0.deg)
         val wallGrab = Pose(33.0.inch, -53.0.inch, 0.0.deg)
         val scoring = Pose(10.0.inch, -36.0.inch, 0.0.deg)
@@ -78,53 +79,32 @@ class RedRight : LinearOpMode() {
             .afterTime(0.0, scoreSpecimen)
             .waitSeconds(3.5.s)
             .setTangent(Math.toRadians(90.0))
-            .lineToY(-28.0.inch)
+            .lineToY(-30.0.inch)
             .afterTime(0.5,InstantAction{robot.outtake.clawPos = 1.0})
             .waitSeconds(5.0.s)
 
-
-
-            //.afterTime(0.0, getSpecimen)
-
-            /*.lineToY(-40.0.inch)
-            .setTangent(Math.toRadians(0.0))
-            .lineToXLinearHeading(34.0,Math.toRadians(45.0))
-            .afterTime(0.0, getSample)
-
-            .turnTo(Math.toRadians(-50.0))
-            .afterTime(0.0, ejectSample)
+            /// more ig
+/*
+            .setTangent(Math.toRadians(-90.0))
+            .splineToLinearHeading(pivot.pose2d, pivot.heading.asDeg)
+            .turnTo(Math.toRadians(-45.0))
             .setTangent(Math.toRadians(0.0))
             .lineToXLinearHeading(40.0,Math.toRadians(35.0))
-            .afterTime(0.0, getSample)
             .turnTo(Math.toRadians(-50.0))
-            .afterTime(0.0, ejectSample)
             .setTangent(0.0)
             .lineToXLinearHeading(50.0,Math.toRadians(35.0))
-            .afterTime(0.0, getSample)
             .turnTo(Math.toRadians(-90.0))
-            .afterTime(0.0, ejectSample)
             .setTangent(Math.toRadians(180.0))
-
             .strafeTo(wallGrab.position)
-            .afterTime(0.0,getSpecimen)
             .strafeTo(scoring.position)
-            .afterTime(0.0, scoreSpecimen)
             .lineToY(-40.0.inch)
-            .afterTime(0.0, toRobot)
-
             .strafeTo(wallGrab.position)
-            .afterTime(0.0,getSpecimen)
             .strafeTo(scoring.position)
-            .afterTime(0.0, scoreSpecimen)
             .lineToY(-40.0.inch)
-            .afterTime(0.0, toRobot)
-
             .strafeTo(wallGrab.position)
-            .afterTime(0.0,getSpecimen)
             .strafeTo(scoring.position)
-            .afterTime(0.0, scoreSpecimen)
-            .lineToY(-40.0.inch)
-            .afterTime(0.0, toRobot)*/
+            .lineToY(-40.0.inch)*/
+
             .build()
 
         telemetry.addData("Config name", config.name)

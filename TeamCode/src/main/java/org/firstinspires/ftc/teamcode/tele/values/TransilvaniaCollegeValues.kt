@@ -20,7 +20,7 @@ val robotValuesTransilvaniaCollege = RobotValues(
         inRobot = 0,
         onHangBar = 0,
         liftWaitingPos = 568,
-        liftIntakePos = 425
+        liftIntakePos = 422
     ),
     intake = IntakeValues(
         boxTiltMaxTravelDuration = 5.s,

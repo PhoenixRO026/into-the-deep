@@ -80,7 +80,7 @@ class RedLeft : LinearOpMode() {
             ),
             SleepAction(0.2.s),
             robot.lift.liftToPosAction(values.lift.liftIntakePos),
-            SleepAction(0.5.s),
+            SleepAction(0.4.s),
             InstantAction { robot.outtake.clawPos = 0.0 },
             SleepAction(0.1.s)
         )
@@ -91,16 +91,16 @@ class RedLeft : LinearOpMode() {
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
                 robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos)
             ),
-            SleepAction(0.5.s),
+            SleepAction(0.4.s),
             InstantAction { robot.outtake.clawPos = 1.0 },
-            SleepAction(0.5.s),
+            SleepAction(0.4.s),
             InstantAction { robot.outtake.clawPos = 0.0 },
             ParallelAction(
                 robot.outtake.elbowToPosAction(values.outtake.elbowIntakePos),
                 robot.outtake.shoudlerToPosAction(values.outtake.shoulderIntakePos),
                 robot.outtake.extendoToPosAction(values.outtake.extendoIntakePos)
             ),
-            SleepAction(0.5.s),
+            SleepAction(0.4.s),
             ParallelAction(
                 robot.lift.liftToPosAction(values.lift.liftWaitingPos),
                 robot.outtake.extendoToPosAction(values.outtake.extendoIntakePos)
@@ -114,7 +114,7 @@ class RedLeft : LinearOpMode() {
             InstantAction { robot.intake.intakeDown()},
             //SleepAction(5.s),
             InstantAction { robot.intake.snatchSpecimen(hsvValues) },
-            SleepAction(0.9.s),
+            SleepAction(0.5.s),
             robot.intake.extendoToPosAction(values.intake.extendoInBot),
             InstantAction { robot.intake.intakeUp() },
             SleepAction(0.3.s),
@@ -154,7 +154,7 @@ class RedLeft : LinearOpMode() {
             .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
 
             .afterTime(0.0,grabSample())
-            .waitSeconds(3.s)
+            .waitSeconds(2.s)
             .afterTime(0.0, scoreBasket())
 
             .waitSeconds(3.s)
