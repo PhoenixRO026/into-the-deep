@@ -281,6 +281,10 @@ class CraniTeleRed : LinearOpMode() {
 
             robot.addTelemetry(telemetry)
 
+            telemetry.addLine("COLOR SENSOR:")
+            telemetry.addData("detected color", robot.intake.readColor(hsvValues[0]))
+            telemetry.addData("should intake stop", robot.intake.shouldStopIntake("RED",hsvValues[0], false))
+
             telemetry.addData("emergency mode value",emergencyMode)
             telemetry.update()
         }
