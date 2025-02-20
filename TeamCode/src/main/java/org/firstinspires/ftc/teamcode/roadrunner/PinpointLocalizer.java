@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.PinpointView;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.Objects;
@@ -19,7 +20,9 @@ public final class PinpointLocalizer implements Localizer {
 
     public static Params PARAMS = new Params();
 
-    private final GoBildaPinpointDriver driver;
+    public final GoBildaPinpointDriver driver;
+    public final GoBildaPinpointDriver.EncoderDirection initialParDirection, initialPerpDirection;
+
     private Pose2d txWorldPinpoint;
     private Pose2d txPinpointRobot = new Pose2d(0, 0, 0);
 
@@ -33,7 +36,10 @@ public final class PinpointLocalizer implements Localizer {
         driver.setOffsets(mmPerTick * PARAMS.parYTicks, mmPerTick * PARAMS.perpXTicks);
 
         // TODO: reverse encoder directions if needed
-        //    driver.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+        initialParDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+        initialPerpDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+
+        driver.setEncoderDirections(initialParDirection, initialPerpDirection);
 
         driver.resetPosAndIMU();
 
