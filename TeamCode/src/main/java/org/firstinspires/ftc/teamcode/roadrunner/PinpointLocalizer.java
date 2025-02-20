@@ -23,20 +23,14 @@ public final class PinpointLocalizer implements Localizer {
     private Pose2d txWorldPinpoint;
     private Pose2d txPinpointRobot = new Pose2d(0, 0, 0);
 
-    public PinpointLocalizer(HardwareMap hardwareMap, Pose2d initialPose) {
+    public PinpointLocalizer(HardwareMap hardwareMap, double inPerTick, Pose2d initialPose) {
         // TODO: make sure your config has a Pinpoint device with this name
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
         driver = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
-        //double mmPerTick = 25.4 * inPerTick;
-        //driver.setEncoderResolution(1 / mmPerTick);
-        //driver.setOffsets(mmPerTick * PARAMS.parYTicks, mmPerTick * PARAMS.perpXTicks);
-        //NOTE FROM DRAGOS: we already know the encoder resolution for the gobilda 4 bar pod
-        //  so we're gonna skip odo tuning completely, setting the inPerTick from MecanumDrive
-        //  to inches per millimeter, and ignoring it here
-        double mmPerInch = 25.4;
-        driver.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        driver.setOffsets(mmPerInch * PARAMS.parYTicks, mmPerInch * PARAMS.perpXTicks);
+        double mmPerTick = 25.4 * inPerTick;
+        driver.setEncoderResolution(1 / mmPerTick);
+        driver.setOffsets(mmPerTick * PARAMS.parYTicks, mmPerTick * PARAMS.perpXTicks);
 
         // TODO: reverse encoder directions if needed
         //    driver.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.REVERSED);
