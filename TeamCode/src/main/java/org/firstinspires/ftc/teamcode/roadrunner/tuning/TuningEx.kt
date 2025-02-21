@@ -22,11 +22,11 @@ fun fakeEncoderGroup(localizer: PinpointLocalizer) = object : EncoderGroup {
     override val encoders: List<Encoder> = listOf(
         fakeMotorEncoder(
             { driver.encoderX },
-            /*{ driver.velX }*/
+            { driver.velX }
         ),
         fakeMotorEncoder(
             { driver.encoderY },
-            /*{ driver.velY }*/
+            { driver.velY }
         )
     )
     override val unwrappedEncoders: List<Encoder>
@@ -38,10 +38,8 @@ fun fakeEncoderGroup(localizer: PinpointLocalizer) = object : EncoderGroup {
 
 }
 
-fun fakeMotorEncoder(position: () -> Int) = RawEncoder(
+fun fakeMotorEncoder(position: () -> Int, velocity: () -> Double) = RawEncoder(
     object : DcMotorEx {
-        private var lastPos = 0
-
         override fun getManufacturer(): HardwareDevice.Manufacturer {
             TODO("Not yet implemented")
         }
@@ -157,9 +155,7 @@ fun fakeMotorEncoder(position: () -> Int) = RawEncoder(
         }
 
         override fun getVelocity(): Double {
-            val vel = position() - lastPos
-            lastPos = position()
-            return vel.toDouble()
+            return velocity()
         }
 
         override fun getVelocity(unit: AngleUnit?): Double {

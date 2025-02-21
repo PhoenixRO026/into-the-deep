@@ -32,13 +32,15 @@ repositories {
     maven {
         url = 'https://maven.brott.dev/'
     }
+    maven { url = "https://jitpack.io"  }
 }
 
 dependencies {
     implementation project(':CommonLibs')
     implementation project(':FtcRobotController')
 
-    implementation "com.acmerobotics.roadrunner:ftc:0.1.20"
+    //implementation "com.acmerobotics.roadrunner:ftc:0.1.20"
+    implementation "com.github.ProNoob1029:road-runner-ftc-pinpoint:-SNAPSHOT"
     implementation "com.acmerobotics.roadrunner:core:1.0.1"
     implementation "com.acmerobotics.roadrunner:actions:1.0.1"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.16"

@@ -170,11 +170,11 @@ public final class TuningOpModes {
                     perpEncs.add(new EncoderRef(0, 1));
                     lazyImu = new PinpointIMU(pv);*/
                     PinpointLocalizer localizer = (PinpointLocalizer) md.localizer;
-                    /*RobotLog.addGlobalWarningMessage(
+                    RobotLog.addGlobalWarningMessage(
                             "Disabling Pinpoint IMU. Perform a power cycle (turn the robot off and back on again) to reset it before running Feedback Tuner, LocalizationTest, or an auto (Angular Scalar now 0, previously %f)",
                             localizer.driver.getYawScalar()
                     );
-                    localizer.driver.setYawScalar(0.0);*/
+                    localizer.driver.setYawScalar(0.0);
                     localizer.driver.resetPosAndIMU();
                     encoderGroups.add(TuningEx.fakeEncoderGroup(localizer));
                     parEncs.add(new EncoderRef(0, 0));
