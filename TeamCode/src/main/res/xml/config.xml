@@ -46,10 +46,9 @@
 <!--            <DigitalDevice name="hSwitch" port="0"/>-->
 
             <!--This is a REV Color Sensor V3. Since this is an I^2C device, we require the type of device in the configuration as well.-->
-            <RevColorSensorV3 name="intakeColorSensor" port="2" bus="2"/>
-
+            <RevColorSensorV3 name="intakeColorSensor" port="0" bus="3"/>
             <!--This is a GoBilda Pinpoint Computer. Use this to configure your pinpoint if you are using one of the pinpoint localizers.-->
-            <goBILDAPinpoint name="odo" port="1" bus="1"/>
+            <goBILDAPinpoint name="odo" port="0" bus="1"/>
 
             <!--These are the Control Hub's servos. Change the ports and names of your servos.-->
             <Servo name="servoIntakeTilt" port="0"/>
