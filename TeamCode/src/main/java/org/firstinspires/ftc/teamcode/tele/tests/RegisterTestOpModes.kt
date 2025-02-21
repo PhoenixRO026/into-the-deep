@@ -31,5 +31,6 @@ object RegisterTestOpModes {
         manager.register(metaForClass(OuttakeExtendoTuning::class.java), OuttakeExtendoTuning())
         manager.register(metaForClass(LiftTuning::class.java), LiftTuning())
         manager.register(metaForClass(IntakeExtendoTuning::class.java), IntakeExtendoTuning())
+        manager.register(metaForClass(LiftLeftRightTest::class.java), LiftLeftRightTest())
     }
 }
