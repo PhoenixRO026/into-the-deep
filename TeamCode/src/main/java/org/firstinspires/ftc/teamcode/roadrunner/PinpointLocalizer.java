@@ -29,7 +29,7 @@ public final class PinpointLocalizer implements Localizer {
     public PinpointLocalizer(HardwareMap hardwareMap, double inPerTick, Pose2d initialPose) {
         // TODO: make sure your config has a Pinpoint device with this name
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
-        driver = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        driver = hardwareMap.get(GoBildaPinpointDriver.class, "odo");
 
         double mmPerTick = 25.4 * inPerTick;
         driver.setEncoderResolution(1 / mmPerTick);
@@ -37,7 +37,7 @@ public final class PinpointLocalizer implements Localizer {
 
         // TODO: reverse encoder directions if needed
         initialParDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
-        initialPerpDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+        initialPerpDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED;
 
         driver.setEncoderDirections(initialParDirection, initialPerpDirection);
 

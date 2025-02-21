@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.teamcode.roadrunner.GoBildaPinpointDriver;
@@ -163,11 +164,21 @@ public final class TuningOpModes {
                     manager.register(metaForClass(OTOSHeadingOffsetTuner.class), new OTOSHeadingOffsetTuner(ol.otos));
                     manager.register(metaForClass(OTOSPositionOffsetTuner.class), new OTOSPositionOffsetTuner(ol.otos));
                 }  else if (md.localizer instanceof PinpointLocalizer) {
-                    PinpointView pv = makePinpointView((PinpointLocalizer) md.localizer);
+                    /*PinpointView pv = makePinpointView((PinpointLocalizer) md.localizer);
                     encoderGroups.add(new PinpointEncoderGroup(pv));
                     parEncs.add(new EncoderRef(0, 0));
                     perpEncs.add(new EncoderRef(0, 1));
-                    lazyImu = new PinpointIMU(pv);
+                    lazyImu = new PinpointIMU(pv);*/
+                    PinpointLocalizer localizer = (PinpointLocalizer) md.localizer;
+                    /*RobotLog.addGlobalWarningMessage(
+                            "Disabling Pinpoint IMU. Perform a power cycle (turn the robot off and back on again) to reset it before running Feedback Tuner, LocalizationTest, or an auto (Angular Scalar now 0, previously %f)",
+                            localizer.driver.getYawScalar()
+                    );
+                    localizer.driver.setYawScalar(0.0);*/
+                    localizer.driver.resetPosAndIMU();
+                    encoderGroups.add(TuningEx.fakeEncoderGroup(localizer));
+                    parEncs.add(new EncoderRef(0, 0));
+                    perpEncs.add(new EncoderRef(0, 1));
                 } else {
                     throw new RuntimeException("unknown localizer: " + md.localizer.getClass().getName());
                 }
