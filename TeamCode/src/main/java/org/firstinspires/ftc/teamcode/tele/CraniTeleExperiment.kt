@@ -42,7 +42,6 @@ class CraniTeleExperiment : LinearOpMode() {
         telemetry.update()
 
         val timeKeep = TimeKeep()
-        val robot = TeleRobot(hardwareMap, config, values, timeKeep, telemetry)
         val functions = FunctionsForTele(hardwareMap, config, values, timeKeep, telemetry)
 
         val relativeLayoutId = hardwareMap.appContext.resources.getIdentifier("RelativeLayout", "id", hardwareMap.appContext.packageName)
@@ -63,7 +62,7 @@ class CraniTeleExperiment : LinearOpMode() {
         }
 
 
-        robot.lift.targetPosition = values.lift.liftIntakePos
+        functions.robot.lift.targetPosition = values.lift.liftIntakePos
         //robot.outtake.clawPos = 0.0
         //robot.lift.targetPosition = values.lift.liftWaitingPos
         //robot.intake.sweeperPower = 0.0
@@ -74,11 +73,11 @@ class CraniTeleExperiment : LinearOpMode() {
 
         waitForStart()
 
-        robot.outtake.shoulderCurrentPos = values.outtake.shoulderRobotPos
-        robot.outtake.elbowCurrentPos = values.outtake.elbowRobotPos
-        robot.outtake.wristPosToMiddle()
-        robot.outtake.clawPos = 1.0
-        robot.intake.intakeTiltCurrentPos = values.intake.intakeUpPos
+        functions.robot.outtake.shoulderCurrentPos = values.outtake.shoulderRobotPos
+        functions.robot.outtake.elbowCurrentPos = values.outtake.elbowRobotPos
+        functions.robot.outtake.wristPosToMiddle()
+        functions.robot.outtake.clawPos = 1.0
+        functions.robot.intake.intakeTiltCurrentPos = values.intake.intakeUpPos
 
         val emergencyButton = ButtonReader { gamepad2.ps }
 
@@ -96,19 +95,19 @@ class CraniTeleExperiment : LinearOpMode() {
             val pad2RightStickX = gamepad2.right_stick_x.toDouble()
 
             Color.RGBToHSV(
-                (robot.intake.intakeColorSensor.red() * SCALE_FACTOR).toInt(),
-                (robot.intake.intakeColorSensor.green() * SCALE_FACTOR).toInt(),
-                (robot.intake.intakeColorSensor.blue() * SCALE_FACTOR).toInt(),
+                (functions.robot.intake.intakeColorSensor.red() * SCALE_FACTOR).toInt(),
+                (functions.robot.intake.intakeColorSensor.green() * SCALE_FACTOR).toInt(),
+                (functions.robot.intake.intakeColorSensor.blue() * SCALE_FACTOR).toInt(),
                 hsvValues
             )
 
             //DRIVE
             if (gamepad1.y)
-                robot.drive.resetFieldCentric()
+                functions.robot.drive.resetFieldCentric()
 
-            robot.drive.isSlowMode = gamepad1.right_trigger >= 0.2
+            functions.robot.drive.isSlowMode = gamepad1.right_trigger >= 0.2
 
-            robot.drive.driveFieldCentric(
+            functions.robot.drive.driveFieldCentric(
                 pad1LeftStickY,
                 -pad1LeftStickX,
                 -pad1RightStickX
@@ -128,53 +127,64 @@ class CraniTeleExperiment : LinearOpMode() {
                     action = functions.initRobot()
                 }
                 else if (gamepad2.a){
-                    robot.outtake.armTargetToSpecimen()
+                    functions.robot.outtake.armTargetToSpecimen()
                 }
                 else if (gamepad2.y) {
-                    robot.outtake.armTargetToBar()
+                    functions.robot.outtake.armTargetToBar()
                 }
 
                 if (gamepad2.dpad_up){
-                    robot.outtake.extendoTargetPos = values.outtake.extendoOutPos
+                    functions.robot.outtake.extendoTargetPos = values.outtake.extendoOutPos
                 }
 
                 if (gamepad2.dpad_down){
-                    robot.outtake.extendoTargetPos = values.outtake.extendoRobotPos
+                    functions.robot.outtake.extendoTargetPos = values.outtake.extendoRobotPos
                 }
 
-                robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
+                functions.robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
                 if (gamepad2.dpad_right) {
-                    robot.intake.boxUp()
+                    functions.robot.intake.boxUp()
                 } else if (gamepad2.dpad_left) {
-                    robot.intake.boxDown()
+                    functions.robot.intake.boxDown()
                 }
+            }
+
+            if (gamepad1.a){
+                functions.robot.intake.resetExtendoPosition()
             }
 
             if(gamepad1.dpad_up){
-                robot.intake.intakeDown()
+                functions.robot.intake.intakeUp()
             }
-            else {
-                robot.intake.intakeUp()
+            else if(gamepad1.dpad_down){
+                functions.robot.intake.intakeDown()
             }
+            else if(gamepad1.dpad_right){
+                functions.robot.intake.intakeUp()
+            }
+            else if(gamepad1.dpad_left){
+                functions.robot.intake.intakeDown()
+            }
+
             //INTAKE
             if (gamepad1.left_trigger >= 0.2) {
-                robot.intake.sweeperPower = pad1LeftStickY
+                functions.robot.intake.sweeperPower = -1.0
             }
-            else if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
-                if (robot.intake.shouldStopIntake("RED", hsvValues[0], false)){
-                    robot.intake.sweeperPower = 0.0
+            else if (functions.robot.intake.intakeTiltCurrentPos in 0.48..0.5){
+                if (functions.robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){
+                    functions.robot.intake.sweeperPower = 0.0
                 }
                 else {
-                    robot.intake.sweeperPower = 1.0
+                    functions.robot.intake.sweeperPower = 1.0
                 }
             }
             else{
-                if (robot.intake.shouldStopIntake("RED", hsvValues[0], false)){
-                    robot.intake.sweeperPower = 0.0
+                if (functions.robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){
+                    functions.robot.intake.sweeperPower = 0.0
                 }
                 else {
-                    robot.intake.sweeperPower = 0.7
+                    functions.robot.intake.sweeperPower = 0.5
                 }
             }
 
@@ -186,7 +196,7 @@ class CraniTeleExperiment : LinearOpMode() {
             }
 
             //LIFT
-            robot.lift.power = pad2RightStickY
+            functions.robot.lift.power = pad2RightStickY
 
             //
             ////////////////////////////////////////////////////////////////
@@ -203,31 +213,31 @@ class CraniTeleExperiment : LinearOpMode() {
             if (emergencyMode == 1){
                 //OUTTAKE
 
-                robot.outtake.extendoSpeed = when {
+                functions.robot.outtake.extendoSpeed = when {
                     pad2LeftStickY >= 0.2 -> 1.0
                     pad2LeftStickY <= -0.2 -> -1.0
                     else -> 0.0
                 }
 
-                robot.outtake.shoulderSpeed = when {
+                functions.robot.outtake.shoulderSpeed = when {
                     gamepad2.right_bumper -> -1.0
                     gamepad2.left_bumper -> 1.0
                     else -> 0.0
                 }
 
-                robot.outtake.elbowSpeed = when {
+                functions.robot.outtake.elbowSpeed = when {
                     gamepad2.y -> 1.0
                     gamepad2.a -> -1.0
                     else -> 0.0
                 }
-                robot.outtake.wristSpeed = when {
+                functions.robot.outtake.wristSpeed = when {
                     gamepad2.dpad_left -> -1.0
                     gamepad2.dpad_right -> 1.0
                     else -> 0.0
                 }
-                robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
+                functions.robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
-                robot.intake.boxTiltSpeed = when {
+                functions.robot.intake.boxTiltSpeed = when {
                     gamepad2.dpad_up -> 1.0
                     gamepad2.dpad_up -> -1.0
                     else -> 0.0
@@ -235,16 +245,16 @@ class CraniTeleExperiment : LinearOpMode() {
 
 
                 //LIFT
-                robot.lift.power = pad2RightStickY
+                functions.robot.lift.power = pad2RightStickY
             }
 
             /*END OF BACKUP*/
 
             updateAction()
 
-            robot.update()
+            functions.robot.update()
 
-            robot.addTelemetry(telemetry)
+            functions.robot.addTelemetry(telemetry)
 
             telemetry.addData("emergency mode value",emergencyMode)
             telemetry.update()

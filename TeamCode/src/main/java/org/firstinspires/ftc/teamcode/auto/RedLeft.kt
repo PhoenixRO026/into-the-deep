@@ -25,12 +25,11 @@ import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 
 @Autonomous
 class RedLeft : LinearOpMode() {
-    private val startPose = Pose(-33.4.inch, -61.inch, 90.0.deg)
-    private val pivot = Pose(-47.0.inch, -47.0.inch, 90.deg)
-    private val  basket = Pose(-52.0.inch, -53.0.inch, 45.0.deg)
-    private val  first_yellow = Pose(-49.inch, -47.0.inch, 90.0.deg)
-    private val  mid_yellow = Pose(-53.2.inch, -44.0.inch, 105.0.deg)
-    private val  last_yellow = Pose(-47.0.inch, -34.0.inch, 155.0.deg)
+    val startPose = Pose(-33.4.inch, -61.inch, 90.0.deg)
+    val basket = Pose(-52.0.inch, -53.0.inch, 45.0.deg)
+    val first_yellow = Pose(-49.inch, -47.0.inch, 90.0.deg)
+    val mid_yellow = Pose(-59.0.inch, -47.0.inch, 90.0.deg)
+    val last_yellow = Pose(-62.0.inch, -47.0.inch, 110.0.deg)
 
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
@@ -126,6 +125,7 @@ class RedLeft : LinearOpMode() {
         ///
 
         val preloadAction = mecanumDrive.actionBuilder(startPose.pose2d).ex()
+            .setTangent(90.0.deg)
             .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,scoreBasket())
@@ -134,43 +134,38 @@ class RedLeft : LinearOpMode() {
             .build()
 
         val firstYellowScore = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-            .setTangent(-90.0.deg + 180.0.deg)
-            .splineToLinearHeading(
-                Pose(first_yellow.position, first_yellow.heading),
-                -90.0.deg + 180.0.deg
-            )
+            .setTangent(90.0.deg)
+            .strafeToLinearHeading(first_yellow.position, first_yellow.heading)
 
             .afterTime(0.0, getSample())
             .waitSeconds(2.5.s)
-            .setTangent(90.0.deg + 180.0.deg)
-            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+            .setTangent(-90.0.deg)
+            .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,SequentialAction(grabSample(), scoreBasket()))
             .build()
 
         val midYellowScore = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-            .setTangent(-135.0.deg + 180.0.deg)
-            .splineToLinearHeading(Pose(mid_yellow.position, mid_yellow.heading), 90.deg)
+            .setTangent(45.0.deg)
+            .strafeToLinearHeading(mid_yellow.position, mid_yellow.heading)
 
             .afterTime(0.0, getSample())
             .waitSeconds(2.5.s)
-            .setTangent(90.0.deg + 180.0.deg)
-            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+            .setTangent(-90.0.deg)
+            .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
             .build()
 
         val lastYellowScore = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-            .setTangent(180.0.deg + 180.0.deg)
-            .splineToLinearHeading(
-                Pose(last_yellow.position, last_yellow.heading),
-                -90.0.deg + 180.0.deg
-            )
+            .setTangent(0.0.deg)
+            .strafeToLinearHeading(last_yellow.position, last_yellow.heading)
+
 
             .afterTime(0.0, getSample())
             .waitSeconds(2.5.s)
-            .setTangent(90.0.deg + 180.0.deg)
-            .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+            .setTangent(-90.0.deg)
+            .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
             .build()

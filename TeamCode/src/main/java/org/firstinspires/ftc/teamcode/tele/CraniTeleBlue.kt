@@ -91,8 +91,9 @@ class CraniTeleBlue : LinearOpMode() {
 
         waitForStart()
 
-        robot.outtake.shoulderCurrentPos = 0.6404
-        robot.outtake.elbowCurrentPos = 0.5159
+        robot.outtake.extendoCurrentPos = values.outtake.extendoIntakePos
+        robot.outtake.shoulderCurrentPos = values.outtake.shoulderRobotPos
+        robot.outtake.elbowCurrentPos = values.outtake.elbowRobotPos
         robot.outtake.wristPosToMiddle()
         robot.outtake.clawPos = 1.0
 

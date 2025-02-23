@@ -91,8 +91,9 @@ class CraniTeleRed : LinearOpMode() {
 
         waitForStart()
 
-        robot.outtake.shoulderCurrentPos = 0.6404
-        robot.outtake.elbowCurrentPos = 0.5159
+        robot.outtake.extendoCurrentPos = values.outtake.extendoIntakePos
+        robot.outtake.shoulderCurrentPos = values.outtake.shoulderRobotPos
+        robot.outtake.elbowCurrentPos = values.outtake.elbowRobotPos
         robot.outtake.wristPosToMiddle()
         robot.outtake.clawPos = 1.0
 
@@ -159,7 +160,7 @@ class CraniTeleRed : LinearOpMode() {
                 }
                 else if (gamepad2.x){
                     robot.outtake.armTargetToBar()
-                    robot.lift.targetPosition = 936
+                    robot.lift.targetPosition = 921
                 }
 
                 if (gamepad2.dpad_up){
@@ -199,7 +200,7 @@ class CraniTeleRed : LinearOpMode() {
                 robot.intake.sweeperPower = -1.0
             }
             else if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
-                if (robot.intake.shouldStopIntake("RED", hsvValues[0], false)){
+                if (robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){
                     robot.intake.sweeperPower = 0.0
                 }
                 else {
@@ -207,7 +208,7 @@ class CraniTeleRed : LinearOpMode() {
                 }
             }
             else{
-                if (robot.intake.shouldStopIntake("RED", hsvValues[0], false)){
+                if (robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){
                     robot.intake.sweeperPower = 0.0
                 }
                 else {
@@ -283,8 +284,7 @@ class CraniTeleRed : LinearOpMode() {
 
             telemetry.addLine("COLOR SENSOR:")
             telemetry.addData("detected color", robot.intake.readColor(hsvValues[0]))
-            telemetry.addData("should intake stop", robot.intake.shouldStopIntake("RED",hsvValues[0], false))
-
+            telemetry.addData("should intake stop", robot.intake.shouldStopIntake("BLUE",hsvValues[0], false))
             telemetry.addData("emergency mode value",emergencyMode)
             telemetry.update()
         }

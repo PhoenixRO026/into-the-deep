@@ -27,55 +27,52 @@ class FunctionsForTele(
     telemetry: Telemetry? = null,
 ) {
     val values = robotValuesTransilvaniaCollege
-    val drive = Drive(hardwareMap, config.drive, values.drive, telemetry)
-    val intake = Intake(hardwareMap, config.intake, values.intake, timeKeep)
-    val lift = Lift(hardwareMap, config.lift, values.lift, timeKeep)
-    val outtake = Outtake(hardwareMap, config.outtake, values.outtake, timeKeep)
+    val robot = TeleRobot(hardwareMap, config, values, timeKeep, telemetry)
 
     fun initRobot() = SequentialAction(
-        InstantAction { outtake.clawPos = 0.0},
-        outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
-        outtake.elbowToPosAction(values.outtake.elbowRobotPos),
+        InstantAction { robot.outtake.clawPos = 0.0},
+        robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
+        robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
         SleepAction(0.5.s),
-        outtake.extendoToPosAction(values.outtake.extendoRobotPos),
+        robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
 
-        lift.liftToPosAction(values.lift.liftWaitingPos),
+        robot.lift.liftToPosAction(values.lift.liftWaitingPos),
 
-        InstantAction { intake.intakeUp()},
+        InstantAction { robot.intake.intakeUp()},
         SleepAction(0.7.s),
-        intake.extendoToPosAction(values.intake.extendoInBot),
+        robot.intake.extendoToPosAction(values.intake.extendoInBot),
     )
 
     fun intakeSubmersible() = SequentialAction(
-        InstantAction{intake.intakeUp()},
-        intake.extendoToPosAction(values.intake.extendoLim),
+        InstantAction{robot.intake.intakeUp()},
+        robot.intake.extendoToPosAction(values.intake.extendoLim),
     )
 
     fun intakeRobot() = SequentialAction(
-        InstantAction{intake.intakeUp()},
+        InstantAction{robot.intake.intakeUp()},
         SleepAction(0.7.s),
-        intake.extendoToPosAction(values.intake.extendoInBot),
+        robot.intake.extendoToPosAction(values.intake.extendoInBot),
     )
 
     fun getSample() = SequentialAction(
-            InstantAction{outtake.clawPos=1.0},
-            lift.liftToPosAction(values.lift.liftWaitingPos),
-            ParallelAction(
-                outtake.shoudlerToPosAction(values.outtake.shoulderIntakePos),
-                outtake.elbowToPosAction(values.outtake.elbowIntakePos)
-            ),
-            lift.liftToPosAction(values.lift.liftIntakePos),
-            InstantAction{outtake.clawPos=0.0},
-            lift.liftToPosAction(values.lift.liftWaitingPos),
+        InstantAction{robot.outtake.clawPos=1.0},
+        robot.lift.liftToPosAction(values.lift.liftWaitingPos),
+        ParallelAction(
+            robot.outtake.shoudlerToPosAction(values.outtake.shoulderIntakePos),
+            robot.outtake.elbowToPosAction(values.outtake.elbowIntakePos)
+        ),
+        robot.lift.liftToPosAction(values.lift.liftIntakePos),
+        InstantAction{robot.outtake.clawPos=0.0},
+        robot.lift.liftToPosAction(values.lift.liftWaitingPos),
     )
 
     fun liftSample() = SequentialAction(
-        lift.liftToPosAction(values.lift.liftWaitingPos),
-        lift.liftToPosAction(values.lift.basketPos),
+        robot.lift.liftToPosAction(values.lift.liftWaitingPos),
+        robot.lift.liftToPosAction(values.lift.basketPos),
         ParallelAction(
-            outtake.extendoToPosAction(values.outtake.extendoRobotPos),
-            outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
-            outtake.elbowToPosAction(values.outtake.elbowBasketPos)
+            robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
+            robot.outtake.shoudlerToPosAction(values.outtake.shoulderBasketPos),
+            robot.outtake.elbowToPosAction(values.outtake.elbowBasketPos)
         )
     )
 }
