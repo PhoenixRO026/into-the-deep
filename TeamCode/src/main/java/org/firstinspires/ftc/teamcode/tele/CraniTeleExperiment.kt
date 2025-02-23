@@ -118,7 +118,7 @@ class CraniTeleExperiment : LinearOpMode() {
                 //OUTTAKE
 
                 if (gamepad2.left_bumper) {
-                    action = functions.liftSample()
+                    action = functions.basketSample()
                 }
                 else if (gamepad2.right_bumper){
                     action = functions.getSample()

@@ -116,13 +116,6 @@ class CraniTeleRed : LinearOpMode() {
             val pad2RightStickY = -gamepad2.right_stick_y.toDouble()
             val pad2RightStickX = gamepad2.right_stick_x.toDouble()
 
-            Color.RGBToHSV(
-                (robot.intake.intakeColorSensor.red() * SCALE_FACTOR).toInt(),
-                (robot.intake.intakeColorSensor.green() * SCALE_FACTOR).toInt(),
-                (robot.intake.intakeColorSensor.blue() * SCALE_FACTOR).toInt(),
-                hsvValues
-            )
-
             //DRIVE
             if (gamepad1.y)
                 robot.drive.resetFieldCentric()
@@ -200,6 +193,7 @@ class CraniTeleRed : LinearOpMode() {
                 robot.intake.sweeperPower = -1.0
             }
             else if (robot.intake.intakeTiltCurrentPos in 0.48..0.5){
+                Color.colorToHSV(robot.intake.intakeColorSensor.argb(), hsvValues)
                 if (robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){
                     robot.intake.sweeperPower = 0.0
                 }
@@ -208,6 +202,7 @@ class CraniTeleRed : LinearOpMode() {
                 }
             }
             else{
+                Color.colorToHSV(robot.intake.intakeColorSensor.argb(), hsvValues)
                 if (robot.intake.shouldStopIntake("BLUE", hsvValues[0], false)){
                     robot.intake.sweeperPower = 0.0
                 }

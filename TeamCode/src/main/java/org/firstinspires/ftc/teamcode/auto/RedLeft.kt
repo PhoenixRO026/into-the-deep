@@ -29,7 +29,7 @@ class RedLeft : LinearOpMode() {
     val basket = Pose(-52.0.inch, -53.0.inch, 45.0.deg)
     val first_yellow = Pose(-49.inch, -47.0.inch, 90.0.deg)
     val mid_yellow = Pose(-59.0.inch, -47.0.inch, 90.0.deg)
-    val last_yellow = Pose(-62.0.inch, -47.0.inch, 110.0.deg)
+    val last_yellow = Pose(-57.0.inch, -43.0.inch, 120.0.deg)
 
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege
@@ -129,39 +129,43 @@ class RedLeft : LinearOpMode() {
             .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,scoreBasket())
-
             .afterTime(0.0,InstantAction{robot.intake.intakeDown()})
-            .build()
+            .waitSeconds(4.0.s)
 
-        val firstYellowScore = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(90.0.deg)
             .strafeToLinearHeading(first_yellow.position, first_yellow.heading)
 
             .afterTime(0.0, getSample())
+            .build()
+
+        val firstYellowScore = mecanumDrive.actionBuilder(first_yellow.pose2d).ex()
             .waitSeconds(2.5.s)
             .setTangent(-90.0.deg)
             .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,SequentialAction(grabSample(), scoreBasket()))
-            .build()
 
-        val midYellowScore = mecanumDrive.actionBuilder(startPose.pose2d).ex()
+            .waitSeconds(4.0.s)
             .setTangent(45.0.deg)
             .strafeToLinearHeading(mid_yellow.position, mid_yellow.heading)
 
             .afterTime(0.0, getSample())
+            .build()
+
+        val midYellowScore = mecanumDrive.actionBuilder(mid_yellow.pose2d).ex()
             .waitSeconds(2.5.s)
             .setTangent(-90.0.deg)
             .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
-            .build()
-
-        val lastYellowScore = mecanumDrive.actionBuilder(startPose.pose2d).ex()
+            .waitSeconds(4.0.s)
             .setTangent(0.0.deg)
             .strafeToLinearHeading(last_yellow.position, last_yellow.heading)
 
+            .afterTime(0.0, getSample())
+            .build()
 
+        val lastYellowScore = mecanumDrive.actionBuilder(last_yellow.pose2d).ex()
             .afterTime(0.0, getSample())
             .waitSeconds(2.5.s)
             .setTangent(-90.0.deg)

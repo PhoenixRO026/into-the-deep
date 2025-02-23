@@ -124,12 +124,7 @@ class Intake(
                 break;
             }
             extendoPower = 0.8
-            Color.RGBToHSV(
-                (intakeColorSensor.red() * 255.0).toInt(),
-                (intakeColorSensor.green() * 255.0).toInt(),
-                (intakeColorSensor.blue() * 255.0).toInt(),
-                hsvValues
-            )
+            Color.colorToHSV(intakeColorSensor.argb(), hsvValues)
         }
         sweeperPower = 0.0
         extendoTargetPosition = values.extendoInBot
@@ -142,12 +137,7 @@ class Intake(
                 sweeperPower = 0.0
             else
                 sweeperPower = 0.85
-            Color.RGBToHSV(
-                (intakeColorSensor.red() * 255.0).toInt(),
-                (intakeColorSensor.green() * 255.0).toInt(),
-                (intakeColorSensor.blue() * 255.0).toInt(),
-                hsvValues
-            )
+            Color.colorToHSV(intakeColorSensor.argb(), hsvValues)
         }
         sweeperPower = 0.0
     }

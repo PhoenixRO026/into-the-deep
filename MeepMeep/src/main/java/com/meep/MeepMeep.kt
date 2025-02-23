@@ -27,8 +27,8 @@ fun main() {
     val pivot = Pose(-47.0.inch, -47.0.inch, 90.deg)
     val basket = Pose(-52.0.inch, -53.0.inch, 45.0.deg)
     val first_yellow = Pose(-49.inch, -47.0.inch, 90.0.deg)
-    val mid_yellow = Pose(-53.2.inch, -44.0.inch, 105.0.deg)
-    val last_yellow = Pose(-47.0.inch, -34.0.inch, 155.0.deg)
+    val mid_yellow = Pose(-59.0.inch, -47.0.inch, 90.0.deg)
+    val last_yellow = Pose(-57.0.inch, -43.0.inch, 125.0.deg)
 
     val meepMeep = MeepMeep(600)
 
@@ -38,40 +38,51 @@ fun main() {
             .build()
 
     myBot.runAction(myBot.drive.actionBuilder(startPose.pose2d).ex()
-        .setTangent(-90.0.deg + 180.0.deg)
+        /*.setTangent(90.0.deg)
         .strafeToLinearHeading(basket.position, basket.heading)
 
-        .setTangent(-90.0.deg + 180.0.deg)
-        .splineToLinearHeading(
-            Pose(first_yellow.position, first_yellow.heading),
-            -90.0.deg + 180.0.deg
-        )
+        .setTangent(90.0.deg)
+        .strafeToLinearHeading(first_yellow.position, first_yellow.heading)
+
         .waitSeconds(3.s)
-        .setTangent(90.0.deg + 180.0.deg)
-        .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+        .setTangent(-90.0.deg)
+        .strafeToLinearHeading(basket.position, basket.heading)
 
 
         .waitSeconds(3.s)
-        .setTangent(-135.0.deg + 180.0.deg)
-        .splineToLinearHeading(Pose(mid_yellow.position, mid_yellow.heading),
-            90.deg
-        )
+        .setTangent(45.0.deg)
+        .strafeToLinearHeading(mid_yellow.position, mid_yellow.heading)
+
 
         .waitSeconds(2.5.s)
-        .setTangent(90.0.deg + 180.0.deg)
-        .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+        .setTangent(-90.0.deg)
+        .strafeToLinearHeading(basket.position, basket.heading)
 
         .waitSeconds(6.s)
-        .setTangent(180.0.deg + 180.0.deg)
-        .splineToLinearHeading(
-            Pose(last_yellow.position, last_yellow.heading),
-            -90.0.deg + 180.0.deg
-        )
+        .setTangent(0.0.deg)
+        .strafeToLinearHeading(last_yellow.position, last_yellow.heading)
+
 
         .waitSeconds(2.5.s)
-        .setTangent(90.0.deg + 180.0.deg)
-        .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
-        .waitSeconds(6.s)
+        .setTangent(-90.0.deg)
+        .strafeToLinearHeading(basket.position, basket.heading)
+
+        .waitSeconds(6.s)*/
+        .setTangent(90.0.deg)
+        .strafeToLinearHeading(basket.position, basket.heading)
+        .setTangent(90.0.deg)
+        .strafeToLinearHeading(first_yellow.position, first_yellow.heading)
+        .setTangent(-90.0.deg)
+        .strafeToLinearHeading(basket.position, basket.heading)
+        .setTangent(45.0.deg)
+        .strafeToLinearHeading(mid_yellow.position, mid_yellow.heading)
+        .setTangent(-90.0.deg)
+        .strafeToLinearHeading(basket.position, basket.heading)
+        .setTangent(0.0.deg)
+        .strafeToLinearHeading(last_yellow.position, last_yellow.heading)
+        .waitSeconds(2.5.s)
+        .setTangent(-90.0.deg)
+
         .build()
     )
 

@@ -66,7 +66,7 @@ class FunctionsForTele(
         robot.lift.liftToPosAction(values.lift.liftWaitingPos),
     )
 
-    fun liftSample() = SequentialAction(
+    fun basketSample() = SequentialAction(
         robot.lift.liftToPosAction(values.lift.liftWaitingPos),
         robot.lift.liftToPosAction(values.lift.basketPos),
         ParallelAction(
