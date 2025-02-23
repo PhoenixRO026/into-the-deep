@@ -27,12 +27,12 @@ class Lift(
         var targetPosTolerance = 10
     }
 
-    enum class MODE {
+    enum class Mode {
         PID,
         RAW_POWER
     }
 
-    private var currentMode = MODE.RAW_POWER
+    private var currentMode = Mode.RAW_POWER
     private var offset = 0
 
     val position get() = encoderMotor.currentPosition - offset
@@ -47,16 +47,16 @@ class Lift(
     var power
         get() = _power
         set(value) {
-            if (currentMode == MODE.PID && value == 0.0) return
+            if (currentMode == Mode.PID && value == 0.0) return
 
             _power = if (value < 0.0) value else value + LiftConfig.kF
-            currentMode = MODE.RAW_POWER
+            currentMode = Mode.RAW_POWER
         }
 
     var targetPosition = position
         set(value) {
             field = value
-            currentMode = MODE.PID
+            currentMode = Mode.PID
         }
 
 
@@ -65,7 +65,7 @@ class Lift(
     }
 
     fun update(deltaTime: Duration) {
-        if (currentMode == MODE.PID)
+        if (currentMode == Mode.PID)
             _power = LiftConfig.controller.calculate(
                 position.toDouble(),
                 targetPosition.toDouble(),

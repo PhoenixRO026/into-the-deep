@@ -63,7 +63,7 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP;
 
         // drive model parameters
-        public double inPerTick = (1.0 / 19.89436789) / 25.4;   //Value tuned for gobilda 4 bar odo
+        public double inPerTick = 1.0 / 25.4;
         public double lateralInPerTick = inPerTick;
         public double trackWidthTicks = 0;
 
