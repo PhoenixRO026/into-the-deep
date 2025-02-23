@@ -5,7 +5,9 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import org.firstinspires.ftc.teamcode.library.buttons.ButtonReader
 import org.firstinspires.ftc.teamcode.robot.Robot
+import java.util.LinkedList
 
 class OuttakeActionsTest: LinearOpMode() {
     override fun runOpMode() {
@@ -17,32 +19,42 @@ class OuttakeActionsTest: LinearOpMode() {
 
         outtake.initTeleop()
 
-        var currentAction: Action? = null
+        val buttonA = ButtonReader { gamepad1.a }
+        val buttonB = ButtonReader { gamepad1.b }
+        val buttonX = ButtonReader { gamepad1.x }
+        val buttonY = ButtonReader { gamepad1.y }
+
+        val actionQueue = LinkedList<Action>()
 
         while (opModeIsActive()) {
+            buttonA.readValue()
+            buttonB.readValue()
+            buttonX.readValue()
+            buttonY.readValue()
+
             when {
-                gamepad1.a -> {
-                    currentAction = outtake.armToIntakeAction()
-                    telemetry.addLine("Current action: Intake")
+                buttonA.wasJustPressed() -> {
+                    actionQueue.addLast(outtake.armToIntakeAction())
                 }
-                gamepad1.x -> {
-                    currentAction = outtake.armToNeutralAction()
-                    telemetry.addLine("Current action: Neutral")
+                buttonX.wasJustPressed() -> {
+                    actionQueue.addLast(outtake.armToNeutralAction())
                 }
-                gamepad1.y -> {
-                    currentAction = outtake.armToBasketAction()
-                    telemetry.addLine("Current action: Basket")
+                buttonY.wasJustPressed() -> {
+                    actionQueue.addLast(outtake.armToBasketAction())
+                }
+                buttonB.wasJustPressed() -> {
+                    actionQueue.clear()
                 }
             }
 
-            if (currentAction == null) {
-                telemetry.addLine("Current action: None")
+            actionQueue.peekFirst()?.let {
+                val running = it.run(TelemetryPacket())
+                if (!running) {
+                    actionQueue.removeFirst()
+                }
             }
 
-            if (currentAction?.run(TelemetryPacket()) != true) {
-                currentAction = null
-            }
-
+            telemetry.addData("actions", actionQueue.toList())
             telemetry.update()
         }
     }

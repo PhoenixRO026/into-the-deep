@@ -22,18 +22,18 @@ class Outtake(
     data object OuttakeConfig {
         @JvmField var extendoSpeed = 3.s
 
-        @JvmField var shoulderActionSleepDuration = 1.s
-        @JvmField var elbowActionSleepDuration = 1.s
-        @JvmField var wristActionSleepDuration = 1.s
-        @JvmField var clawActionSleepDuration = 1.s
+        @JvmField var shoulderActionSleepDuration = 2.s
+        @JvmField var elbowActionSleepDuration = 2.s
+        @JvmField var wristActionSleepDuration = 2.s
+        @JvmField var clawActionSleepDuration = 0.5.s
         @JvmField var extendoActionSleepDuration = 2.s
 
         @JvmField var shoulderNeutralPos = 0.6404
         @JvmField var elbowNeutralPos = 0.5159
         @JvmField var extendoNeutralPos = 0.6197
         @JvmField var wristMidPos = 0.5133
-        @JvmField var clawOpenPos = 0.0
-        @JvmField var clawClosedPos = 1.0
+        @JvmField var clawOpenPos = 1.0
+        @JvmField var clawClosedPos = 0.0
 
         @JvmField var shoulderTeleInit = shoulderNeutralPos
         @JvmField var elbowTeleInit = elbowNeutralPos
