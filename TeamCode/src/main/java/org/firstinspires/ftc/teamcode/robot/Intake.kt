@@ -4,8 +4,12 @@ import android.graphics.Color
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.InstantAction
+import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
+import com.lib.units.SleepAction
+import com.lib.units.s
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.Servo
@@ -29,7 +33,24 @@ class Intake(
         )
         @JvmField var targetPosTolerance = 10
         @JvmField var extendoLim = 600
+
+        @JvmField var titlActionSleepDuration = 1.s
+
+        @JvmField var extendoMax = 600
+        @JvmField var extendoIn = 0
+
+        @JvmField var tiltUp = 0.04
+        @JvmField var tiltDown = 0.49
+
         @JvmField var tiltTeleInit = 0.5106
+        @JvmField var tiltAutoInit = tiltUp
+    }
+
+    enum class SensorColor {
+        YELLOW,
+        BLUE,
+        RED,
+        NONE
     }
 
     enum class Mode {
@@ -38,6 +59,13 @@ class Intake(
     }
 
     var sensorHue: Float = 0f
+
+    val sensorColor get() = when {
+        sensorHue in 5f..35f -> SensorColor.RED
+        sensorHue in 205f..235f -> SensorColor.BLUE
+        sensorHue in 60f..90f -> SensorColor.YELLOW
+        else -> SensorColor.NONE
+    }
 
     fun updateHue() {
         val normalizedColors = colorSensor.normalizedColors
@@ -85,6 +113,10 @@ class Intake(
         tiltPosition = IntakeConfig.tiltTeleInit
     }
 
+    fun initAuto() {
+        tiltPosition = IntakeConfig.tiltAutoInit
+    }
+
     fun update(deltaTime: Duration) {
         if (extendoMode == Mode.PID)
             _extendoPower = IntakeConfig.controller.calculate(extendoPosition.toDouble(), extendoTargetPosition.toDouble(), deltaTime)
@@ -102,5 +134,24 @@ class Intake(
             return abs(extendoTargetPosition - extendoPosition) > IntakeConfig.targetPosTolerance
         }
 
+    }
+
+    fun extendoMaxAction() = extendoToPosAction(IntakeConfig.extendoMax)
+    fun extendoInAction() = extendoToPosAction(IntakeConfig.extendoIn)
+
+    fun tiltToPosAction(pos: Double): Action {
+        val sleepDuration = IntakeConfig.titlActionSleepDuration * abs(pos - tiltPosition)
+        return SequentialAction(
+            InstantAction { tiltPosition = pos },
+            SleepAction(sleepDuration)
+        )
+    }
+
+    fun tiltUpAction() = tiltToPosAction(IntakeConfig.tiltUp)
+    fun tiltDownAction() = tiltToPosAction(IntakeConfig.tiltDown)
+
+    fun waitForColorAction(waitColor: SensorColor) = Action {
+        updateHue()
+        sensorColor != waitColor
     }
 }
