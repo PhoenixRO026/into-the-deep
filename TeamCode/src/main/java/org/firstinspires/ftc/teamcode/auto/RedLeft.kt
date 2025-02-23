@@ -132,10 +132,7 @@ class RedLeft : LinearOpMode() {
             .afterTime(0.0, SequentialAction(grabSample))//4 sec
             .afterTime(0.0, SequentialAction(scoreBasket))// 6 sec*/
 
-            .setTangent(-90.0.deg + 180.0.deg)
-            .splineTo(pivot.position, pivot.heading)
-            .setTangent(-135.0.deg + 180.0.deg)
-            .lineToXLinearHeading(basket.position.x, basket.heading)
+            .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,scoreBasket())
 
