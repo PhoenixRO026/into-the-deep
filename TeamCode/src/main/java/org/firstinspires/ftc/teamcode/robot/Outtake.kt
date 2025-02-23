@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.robot
 
 import com.acmerobotics.dashboard.config.Config
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
-import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.ParallelAction
-import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.units.Duration
 import com.lib.units.SleepAction
 import com.lib.units.s
@@ -122,44 +121,74 @@ class Outtake(
         extendoPos += extendoSpeed * (deltaTime / OuttakeConfig.extendoSpeed)
     }
 
-    fun extendoToPosAction(pos: Double): Action {
-        val sleepDuration = OuttakeConfig.extendoActionSleepDuration * abs(pos - extendoPos)
-        return SequentialAction(
-            InstantAction { extendoPos = pos },
-            SleepAction(sleepDuration)
-        )
+    fun extendoToPosAction(pos: Double) = object : Action {
+        var init = true
+        lateinit var sleepAction: Action
+        override fun run(p: TelemetryPacket): Boolean {
+            if (init) {
+                init = false
+                if (pos == extendoPos) return false
+                sleepAction = SleepAction(OuttakeConfig.extendoActionSleepDuration * abs(pos - extendoPos))
+                extendoPos = pos
+            }
+            return sleepAction.run(p)
+        }
     }
 
-    fun shoulderToPosAction(pos: Double): Action {
-        val sleepDuration = OuttakeConfig.shoulderActionSleepDuration * abs(pos - shoulderPos)
-        return SequentialAction(
-            InstantAction { shoulderPos = pos },
-            SleepAction(sleepDuration)
-        )
+    fun shoulderToPosAction(pos: Double) = object : Action {
+        var init = true
+        lateinit var sleepAction: Action
+        override fun run(p: TelemetryPacket): Boolean {
+            if (init) {
+                init = false
+                if (pos == shoulderPos) return false
+                sleepAction = SleepAction(OuttakeConfig.shoulderActionSleepDuration * abs(pos - shoulderPos))
+                shoulderPos = pos
+            }
+            return sleepAction.run(p)
+        }
     }
 
-    fun elbowToPosAction(pos: Double): Action {
-        val sleepDuration = OuttakeConfig.elbowActionSleepDuration * abs(pos - elbowPos)
-        return SequentialAction(
-            InstantAction { elbowPos = pos },
-            SleepAction(sleepDuration)
-        )
+    fun elbowToPosAction(pos: Double) = object : Action {
+        var init = true
+        lateinit var sleepAction: Action
+        override fun run(p: TelemetryPacket): Boolean {
+            if (init) {
+                init = false
+                if (pos == elbowPos) return false
+                sleepAction = SleepAction(OuttakeConfig.elbowActionSleepDuration * abs(pos - elbowPos))
+                elbowPos = pos
+            }
+            return sleepAction.run(p)
+        }
     }
 
-    fun wristToPosAction(pos: Double): Action {
-        val sleepDuration = OuttakeConfig.wristActionSleepDuration * abs(pos - wristPos)
-        return SequentialAction(
-            InstantAction { wristPos = pos },
-            SleepAction(sleepDuration)
-        )
+    fun wristToPosAction(pos: Double) = object : Action {
+        var init = true
+        lateinit var sleepAction: Action
+        override fun run(p: TelemetryPacket): Boolean {
+            if (init) {
+                init = false
+                if (pos == wristPos) return false
+                sleepAction = SleepAction(OuttakeConfig.wristActionSleepDuration * abs(pos - wristPos))
+                wristPos = pos
+            }
+            return sleepAction.run(p)
+        }
     }
 
-    fun clawToPosAction(pos: Double): Action {
-        val sleepDuration = OuttakeConfig.clawActionSleepDuration * abs(pos - clawPos)
-        return SequentialAction(
-            InstantAction { clawPos = pos },
-            SleepAction(sleepDuration)
-        )
+    fun clawToPosAction(pos: Double) = object : Action {
+        var init = true
+        lateinit var sleepAction: Action
+        override fun run(p: TelemetryPacket): Boolean {
+            if (init) {
+                init = false
+                if (pos == clawPos) return false
+                sleepAction = SleepAction(OuttakeConfig.clawActionSleepDuration * abs(pos - clawPos))
+                clawPos = pos
+            }
+            return sleepAction.run(p)
+        }
     }
 
     fun openClawAction() = clawToPosAction(1.0)
