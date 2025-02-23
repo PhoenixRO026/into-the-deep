@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.robot
 
+import android.graphics.Color
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
@@ -13,8 +15,8 @@ import kotlin.math.abs
 class Intake(
     val extendoMotor: DcMotorEx,
     val sweeperMotor: DcMotorEx,
+    val extendoEncoder: Encoder,
     val tiltServo: Servo,
-    val extendoEncoderMotor: DcMotorEx,
     val colorSensor: NormalizedColorSensor
 ) {
     @Config
@@ -27,7 +29,7 @@ class Intake(
         )
         @JvmField var targetPosTolerance = 10
         @JvmField var extendoLim = 600
-        @JvmField var tiltInit = 0.5106
+        @JvmField var tiltTeleInit = 0.5106
     }
 
     enum class Mode {
@@ -35,11 +37,25 @@ class Intake(
         RAW_POWER
     }
 
-    private var extendoOffset = 0
+    var sensorHue: Float = 0f
+
+    fun updateHue() {
+        val normalizedColors = colorSensor.normalizedColors
+        val hsv = floatArrayOf(0f, 0f, 0f)
+        Color.RGBToHSV(
+            (normalizedColors.red * 256).toInt(),
+            (normalizedColors.green * 256).toInt(),
+            (normalizedColors.blue * 256).toInt(),
+            hsv
+        )
+        sensorHue = hsv[0]
+    }
+
+    private var extendoOffset = extendoEncoder.getPositionAndVelocity().position
 
     private var extendoMode = Mode.RAW_POWER
 
-    val extendoPosition = extendoEncoderMotor.currentPosition - extendoOffset
+    val extendoPosition = extendoEncoder.getPositionAndVelocity().position - extendoOffset
 
     var extendoTargetPosition = extendoPosition
         set(value) {
@@ -62,11 +78,11 @@ class Intake(
     var tiltPosition by tiltServo::position
 
     fun resetExtendoPosition() {
-        extendoOffset = extendoEncoderMotor.currentPosition
+        extendoOffset = extendoEncoder.getPositionAndVelocity().position
     }
 
-    fun init() {
-        tiltPosition = IntakeConfig.tiltInit
+    fun initTeleop() {
+        tiltPosition = IntakeConfig.tiltTeleInit
     }
 
     fun update(deltaTime: Duration) {

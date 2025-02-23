@@ -3,15 +3,16 @@ package org.firstinspires.ftc.teamcode.robot
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
-import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorEx
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
 import kotlin.math.abs
 
 class Lift(
-    val leftMotor: DcMotor,
-    val rightMotor: DcMotor,
-    val encoderMotor: DcMotor
+    val leftMotor: DcMotorEx,
+    val rightMotor: DcMotorEx,
+    val encoder: Encoder
 ) {
     @Config
     data object LiftConfig {
@@ -33,9 +34,9 @@ class Lift(
     }
 
     private var currentMode = Mode.RAW_POWER
-    private var offset = 0
+    private var offset = encoder.getPositionAndVelocity().position
 
-    val position get() = encoderMotor.currentPosition - offset
+    val position get() = encoder.getPositionAndVelocity().position - offset
 
     private var _power
         get() = rightMotor.power
@@ -61,7 +62,7 @@ class Lift(
 
 
     fun resetPosition() {
-        offset = encoderMotor.currentPosition
+        offset = encoder.getPositionAndVelocity().position
     }
 
     fun update(deltaTime: Duration) {

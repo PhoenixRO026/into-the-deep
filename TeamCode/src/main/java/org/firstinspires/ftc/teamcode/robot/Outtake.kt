@@ -17,11 +17,12 @@ class Outtake(
 ) {
     @Config
     data object OuttakeConfig {
-        @JvmField var shoulderInit = 0.6404
-        @JvmField var elbowInit = 0.5159
-        @JvmField var clawInit = 1.0
+        @JvmField var shoulderTeleInit = 0.6404
+        @JvmField var elbowTeleInit = 0.5159
+        @JvmField var clawTeleInit = 1.0
         @JvmField var extendoSpeed = 3.s
         @JvmField var actionSleepDuration = 1.s
+        @JvmField var wristMidPos = 0.5133
     }
 
     var extendoSpeed = 0.0
@@ -59,10 +60,11 @@ class Outtake(
             clawServo.position = value
         }
 
-    fun init() {
-        shoulderPos = OuttakeConfig.shoulderInit
-        elbowPos = OuttakeConfig.elbowInit
-        clawPos = OuttakeConfig.clawInit
+    fun initTeleop() {
+        shoulderPos = OuttakeConfig.shoulderTeleInit
+        elbowPos = OuttakeConfig.elbowTeleInit
+        clawPos = OuttakeConfig.clawTeleInit
+        writsToMidPos()
     }
 
     fun update(deltaTime: Duration) {
@@ -93,4 +95,8 @@ class Outtake(
         InstantAction { clawPos = pos },
         SleepAction(OuttakeConfig.actionSleepDuration)
     )
+
+    fun writsToMidPos() {
+        wristPos = OuttakeConfig.wristMidPos
+    }
 }
