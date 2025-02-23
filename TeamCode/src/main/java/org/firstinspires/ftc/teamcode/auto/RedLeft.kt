@@ -125,61 +125,62 @@ class RedLeft : LinearOpMode() {
         ///+2
         ///
 
-        val action = mecanumDrive.actionBuilder(startPose.pose2d).ex()
-            //.afterTime(0.0, SequentialAction(initRobot,getSample,grabSample,scoreBasket))
-            /*
-            .afterTime(0.0, SequentialAction(initRobot,getSample))//5 sec
-            .afterTime(0.0, SequentialAction(grabSample))//4 sec
-            .afterTime(0.0, SequentialAction(scoreBasket))// 6 sec*/
-
+        val preloadAction = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,scoreBasket())
 
-            .waitSeconds(3.5.s)
             .afterTime(0.0,InstantAction{robot.intake.intakeDown()})
+            .build()
 
+        val firstYellowScore = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(-90.0.deg + 180.0.deg)
             .splineToLinearHeading(
                 Pose(first_yellow.position, first_yellow.heading),
                 -90.0.deg + 180.0.deg
             )
 
-            .afterTime(0.0,SequentialAction(getSample()))
-            .waitSeconds(3.s)
+            .afterTime(0.0, getSample())
+            .waitSeconds(2.5.s)
             .setTangent(90.0.deg + 180.0.deg)
             .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
 
-            .afterTime(0.0,grabSample())
-            .waitSeconds(2.s)
-            .afterTime(0.0, scoreBasket())
+            .afterTime(0.0,SequentialAction(grabSample(), scoreBasket()))
+            .build()
 
-            .waitSeconds(3.s)
+        val midYellowScore = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(-135.0.deg + 180.0.deg)
-            .splineToLinearHeading(Pose(mid_yellow.position, mid_yellow.heading),
-                90.deg
-            )
+            .splineToLinearHeading(Pose(mid_yellow.position, mid_yellow.heading), 90.deg)
 
-            .afterTime(0.0,SequentialAction(getSample()))
+            .afterTime(0.0, getSample())
             .waitSeconds(2.5.s)
             .setTangent(90.0.deg + 180.0.deg)
             .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
 
             .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
-            .waitSeconds(6.s)
+            .build()
+
+        val lastYellowScore = mecanumDrive.actionBuilder(startPose.pose2d).ex()
             .setTangent(180.0.deg + 180.0.deg)
             .splineToLinearHeading(
                 Pose(last_yellow.position, last_yellow.heading),
                 -90.0.deg + 180.0.deg
             )
 
-            .afterTime(0.0,SequentialAction(getSample()))
+            .afterTime(0.0, getSample())
             .waitSeconds(2.5.s)
             .setTangent(90.0.deg + 180.0.deg)
             .splineToLinearHeading(Pose(basket.position, basket.heading), 45.0.deg + 180.0.deg)
+
             .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
-            .waitSeconds(6.s)
             .build()
+
+        val action = SequentialAction(
+            preloadAction,
+            firstYellowScore,
+            midYellowScore,
+            lastYellowScore
+        )
 
         telemetry.addData("Config name", config.name)
         telemetry.addLine("READY!")
