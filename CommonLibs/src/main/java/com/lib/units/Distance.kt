@@ -4,6 +4,7 @@ package com.lib.units
 
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.Vector2d
+import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -59,6 +60,14 @@ fun inch(number: Double) = number.inch
 @Suppress("FunctionName")
 fun Vector2d(x: Distance, y: Distance) = Distance2d(x, y)
 
+fun Vector2d.headingTowards(destination: Vector2d): Pose2d {
+    val diffVec = Vector2d(
+        x = destination.x - x,
+        y = destination.y - y
+    )
+    return Pose2d(this, atan2(diffVec.y, diffVec.x))
+}
+
 data class Distance2d(@JvmField var x: Distance, @JvmField var y: Distance) {
     operator fun plus(other: Distance2d) = Distance2d(x + other.x, y + other.y)
     operator fun minus(other: Distance2d) = Distance2d(x - other.x, y - other.y)
@@ -72,6 +81,10 @@ data class Distance2d(@JvmField var x: Distance, @JvmField var y: Distance) {
     val asInch get() = Vector2d(x.asInch, y.asInch)
 
     val vector2d get() = asInch
+
+    fun headingTowards(destination: Distance2d): Pose {
+        return this.vector2d.headingTowards(destination.vector2d).pose
+    }
 }
 
 val Vector2d.m get() = Distance2d(x.m, y.m)

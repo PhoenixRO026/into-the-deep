@@ -370,6 +370,13 @@ class TrajectoryActionBuilderEx(private var builder: TrajectoryActionBuilder) {
     ) = strafeToLinearHeading(pos.asInch, heading.asRad, velConstraintOverride, accelConstraintOverride)
 
     @JvmOverloads
+    fun strafeToLinearHeading(
+        pose: Pose,
+        velConstraintOverride: VelConstraint? = null,
+        accelConstraintOverride: AccelConstraint? = null
+    ) = strafeToLinearHeading(pose.position, pose.heading, velConstraintOverride, accelConstraintOverride)
+
+    @JvmOverloads
     fun strafeToSplineHeading(
         pos: Vector2d,
         heading: Rotation2d,

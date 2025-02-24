@@ -5,7 +5,6 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.ftc.PinpointView;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.Objects;
@@ -34,6 +33,7 @@ public final class PinpointLocalizer implements Localizer {
         //double mmPerTick = 25.4 * inPerTick;
         double mmPerInch = 25.4;
         driver.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        //noinspection SuspiciousNameCombination
         driver.setOffsets(PARAMS.parYTicks, PARAMS.perpXTicks);
 
         // TODO: reverse encoder directions if needed
