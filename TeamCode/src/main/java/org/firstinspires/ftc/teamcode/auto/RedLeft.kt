@@ -11,6 +11,7 @@ import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.roadrunner_ext.ex
+import com.lib.units.Distance2d
 import com.lib.units.Pose
 import com.lib.units.SleepAction
 import com.lib.units.deg
@@ -25,11 +26,11 @@ import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 
 @Autonomous
 class RedLeft : LinearOpMode() {
-    val startPose = Pose(-33.4.inch, -61.inch, 90.0.deg)
+    val startPose = Pose(-37.5.inch, -61.inch, 90.0.deg)
     val basket = Pose(-52.0.inch, -53.0.inch, 45.0.deg)
-    val first_yellow = Pose(-49.inch, -47.0.inch, 90.0.deg)
-    val mid_yellow = Pose(-59.0.inch, -47.0.inch, 90.0.deg)
-    val last_yellow = Pose(-57.0.inch, -43.0.inch, 120.0.deg)
+    val first_yellow = Distance2d(-49.inch, -47.0.inch).headingTowards(Distance2d(-58.inch, -26.0.inch))
+    val mid_yellow = Distance2d(-59.0.inch, -47.0.inch).headingTowards(Distance2d(-58.inch, -26.0.inch))
+    val last_yellow = Distance2d(-57.0.inch, -43.0.inch).headingTowards(Distance2d(-69.inch, -26.0.inch))
 
     override fun runOpMode() {
         val config = robotHardwareConfigTransilvaniaCollege

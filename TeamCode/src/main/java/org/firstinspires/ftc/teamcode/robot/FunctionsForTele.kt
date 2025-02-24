@@ -58,11 +58,15 @@ class FunctionsForTele(
         InstantAction{robot.outtake.clawPos=1.0},
         robot.lift.liftToPosAction(values.lift.liftWaitingPos),
         ParallelAction(
+            robot.outtake.extendoToPosAction(values.outtake.extendoIntakePos),
             robot.outtake.shoudlerToPosAction(values.outtake.shoulderIntakePos),
             robot.outtake.elbowToPosAction(values.outtake.elbowIntakePos)
         ),
+        SleepAction(0.5.s),
         robot.lift.liftToPosAction(values.lift.liftIntakePos),
+        SleepAction(0.5.s),
         InstantAction{robot.outtake.clawPos=0.0},
+        SleepAction(0.5.s),
         robot.lift.liftToPosAction(values.lift.liftWaitingPos),
     )
 

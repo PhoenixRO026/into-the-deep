@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.Vector2d
 import com.lib.roadrunner_ext.ex
+import com.lib.units.Distance2d
 import com.lib.units.M
 import com.lib.units.Pose
 import com.lib.units.Pose2d
@@ -23,12 +24,19 @@ fun main() {
     System.setProperty("sun.java2d.opengl", "true")
     //val startPose = Pose(23.0.inch, -60.0.inch, 90.0.deg)
 
-    val startPose = Pose(-33.4.inch, -61.inch, 90.0.deg)
+    val startPose = Pose(-37.5.inch, -61.inch, 90.0.deg)
     val pivot = Pose(-47.0.inch, -47.0.inch, 90.deg)
     val basket = Pose(-52.0.inch, -53.0.inch, 45.0.deg)
-    val first_yellow = Pose(-49.inch, -47.0.inch, 90.0.deg)
-    val mid_yellow = Pose(-59.0.inch, -47.0.inch, 90.0.deg)
-    val last_yellow = Pose(-57.0.inch, -43.0.inch, 125.0.deg)
+    val first_yellow = Distance2d(-49.inch, -47.0.inch).headingTowards(Distance2d(-58.inch, -26.0.inch))
+    val mid_yellow = Distance2d(-59.0.inch, -47.0.inch).headingTowards(Distance2d(-58.inch, -26.0.inch))
+    val last_yellow = Distance2d(-57.0.inch, -43.0.inch).headingTowards(Distance2d(-69.inch, -26.0.inch))
+
+    /*
+    * 48 26
+    * 58 26
+    * 69 26
+    * */
+
 
     val meepMeep = MeepMeep(600)
 
@@ -68,6 +76,7 @@ fun main() {
         .strafeToLinearHeading(basket.position, basket.heading)
 
         .waitSeconds(6.s)*/
+
         .setTangent(90.0.deg)
         .strafeToLinearHeading(basket.position, basket.heading)
         .setTangent(90.0.deg)
