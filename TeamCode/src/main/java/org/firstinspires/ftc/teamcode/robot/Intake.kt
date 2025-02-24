@@ -5,6 +5,8 @@ import android.view.WindowInsets.Side
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.InstantAction
+import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.qualcomm.robotcore.hardware.ColorSensor
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -110,6 +112,32 @@ class Intake(
         return true
     }
 
+    fun waitUntilRed() = Action {
+        val hsvValues = floatArrayOf(0f, 0f, 0f)
+        Color.colorToHSV(intakeColorSensor.argb(), hsvValues)
+        shouldStopIntake("RED", hsvValues[0], false)
+    }
+
+    fun waitUntilNoneRed() = Action {
+        val hsvValues = floatArrayOf(0f, 0f, 0f)
+        Color.colorToHSV(intakeColorSensor.argb(), hsvValues)
+        !shouldStopIntake("RED", hsvValues[0], false)
+    }
+
+    fun snatchRedSample() = SequentialAction(
+        InstantAction{
+            extendoTargetPosition = values.extendoLim
+            sweeperPower = 1.0
+            intakeDown()
+                     },
+        waitUntilRed(),
+        InstantAction{
+            sweeperPower = 0.0
+            intakeUp()
+        },
+        extendoToPosAction(values.extendoInBot)
+    )
+
     fun snatchSpecimen(hsvValues: FloatArray) {
         extendoTargetPosition = values.extendoLim
         while (extendoPosition <= 600){
@@ -129,6 +157,16 @@ class Intake(
         sweeperPower = 0.0
         extendoTargetPosition = values.extendoInBot
     }
+
+    fun moveSample() = SequentialAction(
+        InstantAction{
+            sweeperPower = 1.0
+        },
+        waitUntilNoneRed(),
+        InstantAction{
+            sweeperPower = 0.0
+        }
+    )
 
     fun kickSample(hsvValues: FloatArray){// have to change for specimen auto
         intakeUp()

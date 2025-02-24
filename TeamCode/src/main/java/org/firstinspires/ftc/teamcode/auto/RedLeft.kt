@@ -28,7 +28,7 @@ import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 class RedLeft : LinearOpMode() {
     val startPose = Pose(-37.5.inch, -61.inch, 90.0.deg)
     val basket = Pose(-52.0.inch, -53.0.inch, 45.0.deg)
-    val first_yellow = Distance2d(-49.inch, -47.0.inch).headingTowards(Distance2d(-58.inch, -26.0.inch))
+    val first_yellow = Distance2d(-49.inch, -47.0.inch).headingTowards(Distance2d(-47.inch, -26.0.inch))
     val mid_yellow = Distance2d(-59.0.inch, -47.0.inch).headingTowards(Distance2d(-58.inch, -26.0.inch))
     val last_yellow = Distance2d(-57.0.inch, -43.0.inch).headingTowards(Distance2d(-69.inch, -26.0.inch))
 
@@ -111,16 +111,10 @@ class RedLeft : LinearOpMode() {
 
         fun getSample() = SequentialAction(
             robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
-            InstantAction { robot.intake.intakeDown()},
-            //SleepAction(5.s),
-            InstantAction { robot.intake.snatchSpecimen(hsvValues) },
-            SleepAction(0.5.s),
-            robot.intake.extendoToPosAction(values.intake.extendoInBot),
-            InstantAction { robot.intake.intakeUp() },
+            robot.intake.snatchRedSample(),
             SleepAction(0.3.s),
-            InstantAction { robot.intake.kickSample(hsvValues)},
+            robot.intake.moveSample(),
             SleepAction(0.3.s),
-            InstantAction { robot.intake.sweeperPower = 0.0 }
         )
         ///+2
         ///
@@ -197,13 +191,6 @@ class RedLeft : LinearOpMode() {
 
         while (isStarted && !isStopRequested && running) {
             timeKeep.resetDeltaTime()
-
-            Color.RGBToHSV(
-                (robot.intake.intakeColorSensor.red() * SCALE_FACTOR).toInt(),
-                (robot.intake.intakeColorSensor.green() * SCALE_FACTOR).toInt(),
-                (robot.intake.intakeColorSensor.blue() * SCALE_FACTOR).toInt(),
-                hsvValues
-            )
 
             val packet = TelemetryPacket()
             packet.fieldOverlay().operations.addAll(canvas.operations)
