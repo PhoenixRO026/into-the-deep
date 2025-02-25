@@ -48,7 +48,7 @@ class Robot(
     )
 
     fun armAndLiftToIntakeWaiting() = SequentialAction(
-        outtake.armToIntakeWaitAction(),
+        outtake.armToIntakeAction(),
         lift.liftToIntakeWaitingAction()
     )
 

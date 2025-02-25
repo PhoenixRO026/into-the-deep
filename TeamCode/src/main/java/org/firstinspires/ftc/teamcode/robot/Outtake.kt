@@ -51,9 +51,6 @@ class Outtake(
         @JvmField var elbowIntakePos = 0.2916
         @JvmField var extendoIntakePos = 0.5307
 
-        @JvmField var shoulderIntakeWaitingPos = 0.5
-        @JvmField var elbowIntakeWaitingPos = 0.5
-
         @JvmField var shoulderBasketPos = 0.4045
         @JvmField var elbowBasketPos = 0.7172
         @JvmField var extendoBasketPos = extendoNeutralPos
@@ -205,9 +202,6 @@ class Outtake(
     fun elbowToIntakeAction() = elbowToPosAction(OuttakeConfig.elbowIntakePos)
     fun extendoToIntakeAction() = extendoToPosAction(OuttakeConfig.extendoIntakePos)
 
-    fun shoulderToIntakeWaitingAction() = shoulderToPosAction(OuttakeConfig.shoulderIntakeWaitingPos)
-    fun elbowToIntakeWaitingAction() = elbowToPosAction(OuttakeConfig.elbowIntakeWaitingPos)
-
     fun shoulderToBarAction() = shoulderToPosAction(OuttakeConfig.shoulderBarPos)
     fun elbowToBarAction() = elbowToPosAction(OuttakeConfig.elbowBarPos)
     fun extendoToBarAction() = extendoToPosAction(OuttakeConfig.extendoBarPos)
@@ -223,25 +217,22 @@ class Outtake(
     fun armToNeutralAction() = ParallelAction(
         shoulderToNeutralAction(),
         elbowToNeutralAction(),
-        wristToMidAction()
+        wristToMidAction(),
+        extendoToNeutralAction()
     )
 
     fun armToIntakeAction() = ParallelAction(
         shoulderToIntakeAction(),
         elbowToIntakeAction(),
-        wristToMidAction()
-    )
-
-    fun armToIntakeWaitAction() = ParallelAction(
-        shoulderToIntakeWaitingAction(),
-        elbowToIntakeWaitingAction(),
-        wristToMidAction()
+        wristToMidAction(),
+        extendoToIntakeAction()
     )
 
     fun armToBasketAction() = ParallelAction(
         shoulderToBasketAction(),
         elbowToBasketAction(),
         wristToMidAction(),
+        extendoToBasketAction(),
         openClawAction()
     )
 }

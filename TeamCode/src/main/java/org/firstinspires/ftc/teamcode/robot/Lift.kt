@@ -26,11 +26,11 @@ class Lift(
         @JvmField
         var kF: Double = 0.18
         @JvmField
-        var targetPosTolerance = 10
+        var targetPosTolerance = 20
 
-        @JvmField var basketPos = 2980
+        @JvmField var basketPos = 2850
         @JvmField var intakePos = 422
-        @JvmField var intakeWaitingPos = 568
+        @JvmField var intakeWaitingPos = 800
     }
 
     enum class Mode {
