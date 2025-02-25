@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.ParallelAction
+import com.acmerobotics.roadrunner.RaceAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
@@ -196,6 +197,11 @@ class Intake(
             waitForColorAction(color)
         ),
         sweeperOffAction()
+    )
+
+    fun waitFor2Colors(firstColor: SensorColor, secondColor: SensorColor) = RaceAction(
+        waitForColorAction(firstColor),
+        waitForColorAction(secondColor)
     )
 
     fun bringSampleToIntake() = SequentialAction(
