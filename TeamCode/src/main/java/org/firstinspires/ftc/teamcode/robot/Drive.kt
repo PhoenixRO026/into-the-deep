@@ -9,7 +9,7 @@ import com.lib.units.rotate
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
 
 class Drive(
-    val mecanumDrive: MecanumDrive
+    private val mecanumDrive: MecanumDrive
 ) {
     @Config
     data object DriveConfig {
