@@ -81,7 +81,7 @@ class Intake(
 
     fun shouldStopIntake(side: String, hue: Float, onlyColored: Boolean): Boolean{
         var color: String = readColor(hue)
-        if (intakeTiltCurrentPos in 0.48..0.5){//down
+        if (intakeTiltCurrentPos in 0.55..0.58){//down
             if (side == "RED"){
                 if (color == "Red")//////////////////red only
                     return true
