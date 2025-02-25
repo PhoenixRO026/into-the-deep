@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta
 @Suppress("unused")
 object RegisterTestOpModes {
     private const val GROUP: String = "test"
-    private const val DISABLED: Boolean = false
+    private const val DISABLED: Boolean = true
 
     private fun metaForClass(cls: Class<out OpMode?>): OpModeMeta {
         return OpModeMeta.Builder()
