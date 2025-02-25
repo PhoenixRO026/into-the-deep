@@ -1,16 +1,19 @@
 package org.firstinspires.ftc.teamcode.robot
 
+import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.RawEncoder
 import com.lib.units.Duration
 import com.lib.units.Pose
 import com.lib.units.cm
 import com.lib.units.deg
+import com.lib.units.s
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
 
 class Robot(
@@ -27,12 +30,32 @@ class Robot(
         outtake.initTeleop()
     }
 
+    fun initAuto() {
+        intake.initAuto()
+        outtake.initAuto()
+    }
+
     fun update(deltaTime: Duration) {
         drive.update()
         intake.update(deltaTime)
         lift.update(deltaTime)
         outtake.update(deltaTime)
     }
+
+    fun sampleToBasket() = SequentialAction(
+        lift.liftToBasketAction(),
+        outtake.armToBasketAction()
+    )
+
+    fun armAndLiftToIntakeWaiting() = SequentialAction(
+        outtake.armToIntakeWaitAction(),
+        lift.liftToIntakeWaitingAction()
+    )
+
+    fun armAndLiftToIntake() = SequentialAction(
+        outtake.armToIntakeAction(),
+        lift.liftToIntakeAction()
+    )
 
     init {
         val mecanumDrive = MecanumDrive(hardwareMap, pose.pose2d)
@@ -106,5 +129,10 @@ class Robot(
             wristServo = outtakeWristServo,
             clawServo = outtakeClawServo
         )
+    }
+
+    fun addTelemetry(telemetry: Telemetry, deltaTime: Duration) {
+        telemetry.addData("delta time ms", deltaTime.asMs)
+        telemetry.addData("fps", 1.s / deltaTime)
     }
 }

@@ -42,7 +42,8 @@ class SigmaDrive: LinearOpMode() {
                 -gamepad1.right_stick_x.toDouble()
             )
 
-
+            robot.addTelemetry(telemetry, timeKeep.deltaTime)
+            telemetry.update()
         }
     }
 }

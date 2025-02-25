@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.InstantAction
+import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
@@ -136,6 +137,9 @@ class Intake(
 
     }
 
+    fun sweeperOnAction() = InstantAction{ sweeperPower = 1.0 }
+    fun sweeperOffAction() = InstantAction{ sweeperPower = 1.0 }
+
     fun extendoMaxAction() = extendoToPosAction(IntakeConfig.extendoMax)
     fun extendoInAction() = extendoToPosAction(IntakeConfig.extendoIn)
 
@@ -154,4 +158,32 @@ class Intake(
         updateHue()
         sensorColor != waitColor
     }
+
+    fun extendReadyForSampling() = ParallelAction(
+        extendoMaxAction(),
+        tiltUpAction()
+    )
+
+    fun takeOutSample() = SequentialAction(
+        sweeperOnAction(),
+        waitForColorAction(SensorColor.NONE),
+        sweeperOffAction()
+    )
+
+    fun takeSample(color: SensorColor) = SequentialAction(
+        ParallelAction(
+            sweeperOnAction(),
+            tiltDownAction(),
+            waitForColorAction(color)
+        ),
+        sweeperOffAction()
+    )
+
+    fun bringSampleToIntake() = SequentialAction(
+        ParallelAction(
+            tiltUpAction(),
+            extendoInAction()
+        ),
+        takeOutSample()
+    )
 }
