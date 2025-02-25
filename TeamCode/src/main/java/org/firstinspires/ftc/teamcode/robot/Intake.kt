@@ -130,6 +130,13 @@ class Intake(
             sweeperPower = 1.0
             intakeDown()
                      },
+        /*SequentialAction(
+            extendoToPosAction(values.extendoLim),
+            InstantAction{
+                sweeperPower=1.0
+                intakeTiltCurrentPos = values.intakeDownPos
+                         },
+        ),*/
         waitUntilRed(),
         InstantAction{
             sweeperPower = 0.0
@@ -140,7 +147,7 @@ class Intake(
 
     fun snatchSpecimen(hsvValues: FloatArray) {
         extendoTargetPosition = values.extendoLim
-        while (extendoPosition <= 600){
+        while (extendoPosition <= 700){
             if (shouldStopIntake("RED", hsvValues[0], false)) {
                 sweeperPower = 0.0
             } else {
@@ -169,12 +176,12 @@ class Intake(
     )
 
     fun kickSample(hsvValues: FloatArray){// have to change for specimen auto
-        intakeUp()
+        //intakeUp()
         while (!shouldStopIntake("RED", hsvValues[0], false)){
             if(shouldStopIntake("RED", hsvValues[0], false))
                 sweeperPower = 0.0
             else
-                sweeperPower = 0.85
+                sweeperPower = 0.65
             Color.colorToHSV(intakeColorSensor.argb(), hsvValues)
         }
         sweeperPower = 0.0

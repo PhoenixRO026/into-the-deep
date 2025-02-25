@@ -14,13 +14,13 @@ val robotValuesTransilvaniaCollege = RobotValues(
     ),
     lift = LiftValues(
         highPos = 0,
-        basketPos = 2980,
+        basketPos = 2848,// 2980,
         secondBar = 936,
         secondBarUp = 1324,
-        inRobot = 0,
+        inRobot = 400,
         onHangBar = 0,
-        liftWaitingPos = 568,
-        liftIntakePos = 422
+        liftWaitingPos = 800,
+        liftIntakePos = 428
     ),
     intake = IntakeValues(
         boxTiltMaxTravelDuration = 5.s,

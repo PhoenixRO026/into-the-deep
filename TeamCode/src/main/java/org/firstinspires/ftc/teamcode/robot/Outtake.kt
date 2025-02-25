@@ -158,12 +158,12 @@ class Outtake(
         get() = servoExtendo.position
         set(value) {
             servoExtendo.position = value
-            _extendoTargetPos = servoExtendo.position
             extendoSpeed = 0.0
         }
 
     private var _extendoTargetPos = servoExtendo.position
         set(value) {
+            extendoCurrentPos = value
             field = value.coerceIn(0.0, 1.0)
         }
     var extendoTargetPos
@@ -182,12 +182,12 @@ class Outtake(
         get() = servoShoulder.position
         set(value) {
             servoShoulder.position = value
-            _shoulderTargetPos = servoShoulder.position
             shoulderSpeed = 0.0
         }
 
     private var _shoulderTargetPos = servoShoulder.position
         set(value) {
+            shoulderCurrentPos = value
             field = value.coerceIn(0.0, 1.0)
         }
     var shoulderTargetPos
@@ -206,12 +206,12 @@ class Outtake(
         get() = servoElbow.position
         set(value) {
             servoElbow.position = value
-            _elbowTargetPos = servoElbow.position
             elbowSpeed = 0.0
         }
 
     private var _elbowTargetPos = servoElbow.position
         set(value) {
+            elbowCurrentPos = value
             field = value.coerceIn(0.0, 1.0)
         }
     var elbowTargetPos
@@ -230,12 +230,12 @@ class Outtake(
         get() = servoWrist.position
         set(value) {
             servoWrist.position = value
-            _wristTargetPos = servoWrist.position
             wristSpeed = 0.0
         }
 
     private var _wristTargetPos = servoWrist.position
         set(value) {
+            wristCurrentPos = value
             field = value.coerceIn(0.0, 1.0)
         }
     var wristTargetPos
@@ -256,10 +256,10 @@ class Outtake(
         /*servoExtendo.update()
         if (currentMode == MODE.RUN_TO_POSITION)
             extendoPower = OuttakeConfig.extendoController.calculate(extendoPos.asRev, extendoTargetPos.asRev, timeKeep.deltaTime) + OuttakeConfig.kF*/
-        moveExtendo()
+        /*moveExtendo()
         moveShoulder()
         moveElbow()
-        moveWrist()
+        moveWrist()*/
     }
 
     private fun moveExtendo() {

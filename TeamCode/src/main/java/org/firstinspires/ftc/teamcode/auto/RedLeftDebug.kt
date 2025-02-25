@@ -25,11 +25,11 @@ import org.firstinspires.ftc.teamcode.tele.config.robotHardwareConfigTransilvani
 import org.firstinspires.ftc.teamcode.tele.values.robotValuesTransilvaniaCollege
 
 @Autonomous
-class RedLeft : LinearOpMode() {
+class RedLeftDebug : LinearOpMode() {
     val startPose = Pose(-37.5.inch, -61.inch, 90.0.deg)
     val basket = Pose(-53.5.inch, -53.5.inch, 45.0.deg)
     val first_yellow = Distance2d(-55.5.inch, -46.5.inch).headingTowards(Distance2d(-47.inch, -26.0.inch))
-    val mid_yellow = Distance2d(-58.0.inch, -45.0.inch).headingTowards(Distance2d(-58.inch, -26.0.inch))
+    val mid_yellow = Distance2d(-59.0.inch, -47.0.inch).headingTowards(Distance2d(-58.inch, -26.0.inch))
     val last_yellow = Distance2d(-57.0.inch, -43.0.inch).headingTowards(Distance2d(-69.inch, -26.0.inch))
 
     override fun runOpMode() {
@@ -64,6 +64,8 @@ class RedLeft : LinearOpMode() {
         robot.outtake.clawPos = 0.0
 
         fun initRobot() = SequentialAction(
+            robot.lift.liftToPosAction(values.lift.liftWaitingPos),
+            robot.outtake.extendoToPosAction(values.outtake.extendoIntakePos),
             InstantAction { robot.outtake.clawPos = 0.0},
             robot.outtake.shoudlerToPosAction(values.outtake.shoulderRobotPos),
             robot.outtake.elbowToPosAction(values.outtake.elbowRobotPos),
@@ -84,7 +86,7 @@ class RedLeft : LinearOpMode() {
             InstantAction { robot.outtake.clawPos = 0.0 },
             SleepAction(0.1.s)
         )
-        fun scoreBasket() = SequentialAction(
+        fun  scoreBasket() = SequentialAction(
             robot.lift.liftToPosAction(values.lift.basketPos),
             ParallelAction(
                 robot.outtake.extendoToPosAction(values.outtake.extendoRobotPos),
@@ -137,29 +139,27 @@ class RedLeft : LinearOpMode() {
             .build()
 
         val firstYellowScore = mecanumDrive.actionBuilder(first_yellow.pose2d).ex()
-            .waitSeconds(2.s)
+            .waitSeconds(2.5.s)
             .setTangent(-90.0.deg)
-            .strafeToLinearHeading(basket.position, basket.heading)
+            //.strafeToLinearHeading(basket.position, basket.heading)
 
-            .afterTime(0.0,SequentialAction(grabSample(), scoreBasket()))
-            .afterTime(0.0,InstantAction{robot.intake.intakeDown()})
+
+            .afterTime(0.0,SequentialAction(initRobot(), grabSample(), scoreBasket()))
+
             .waitSeconds(4.0.s)
-
             .setTangent(45.0.deg)
-            .strafeToLinearHeading(mid_yellow.position, mid_yellow.heading)
+            //.strafeToLinearHeading(mid_yellow.position, mid_yellow.heading)
 
             .afterTime(0.0, getSample())
             .build()
 
         val midYellowScore = mecanumDrive.actionBuilder(mid_yellow.pose2d).ex()
-            .waitSeconds(2.s)
+            .waitSeconds(2.5.s)
             .setTangent(-90.0.deg)
             .strafeToLinearHeading(basket.position, basket.heading)
 
             .afterTime(0.0,SequentialAction(grabSample(),scoreBasket()))
-            .afterTime(0.0,InstantAction{robot.intake.intakeDown()})
             .waitSeconds(4.0.s)
-
             .setTangent(0.0.deg)
             .strafeToLinearHeading(last_yellow.position, last_yellow.heading)
 
@@ -168,7 +168,7 @@ class RedLeft : LinearOpMode() {
 
         val lastYellowScore = mecanumDrive.actionBuilder(last_yellow.pose2d).ex()
             .afterTime(0.0, getSample())
-            .waitSeconds(2.s)
+            .waitSeconds(2.5.s)
             .setTangent(-90.0.deg)
             .strafeToLinearHeading(basket.position, basket.heading)
 
@@ -176,10 +176,10 @@ class RedLeft : LinearOpMode() {
             .build()
 
         val action = SequentialAction(
-            preloadAction,
+            //preloadAction,
             firstYellowScore,
-            midYellowScore,
-            lastYellowScore
+            /*midYellowScore,
+            lastYellowScore*/
         )
 
         telemetry.addData("Config name", config.name)

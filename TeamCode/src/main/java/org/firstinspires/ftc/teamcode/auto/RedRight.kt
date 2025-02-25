@@ -70,7 +70,7 @@ class RedRight : LinearOpMode() {
             robot.outtake.elbowToPosAction(values.outtake.elbowBarPos),
             robot.outtake.extendoToPosAction(values.outtake.extendoOutPos),
             SleepAction(0.5.s),
-            //InstantAction {robot.outtake.clawPos = 1.0}
+            InstantAction {robot.outtake.clawPos = 1.0}
         )
 
 
