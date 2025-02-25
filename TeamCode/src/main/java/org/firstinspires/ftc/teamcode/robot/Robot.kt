@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot
 
+import com.acmerobotics.roadrunner.InstantAction
+import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.RawEncoder
 import com.lib.units.Duration
@@ -55,6 +57,14 @@ class Robot(
     fun armAndLiftToIntake() = SequentialAction(
         outtake.armToIntakeAction(),
         lift.liftToIntakeAction()
+    )
+
+    fun turnOffAction() = ParallelAction(
+        outtake.armToNeutralAction(),
+        intake.sweeperOffAction(),
+        intake.tiltUpAction(),
+        InstantAction { intake.extendoPower = 0.0 },
+        InstantAction { lift.power = 0.0 }
     )
 
     init {
@@ -132,6 +142,7 @@ class Robot(
     }
 
     fun addTelemetry(telemetry: Telemetry, deltaTime: Duration) {
+        intake.addTelemetry(telemetry)
         telemetry.addData("delta time ms", deltaTime.asMs)
         telemetry.addData("fps", 1.s / deltaTime)
     }

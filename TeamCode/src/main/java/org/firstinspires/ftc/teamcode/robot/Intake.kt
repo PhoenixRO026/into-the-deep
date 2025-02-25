@@ -14,6 +14,7 @@ import com.lib.units.s
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
 import kotlin.math.abs
 
@@ -33,7 +34,7 @@ class Intake(
             kI = 0.004,
             stabilityThreshold = 0.2
         )
-        @JvmField var targetPosTolerance = 10
+        @JvmField var targetPosTolerance = 20
         @JvmField var extendoLim = 600
 
         @JvmField var titlActionSleepDuration = 1.s
@@ -41,10 +42,10 @@ class Intake(
         @JvmField var extendoMax = 600
         @JvmField var extendoIn = 0
 
-        @JvmField var tiltUp = 0.04
-        @JvmField var tiltDown = 0.49
+        @JvmField var tiltUp = 0.1567
+        @JvmField var tiltDown = 0.6194
 
-        @JvmField var tiltTeleInit = 0.5106
+        @JvmField var tiltTeleInit = tiltUp
         @JvmField var tiltAutoInit = tiltUp
     }
 
@@ -57,7 +58,8 @@ class Intake(
 
     enum class Mode {
         PID,
-        RAW_POWER
+        RAW_POWER,
+        ACTION
     }
 
     var sensorHue: Float = 0f
@@ -98,7 +100,7 @@ class Intake(
     var extendoPower
         get() = _extendoPower
         set(value) {
-            if (extendoMode == Mode.PID && value == 0.0) return
+            if (extendoMode != Mode.RAW_POWER && value == 0.0) return
             _extendoPower = if (extendoPosition >= IntakeConfig.extendoLim) value.coerceAtMost(0.0) else value
             extendoMode = Mode.RAW_POWER
         }
@@ -120,7 +122,11 @@ class Intake(
     }
 
     fun update(deltaTime: Duration) {
-        if (extendoMode == Mode.PID)
+        if (extendoMode == Mode.PID && abs(extendoTargetPosition - extendoPosition) <= IntakeConfig.targetPosTolerance) {
+            extendoMode = Mode.RAW_POWER
+            extendoPower = 0.0
+        }
+        if (extendoMode != Mode.RAW_POWER)
             _extendoPower = IntakeConfig.controller.calculate(extendoPosition.toDouble(), extendoTargetPosition.toDouble(), deltaTime)
     }
 
@@ -131,15 +137,27 @@ class Intake(
             if (init) {
                 init = false
                 extendoTargetPosition = pos
+                extendoMode = Mode.ACTION
             }
 
-            return abs(extendoTargetPosition - extendoPosition) > IntakeConfig.targetPosTolerance
+            return if (abs(extendoTargetPosition - extendoPosition) > IntakeConfig.targetPosTolerance) {
+                true
+            } else {
+                extendoMode = Mode.RAW_POWER
+                extendoPower = 0.0
+                false
+            }
         }
 
     }
 
+    fun addTelemetry(telemetry: Telemetry) {
+        telemetry.addData("sensor hue", sensorHue)
+        telemetry.addData("sensor color", sensorColor)
+    }
+
     fun sweeperOnAction() = InstantAction{ sweeperPower = 1.0 }
-    fun sweeperOffAction() = InstantAction{ sweeperPower = 1.0 }
+    fun sweeperOffAction() = InstantAction{ sweeperPower = 0.0 }
 
     fun extendoMaxAction() = extendoToPosAction(IntakeConfig.extendoMax)
     fun extendoInAction() = extendoToPosAction(IntakeConfig.extendoIn)

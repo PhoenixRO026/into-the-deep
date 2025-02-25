@@ -4,10 +4,12 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.SequentialAction
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.buttons.ButtonReader
+import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 
 @TeleOp
@@ -26,7 +28,9 @@ class SigmaDrive: LinearOpMode() {
         val b2Button = ButtonReader { gamepad2.b }
         val x2Button = ButtonReader { gamepad2.x }
         val y2Button = ButtonReader { gamepad2.y }
-        val buttons = listOf(a2Button, b2Button, x2Button, y2Button)
+        val leftBumper2Button = ButtonReader { gamepad2.left_bumper }
+        val rightBumper2Button = ButtonReader { gamepad2.right_bumper }
+        val buttons = listOf(a2Button, b2Button, x2Button, y2Button, leftBumper2Button, rightBumper2Button)
 
         telemetry.addLine("Ready")
         telemetry.update()
@@ -68,6 +72,18 @@ class SigmaDrive: LinearOpMode() {
 
             if (y2Button.wasJustPressed()) {
                 currentAction = robot.sampleToBasket()
+            }
+
+            if (rightBumper2Button.wasJustPressed()) {
+                currentAction = SequentialAction(
+                    robot.intake.extendReadyForSampling(),
+                    robot.intake.takeSample(Intake.SensorColor.YELLOW),
+                    robot.intake.bringSampleToIntake()
+                )
+            }
+
+            if (leftBumper2Button.wasJustPressed()) {
+                currentAction = robot.turnOffAction()
             }
 
             currentAction?.let {
