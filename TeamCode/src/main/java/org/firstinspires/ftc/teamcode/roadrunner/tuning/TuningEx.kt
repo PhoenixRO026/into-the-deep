@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
+import org.firstinspires.ftc.teamcode.roadrunner.GoBildaPinpointDriver
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointLocalizer
 
 fun fakeEncoderGroup(localizer: PinpointLocalizer) = object : EncoderGroup {
@@ -21,11 +22,11 @@ fun fakeEncoderGroup(localizer: PinpointLocalizer) = object : EncoderGroup {
 
     override val encoders: List<Encoder> = listOf(
         fakeMotorEncoder(
-            { driver.encoderX },
+            { (driver.encoderX / GoBildaPinpointDriver.goBILDA_4_BAR_POD).toInt() },
             { driver.velX }
         ),
         fakeMotorEncoder(
-            { driver.encoderY },
+            { (driver.encoderY / GoBildaPinpointDriver.goBILDA_4_BAR_POD).toInt() },
             { driver.velY }
         )
     )

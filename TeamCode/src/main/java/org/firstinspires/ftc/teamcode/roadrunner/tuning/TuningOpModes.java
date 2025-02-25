@@ -175,7 +175,6 @@ public final class TuningOpModes {
                             localizer.driver.getYawScalar()
                     );
                     localizer.driver.setYawScalar(0.0);
-                    localizer.driver.resetPosAndIMU();
                     encoderGroups.add(TuningEx.fakeEncoderGroup(localizer));
                     parEncs.add(new EncoderRef(0, 0));
                     perpEncs.add(new EncoderRef(0, 1));

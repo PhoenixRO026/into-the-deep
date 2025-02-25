@@ -18,9 +18,10 @@ class Lift(
     data object LiftConfig {
         @JvmField
         var controller = PIDController(
-            kP = 0.01,
+            kP = 0.02,
             kD = 0.0005,
-            kI = 0.009
+            kI = 0.009,
+            stabilityThreshold = 0.2
         )
         @JvmField
         var kF: Double = 0.18
