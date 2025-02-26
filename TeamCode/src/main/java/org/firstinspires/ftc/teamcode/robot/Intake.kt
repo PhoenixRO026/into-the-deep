@@ -89,7 +89,7 @@ class Intake(
 
     private var extendoOffset = extendoEncoder.getPositionAndVelocity().position
 
-    private var extendoMode = Mode.RAW_POWER
+    var extendoMode = Mode.RAW_POWER
 
     val extendoPosition get() = extendoEncoder.getPositionAndVelocity().position - extendoOffset
 
@@ -242,9 +242,10 @@ class Intake(
     )
 
     fun takeSampleSequenceAction(color: SensorColor) = SequentialAction(
-        extendReadyForSampling(),
         takeSample(color),
-        bringSampleToIntake(),
-        takeOutSample()
+        ParallelAction(
+            tiltUpAction(),
+            extendoInAction()
+        )
     )
 }

@@ -9,8 +9,10 @@ import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.units.Distance2d
 import com.lib.units.Pose
+import com.lib.units.SleepAction
 import com.lib.units.deg
 import com.lib.units.inch
+import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
@@ -20,13 +22,13 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 @Autonomous
 class RedLeft : LinearOpMode() {
     private val startPose = Pose(-36.inch, -60.inch, 90.deg)
-    private val basketPose = Pose(-54.inch, -54.inch, 45.deg)
+    private val basketPose = Pose(-52.inch, -52.inch, 45.deg)
     private val firstYellowSample = Distance2d(-48.inch, -25.5.inch)
     private val firstYellowPose = Distance2d(-48.inch, -50.inch).headingTowards(firstYellowSample)
-    private val secondYellowSample = Distance2d(-58.5.inch, -25.5.inch)
+    private val secondYellowSample = Distance2d(-56.5.inch, -25.5.inch)
     private val secondYellowPose = Distance2d(-52.inch, -50.inch).headingTowards(secondYellowSample)
-    private val thirdYellowSample = Distance2d(-68.5.inch, -25.5.inch)
-    private val thirdYellowPose = Distance2d(-56.inch, -50.inch).headingTowards(thirdYellowSample)
+    private val thirdYellowSample = Distance2d(-64.5.inch, -25.5.inch)
+    private val thirdYellowPose = Distance2d(-48.inch, -46.inch).headingTowards(thirdYellowSample)
     private val parkPose = Pose(-24.inch, -12.inch, 0.deg)
 
     override fun runOpMode() {
@@ -62,7 +64,8 @@ class RedLeft : LinearOpMode() {
                     .build()
             ),
             outtake.armToBasketAction(),
-            outtake.openClawAction()
+            outtake.openClawAction(),
+            SleepAction(0.2.s),
         )
 
         val action = SequentialAction(
@@ -74,9 +77,11 @@ class RedLeft : LinearOpMode() {
             ),
             outtake.armToBasketAction(),
             outtake.openClawAction(),
+            SleepAction(0.2.s),
             sampleCycle(firstYellowPose),
             sampleCycle(secondYellowPose),
-            sampleCycle(thirdYellowPose)
+            sampleCycle(thirdYellowPose),
+            outtake.armToNeutralAction()
         )
 
         action.preview(previewCanvas)

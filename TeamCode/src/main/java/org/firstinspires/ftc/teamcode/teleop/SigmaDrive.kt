@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -67,8 +68,6 @@ abstract class SigmaDrive: LinearOpMode() {
 
         robot.lift.power = -gamepad2.right_stick_y.toDouble()
 
-        robot.intake.sweeperPower = gamepad2.left_trigger.toDouble()
-
         if (gamepad2.left_bumper) {
             robot.outtake.armToBasketInstant()
         }
@@ -77,8 +76,16 @@ abstract class SigmaDrive: LinearOpMode() {
             currentAction = ParallelAction(
                 SequentialAction(
                     robot.lift.liftToIntakeWaitingAction(),
+                    InstantAction {
+                        robot.intake.extendoTargetPosition = Intake.IntakeConfig.extendoIn
+                        robot.intake.extendoMode = Intake.Mode.ACTION
+                    },
                     robot.armAndLiftToIntake(),
-                    robot.outtake.closeClawAction()
+                    robot.outtake.closeClawAction(),
+                    InstantAction {
+                        robot.intake.extendoMode = Intake.Mode.RAW_POWER
+                        robot.intake.extendoPower = 0.0
+                    }
                 ),
                 currentAction ?: Action { false }
             )
@@ -134,7 +141,10 @@ abstract class SigmaDrive: LinearOpMode() {
 
         if (gamepad1.x) {
             currentAction = ParallelAction(
-                robot.intake.takeSampleSequenceAction(Intake.SensorColor.YELLOW),
+                SequentialAction(
+                    robot.intake.takeSampleSequenceAction(Intake.SensorColor.YELLOW),
+                    robot.intake.takeOutSample()
+                ),
                 currentAction ?: Action { false }
             )
         }
@@ -157,7 +167,12 @@ abstract class SigmaDrive: LinearOpMode() {
             robot.intake.extendoPower = 0.0
         }
 
-        robot.intake.sweeperPower = -gamepad1.left_trigger.toDouble()
+        if (gamepad2.left_trigger != 0f) {
+            robot.intake.sweeperPower = gamepad2.left_trigger.toDouble()
+        } else {
+            robot.intake.sweeperPower = -gamepad1.left_trigger.toDouble()
+        }
+
     }
 
     private fun movement(robot: Robot) {
