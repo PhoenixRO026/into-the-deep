@@ -12,6 +12,7 @@ import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
 import com.lib.units.SleepAction
 import com.lib.units.s
+import com.qualcomm.robotcore.hardware.ColorSensor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.Servo
@@ -66,16 +67,17 @@ class Intake(
 
     var sensorHue: Float = 0f
 
+    var hsv = floatArrayOf(0f, 0f, 0f)
+
     val sensorColor get() = when {
-        sensorHue in 5f..35f -> SensorColor.RED
-        sensorHue in 205f..235f -> SensorColor.BLUE
-        sensorHue in 60f..90f -> SensorColor.YELLOW
+        hsv[1] != 0f && sensorHue in 0f..40f -> SensorColor.RED
+        hsv[1] != 0f && sensorHue in 200f..280f -> SensorColor.BLUE
+        hsv[1] != 0f && sensorHue in 40f..110f -> SensorColor.YELLOW
         else -> SensorColor.NONE
     }
 
     fun updateHue() {
         val normalizedColors = colorSensor.normalizedColors
-        val hsv = floatArrayOf(0f, 0f, 0f)
         Color.RGBToHSV(
             (normalizedColors.red * 256).toInt(),
             (normalizedColors.green * 256).toInt(),

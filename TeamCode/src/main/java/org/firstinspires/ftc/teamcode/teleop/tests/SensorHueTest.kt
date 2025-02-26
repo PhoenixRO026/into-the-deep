@@ -22,6 +22,8 @@ class SensorHueTest : LinearOpMode() {
             intake.updateHue()
 
             telemetry.addData("sensor hue", intake.sensorHue)
+            telemetry.addData("s", intake.hsv[1])
+            telemetry.addData("v", intake.hsv[2])
             telemetry.addData("sensor color", intake.sensorColor)
 
             telemetry.addData("delta time ms", timeKeep.deltaTime.asMs)

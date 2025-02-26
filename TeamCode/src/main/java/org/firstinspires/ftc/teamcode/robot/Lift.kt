@@ -26,7 +26,7 @@ class Lift(
             stabilityThreshold = 0.2
         )
         @JvmField
-        var kF: Double = 0.18
+        var kF: Double = 0.075
         @JvmField
         var targetPosTolerance = 20
 
