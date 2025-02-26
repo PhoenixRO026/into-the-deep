@@ -31,6 +31,7 @@ class Lift(
         @JvmField var basketPos = 2850
         @JvmField var intakePos = 422
         @JvmField var intakeWaitingPos = 800
+        @JvmField var barInitPos = 936
     }
 
     enum class Mode {
@@ -88,6 +89,10 @@ class Lift(
             }
             return abs(targetPosition - position) > LiftConfig.targetPosTolerance
         }
+    }
+
+    fun liftToBarInitInstant() {
+        targetPosition = LiftConfig.barInitPos
     }
 
     fun liftToBasketAction() = liftToPosAction(LiftConfig.basketPos)

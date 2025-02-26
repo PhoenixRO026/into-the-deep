@@ -160,6 +160,14 @@ class Intake(
     fun sweeperOnAction() = InstantAction{ sweeperPower = 1.0 }
     fun sweeperOffAction() = InstantAction{ sweeperPower = 0.0 }
 
+    fun extendoMaxInstant() {
+        extendoTargetPosition = IntakeConfig.extendoMax
+    }
+
+    fun extendoInInstant() {
+        extendoTargetPosition = IntakeConfig.extendoIn
+    }
+
     fun extendoMaxAction() = extendoToPosAction(IntakeConfig.extendoMax)
     fun extendoInAction() = extendoToPosAction(IntakeConfig.extendoIn)
 

@@ -9,28 +9,23 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.buttons.ButtonReader
-import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 
 @TeleOp
 class SigmaDrive: LinearOpMode() {
+    private var currentAction: Action? = null
+
+    private val timeKeep = TimeKeep()
+
     override fun runOpMode() {
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
         telemetry.addLine("INITIALIZING")
         telemetry.update()
 
-        val timeKeep = TimeKeep()
+        timeKeep.resetDeltaTime()
         val robot = Robot(hardwareMap)
 
-        var currentAction: Action? = null
-
-        val a2Button = ButtonReader { gamepad2.a }
-        val b2Button = ButtonReader { gamepad2.b }
-        val x2Button = ButtonReader { gamepad2.x }
-        val y2Button = ButtonReader { gamepad2.y }
-        val leftBumper2Button = ButtonReader { gamepad2.left_bumper }
         val rightBumper2Button = ButtonReader { gamepad2.right_bumper }
-        val buttons = listOf(a2Button, b2Button, x2Button, y2Button, leftBumper2Button, rightBumper2Button)
 
         telemetry.addLine("Ready")
         telemetry.update()
@@ -43,54 +38,13 @@ class SigmaDrive: LinearOpMode() {
         robot.initTeleop()
 
         while (isStarted && !isStopRequested) {
-            buttons.forEach { it.readValue() }
+            rightBumper2Button.readValue()
 
-            if (gamepad1.y)
-                robot.drive.resetFieldCentric()
+            movement(robot)
 
-            robot.drive.isSlowMode = gamepad1.right_trigger >= 0.2
+            normalSystems(robot, rightBumper2Button)
 
-            robot.drive.driveFieldCentric(
-                -gamepad1.left_stick_y.toDouble(),
-                -gamepad1.left_stick_x.toDouble(),
-                -gamepad1.right_stick_x.toDouble()
-            )
-
-            robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
-
-            if (a2Button.wasJustPressed()) {
-                currentAction = robot.outtake.armToNeutralAction()
-            }
-
-            if (b2Button.wasJustPressed()) {
-                currentAction = robot.armAndLiftToIntake()
-            }
-
-            if (x2Button.wasJustPressed()) {
-                currentAction = robot.armAndLiftToIntakeWaiting()
-            }
-
-            if (y2Button.wasJustPressed()) {
-                currentAction = robot.sampleToBasket()
-            }
-
-            if (rightBumper2Button.wasJustPressed()) {
-                currentAction = SequentialAction(
-                    robot.intake.extendReadyForSampling(),
-                    robot.intake.takeSample(Intake.SensorColor.YELLOW),
-                    robot.intake.bringSampleToIntake()
-                )
-            }
-
-            if (leftBumper2Button.wasJustPressed()) {
-                currentAction = robot.turnOffAction()
-            }
-
-            currentAction?.let {
-                if (!it.run(TelemetryPacket())) {
-                    currentAction = null
-                }
-            }
+            runActions()
 
             timeKeep.resetDeltaTime()
             robot.update(timeKeep.deltaTime)
@@ -98,6 +52,87 @@ class SigmaDrive: LinearOpMode() {
             robot.addTelemetry(telemetry, timeKeep.deltaTime)
             telemetry.addData("current action", currentAction)
             telemetry.update()
+        }
+    }
+
+    private fun normalSystems(robot: Robot, actionButton: ButtonReader) {
+        robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
+
+        robot.lift.power = -gamepad2.right_stick_y.toDouble()
+
+        robot.intake.sweeperPower = gamepad2.left_trigger.toDouble()
+
+        if (gamepad2.left_bumper) {
+            robot.outtake.armToBasketInstant()
+        }
+
+        if (actionButton.wasJustPressed()) {
+            currentAction = SequentialAction(
+                robot.lift.liftToIntakeWaitingAction(),
+                robot.armAndLiftToIntake(),
+                robot.outtake.closeClawAction()
+            )
+        }
+
+        if (gamepad2.touchpad) {
+            currentAction = robot.turnOffAction()
+        }
+
+        if (gamepad2.dpad_up) {
+            robot.outtake.extendoToMaxInstant()
+        }
+
+        if (gamepad2.dpad_down) {
+            robot.outtake.extendoInInstant()
+        }
+
+        if (gamepad2.dpad_right) {
+            robot.outtake.wristToMidInstant()
+        }
+
+        if (gamepad2.dpad_left) {
+            robot.outtake.wristToUpsideDownInstant()
+        }
+
+        if (gamepad2.a) {
+            robot.outtake.armToSpecimenInstant()
+        }
+
+        if (gamepad2.b) {
+            robot.outtake.armToNeutralInstant()
+        }
+
+        if (gamepad2.x) {
+            robot.robotToBarInstant()
+        }
+
+        if (gamepad2.y) {
+            robot.outtake.armToOldBarInstant()
+        }
+
+        if (gamepad1.a) {
+            robot.intake.resetExtendoPosition()
+        }
+    }
+
+    private fun movement(robot: Robot) {
+        if (gamepad1.y)
+            robot.drive.resetFieldCentric()
+
+        robot.drive.isSlowMode = gamepad1.right_trigger >= 0.2
+
+        robot.drive.driveFieldCentric(
+            -gamepad1.left_stick_y.toDouble(),
+            -gamepad1.left_stick_x.toDouble(),
+            -gamepad1.right_stick_x.toDouble()
+        )
+    }
+
+    private fun runActions() {
+        currentAction?.let {
+            if (!it.run(TelemetryPacket())) {
+                currentAction = null
+            }
         }
     }
 }

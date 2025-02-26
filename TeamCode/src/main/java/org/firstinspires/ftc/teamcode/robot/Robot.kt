@@ -55,9 +55,17 @@ class Robot(
     )
 
     fun armAndLiftToIntake() = SequentialAction(
-        outtake.armToIntakeAction(),
+        ParallelAction(
+            outtake.armToIntakeAction(),
+            outtake.openClawAction()
+        ),
         lift.liftToIntakeAction()
     )
+
+    fun robotToBarInstant() {
+        lift.liftToBarInitInstant()
+        outtake.armToBarInstant()
+    }
 
     fun turnOffAction() = ParallelAction(
         outtake.armToNeutralAction(),
