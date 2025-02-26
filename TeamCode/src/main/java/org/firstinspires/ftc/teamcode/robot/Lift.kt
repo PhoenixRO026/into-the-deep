@@ -32,7 +32,7 @@ class Lift(
 
         @JvmField var basketPos = 2850
         @JvmField var intakePos = 422
-        @JvmField var intakeWaitingPos = 800
+        @JvmField var intakeWaitingPos = 600
         @JvmField var barInitPos = 936
     }
 

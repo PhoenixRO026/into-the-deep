@@ -142,7 +142,13 @@ abstract class SigmaDrive: LinearOpMode() {
         if (gamepad1.x) {
             currentAction = ParallelAction(
                 SequentialAction(
-                    robot.intake.takeSampleSequenceAction(Intake.SensorColor.YELLOW),
+                    ParallelAction(
+                        SequentialAction(
+                            robot.lift.liftToIntakeWaitingAction(),
+                            robot.outtake.armToIntakeAction()
+                        ),
+                        robot.intake.takeSampleSequenceAction(Intake.SensorColor.YELLOW),
+                    ),
                     robot.intake.takeOutSample()
                 ),
                 currentAction ?: Action { false }
