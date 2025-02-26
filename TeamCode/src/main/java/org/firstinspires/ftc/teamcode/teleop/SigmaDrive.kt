@@ -4,15 +4,22 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.library.buttons.ButtonReader
+import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 
-@TeleOp
-class SigmaDrive: LinearOpMode() {
+abstract class SigmaDrive: LinearOpMode() {
+    enum class Color {
+        RED,
+        BLUE
+    }
+
+    abstract val color: Color
+
     private var currentAction: Action? = null
 
     private val timeKeep = TimeKeep()
@@ -67,10 +74,13 @@ class SigmaDrive: LinearOpMode() {
         }
 
         if (actionButton.wasJustPressed()) {
-            currentAction = SequentialAction(
-                robot.lift.liftToIntakeWaitingAction(),
-                robot.armAndLiftToIntake(),
-                robot.outtake.closeClawAction()
+            currentAction = ParallelAction(
+                SequentialAction(
+                    robot.lift.liftToIntakeWaitingAction(),
+                    robot.armAndLiftToIntake(),
+                    robot.outtake.closeClawAction()
+                ),
+                currentAction ?: Action { false }
             )
         }
 
@@ -113,6 +123,41 @@ class SigmaDrive: LinearOpMode() {
         if (gamepad1.a) {
             robot.intake.resetExtendoPosition()
         }
+
+        if (gamepad1.dpad_up) {
+            robot.intake.tiltUpInstant()
+        }
+
+        if (gamepad1.dpad_down) {
+            robot.intake.tiltDownInstant()
+        }
+
+        if (gamepad1.x) {
+            currentAction = ParallelAction(
+                robot.intake.takeSampleSequenceAction(Intake.SensorColor.YELLOW),
+                currentAction ?: Action { false }
+            )
+        }
+
+        if (gamepad1.b) {
+            currentAction = ParallelAction(
+                robot.intake.takeSampleSequenceAction(when (color) {
+                    Color.RED -> Intake.SensorColor.RED
+                    Color.BLUE -> Intake.SensorColor.BLUE
+                }),
+                currentAction ?: Action { false }
+            )
+        }
+
+        if (gamepad1.left_bumper) {
+            robot.intake.extendoPower = -1.0
+        } else if (gamepad1.right_bumper) {
+            robot.intake.extendoPower = 1.0
+        } else {
+            robot.intake.extendoPower = 0.0
+        }
+
+        robot.intake.sweeperPower = -gamepad1.left_trigger.toDouble()
     }
 
     private fun movement(robot: Robot) {

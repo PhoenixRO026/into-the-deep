@@ -6,6 +6,8 @@ import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
 import com.qualcomm.robotcore.hardware.DcMotorEx
+import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
 import kotlin.math.abs
 
@@ -99,4 +101,9 @@ class Lift(
     fun liftToIntakeAction() = liftToPosAction(LiftConfig.intakePos)
     fun liftToIntakeWaitingAction() = liftToPosAction(LiftConfig.intakeWaitingPos)
     fun liftDownAction() = liftToPosAction(0)
+
+    fun addTelemetry(telemetry: Telemetry) {
+        telemetry.addData("lift power", power)
+        telemetry.addData("lift current", rightMotor.getCurrent(CurrentUnit.AMPS) + leftMotor.getCurrent(CurrentUnit.AMPS))
+    }
 }

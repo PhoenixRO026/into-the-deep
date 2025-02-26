@@ -151,6 +151,7 @@ class Robot(
 
     fun addTelemetry(telemetry: Telemetry, deltaTime: Duration) {
         intake.addTelemetry(telemetry)
+        lift.addTelemetry(telemetry)
         telemetry.addData("delta time ms", deltaTime.asMs)
         telemetry.addData("fps", 1.s / deltaTime)
     }

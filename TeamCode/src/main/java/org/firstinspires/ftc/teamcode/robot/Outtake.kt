@@ -29,7 +29,7 @@ class Outtake(
 
         @JvmField var shoulderNeutralPos = 0.6404
         @JvmField var elbowNeutralPos = 0.5159
-        @JvmField var extendoNeutralPos = 0.6197
+        @JvmField var extendoNeutralPos = 0.5197
         @JvmField var wristMidPos = 0.5133
         @JvmField var wristUpsideDown = 0.0
         @JvmField var clawOpenPos = 1.0

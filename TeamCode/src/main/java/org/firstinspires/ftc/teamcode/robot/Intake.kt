@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
 import kotlin.math.abs
 
@@ -106,7 +107,14 @@ class Intake(
             extendoMode = Mode.RAW_POWER
         }
 
-    var sweeperPower by sweeperMotor::power
+    var sweeperPower: Double = 0.0
+        get() = sweeperMotor.power
+        set(value) {
+            val clampedVal = value.coerceIn(-1.0, 1.0)
+            if (clampedVal == field) return
+            field = clampedVal
+            sweeperMotor.power = field
+        }
 
     var tiltPosition by tiltServo::position
 
@@ -155,10 +163,14 @@ class Intake(
     fun addTelemetry(telemetry: Telemetry) {
         telemetry.addData("sensor hue", sensorHue)
         telemetry.addData("sensor color", sensorColor)
+        telemetry.addData("sweeper power", sweeperPower)
+        telemetry.addData("extendo power", extendoPower)
+        telemetry.addData("sweeper current", sweeperMotor.getCurrent(CurrentUnit.AMPS))
+        telemetry.addData("extendo current", extendoMotor.getCurrent(CurrentUnit.AMPS))
     }
 
-    fun sweeperOnAction() = InstantAction{ sweeperPower = 1.0 }
-    fun sweeperOffAction() = InstantAction{ sweeperPower = 0.0 }
+    fun sweeperOnAction() = InstantAction{ sweeperMotor.power = 1.0 }
+    fun sweeperOffAction() = InstantAction{ sweeperMotor.power = 0.0 }
 
     fun extendoMaxInstant() {
         extendoTargetPosition = IntakeConfig.extendoMax
@@ -181,6 +193,13 @@ class Intake(
 
     fun tiltUpAction() = tiltToPosAction(IntakeConfig.tiltUp)
     fun tiltDownAction() = tiltToPosAction(IntakeConfig.tiltDown)
+
+    fun tiltUpInstant() {
+        tiltPosition = IntakeConfig.tiltUp
+    }
+    fun tiltDownInstant() {
+        tiltPosition = IntakeConfig.tiltDown
+    }
 
     fun waitForColorAction(waitColor: SensorColor) = Action {
         updateHue()
@@ -217,6 +236,13 @@ class Intake(
             tiltUpAction(),
             extendoInAction()
         ),
+        takeOutSample()
+    )
+
+    fun takeSampleSequenceAction(color: SensorColor) = SequentialAction(
+        extendReadyForSampling(),
+        takeSample(color),
+        bringSampleToIntake(),
         takeOutSample()
     )
 }
