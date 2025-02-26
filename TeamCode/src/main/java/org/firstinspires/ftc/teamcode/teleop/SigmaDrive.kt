@@ -24,6 +24,12 @@ abstract class SigmaDrive: LinearOpMode() {
     private var currentAction: Action? = null
 
     private val timeKeep = TimeKeep()
+    private val movementTimekeep = TimeKeep()
+    private val systemsTimekeep = TimeKeep()
+    private val actionsTimekeep = TimeKeep()
+    private val updateTimekeep = TimeKeep()
+    private val telemetryTimkeep = TimeKeep()
+    private val betweenLoopTimeKeep = TimeKeep()
 
     override fun runOpMode() {
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
@@ -46,20 +52,39 @@ abstract class SigmaDrive: LinearOpMode() {
         robot.initTeleop()
 
         while (isStarted && !isStopRequested) {
+            betweenLoopTimeKeep.resetDeltaTime()
             rightBumper2Button.readValue()
 
+            movementTimekeep.resetDeltaTime()
             movement(robot)
+            movementTimekeep.resetDeltaTime()
 
+            systemsTimekeep.resetDeltaTime()
             normalSystems(robot, rightBumper2Button)
+            systemsTimekeep.resetDeltaTime()
 
+            actionsTimekeep.resetDeltaTime()
             runActions()
+            actionsTimekeep.resetDeltaTime()
 
             timeKeep.resetDeltaTime()
+            updateTimekeep.resetDeltaTime()
             robot.update(timeKeep.deltaTime)
+            updateTimekeep.resetDeltaTime()
 
+            val telemetryMs = telemetryTimkeep.deltaTime
+            telemetryTimkeep.resetDeltaTime()
             robot.addTelemetry(telemetry, timeKeep.deltaTime)
             telemetry.addData("current action", currentAction)
+            telemetry.addData("movement ms", movementTimekeep.deltaTime.asMs)
+            telemetry.addData("systems ms", systemsTimekeep.deltaTime.asMs)
+            telemetry.addData("actions ms", actionsTimekeep.deltaTime.asMs)
+            telemetry.addData("update ms", updateTimekeep.deltaTime.asMs)
+            telemetry.addData("telemetry ms", telemetryMs)
+            telemetry.addData("between loop ms", betweenLoopTimeKeep.deltaTime.asMs)
             telemetry.update()
+            telemetryTimkeep.resetDeltaTime()
+            betweenLoopTimeKeep.resetDeltaTime()
         }
     }
 

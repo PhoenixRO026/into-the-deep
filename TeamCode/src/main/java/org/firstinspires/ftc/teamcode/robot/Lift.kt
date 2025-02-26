@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
+import org.firstinspires.ftc.teamcode.robot.Intake.IntakeConfig
+import org.firstinspires.ftc.teamcode.robot.Intake.Mode
 import kotlin.math.abs
 
 class Lift(
@@ -22,11 +24,11 @@ class Lift(
         var controller = PIDController(
             kP = 0.02,
             kD = 0.0005,
-            kI = 0.009,
+            kI = 0.0,
             stabilityThreshold = 0.2
         )
         @JvmField
-        var kF: Double = 0.075
+        var kF: Double = 0.085
         @JvmField
         var targetPosTolerance = 20
 
@@ -106,6 +108,6 @@ class Lift(
 
     fun addTelemetry(telemetry: Telemetry) {
         telemetry.addData("lift power", power)
-        telemetry.addData("lift current", rightMotor.getCurrent(CurrentUnit.AMPS) + leftMotor.getCurrent(CurrentUnit.AMPS))
+        //telemetry.addData("lift current", rightMotor.getCurrent(CurrentUnit.AMPS) + leftMotor.getCurrent(CurrentUnit.AMPS))
     }
 }

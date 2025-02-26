@@ -46,7 +46,7 @@ class Intake(
         @JvmField var extendoIn = 0
 
         @JvmField var tiltUp = 0.1567
-        @JvmField var tiltDown = 0.6194
+        @JvmField var tiltDown = 0.595
 
         @JvmField var tiltTeleInit = tiltUp
         @JvmField var tiltAutoInit = tiltUp
@@ -54,6 +54,8 @@ class Intake(
         @JvmField var extendoLeftRedSample = 600
         @JvmField var extendoMiddleRedSample = 600
         @JvmField var extendoRightRedSample = 600
+
+        @JvmField var sampleToBoxPower = 0.8
     }
 
     enum class SensorColor {
@@ -171,13 +173,14 @@ class Intake(
         telemetry.addData("sensor color", sensorColor)
         telemetry.addData("sweeper power", sweeperPower)
         telemetry.addData("extendo power", extendoPower)
-        telemetry.addData("sweeper current", sweeperMotor.getCurrent(CurrentUnit.AMPS))
-        telemetry.addData("extendo current", extendoMotor.getCurrent(CurrentUnit.AMPS))
+        //telemetry.addData("sweeper current", sweeperMotor.getCurrent(CurrentUnit.AMPS))
+        //telemetry.addData("extendo current", extendoMotor.getCurrent(CurrentUnit.AMPS))
     }
 
     fun sweeperOnAction() = InstantAction{ sweeperMotor.power = 1.0 }
     fun sweeperOffAction() = InstantAction{ sweeperMotor.power = 0.0 }
     fun sweeperSpewAction() = InstantAction{ sweeperMotor.power = -1.0 }
+    fun sweeperBoxAction() = InstantAction { sweeperMotor.power = IntakeConfig.sampleToBoxPower }
 
     fun extendoMaxInstant() {
         extendoTargetPosition = IntakeConfig.extendoMax
@@ -219,7 +222,7 @@ class Intake(
     )
 
     fun takeOutSample() = SequentialAction(
-        sweeperOnAction(),
+        sweeperBoxAction(),
         waitForColorAction(SensorColor.NONE),
         sweeperOffAction()
     )
