@@ -217,6 +217,8 @@ class Outtake(
         wristPos = OuttakeConfig.wristUpsideDown
     }
 
+    fun wristToUpsideDownAction() = wristToPosAction(OuttakeConfig.wristUpsideDown)
+
     fun shoulderToNeutralAction() = shoulderToPosAction(OuttakeConfig.shoulderNeutralPos)
     fun elbowToNeutralAction() = elbowToPosAction(OuttakeConfig.elbowNeutralPos)
     fun extendoToNeutralAction() = extendoToPosAction(OuttakeConfig.extendoNeutralPos)
@@ -242,6 +244,14 @@ class Outtake(
         elbowPos = OuttakeConfig.elbowSpecimenPickupPos
         extendoPos = OuttakeConfig.extendoSpecimenPickupPos
     }
+
+    fun armToSpecimenAction() = ParallelAction(
+        shoulderToSpecimenPickupAction(),
+        elbowToSpecimenPickupAction(),
+        extendoToSpecimenPickupAction(),
+        wristToMidAction(),
+        openClawAction()
+    )
 
     fun armToNeutralAction() = ParallelAction(
         shoulderToNeutralAction(),

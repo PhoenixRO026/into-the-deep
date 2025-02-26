@@ -63,6 +63,11 @@ class Robot(
         lift.liftToIntakeAction()
     )
 
+    fun armAndLiftToSpecimen() = ParallelAction(
+        outtake.armToSpecimenAction(),
+        lift.liftDownAction()
+    )
+
     fun armAndLiftToNeutral() = ParallelAction(
         lift.liftDownAction(),
         outtake.armToNeutralAction()

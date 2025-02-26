@@ -25,6 +25,9 @@ class RedRight : LinearOpMode() {
     private val startPose = Pose(4.inch, -60.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
     private val firstSpecimenPos = Pose(4.inch, -36.inch, 90.deg)
+    private val secondSpecimenPos = Pose(5.inch, -36.inch, 90.deg)
+    private val thirdSpecimenPos = Pose(6.inch, -36.inch, 90.deg)
+    private val forthSpecimenPos = Pose(7.inch, -36.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
@@ -48,8 +51,116 @@ class RedRight : LinearOpMode() {
         val outtake = robot.outtake
         robot.initAuto()
 
-        fun sampleCycle(samplePose: Pose) = SequentialAction(
+        fun firstSampleCycle() = SequentialAction(
+            ParallelAction(
+                robot.armAndLiftToNeutral().delayedBy(1.s),
+                intake.extendoToLeftRedSampleAction().delayedBy(1.s),
+                drive.actionBuilder(firstSpecimenPos)
+                    .strafeToLinearHeading(firstSamplePos)
+                    .build()
+            ),
+            intake.takeSample(Intake.SensorColor.RED),
+            intake.tiltUpAction(),
+            ParallelAction(
+                intake.extendoInAction(),
+                drive.actionBuilder(firstSamplePos)
+                    .strafeToLinearHeading(firstKickPos)
+                    .build()
+            ),
+            intake.kickSample()
+        )
 
+        fun secondSampleCycle() = SequentialAction(
+            ParallelAction(
+                intake.extendoToMiddleRedSampleAction().delayedBy(1.s),
+                drive.actionBuilder(firstKickPos)
+                    .strafeToLinearHeading(secondSamplePos)
+                    .build()
+            ),
+            intake.takeSample(Intake.SensorColor.RED),
+            intake.tiltUpAction(),
+            ParallelAction(
+                intake.extendoInAction(),
+                drive.actionBuilder(secondSamplePos)
+                    .strafeToLinearHeading(secondKickPos)
+                    .build()
+            ),
+            intake.kickSample()
+        )
+
+        fun thirdSampleCycle() = SequentialAction(
+            ParallelAction(
+                intake.extendoToRightRedSampleAction().delayedBy(1.s),
+                drive.actionBuilder(secondKickPos)
+                    .strafeToLinearHeading(thirdSamplePos)
+                    .build()
+            ),
+            intake.takeSample(Intake.SensorColor.RED),
+            intake.tiltUpAction(),
+            ParallelAction(
+                intake.extendoInAction(),
+                drive.actionBuilder(thirdSamplePos)
+                    .strafeToLinearHeading(thirdKickPos)
+                    .build()
+            ),
+            intake.kickSample()
+        )
+
+        fun firstSpecimenCycle() = SequentialAction(
+            ParallelAction(
+                robot.armAndLiftToSpecimen(),
+                drive.actionBuilder(thirdKickPos)
+                    .strafeToLinearHeading(takeSpecimenPos)
+                    .build()
+            ),
+            outtake.closeClawAction(),
+            lift.liftToBarAction(),
+            ParallelAction(
+                robot.armAndLiftToBar(),
+                outtake.wristToUpsideDownAction(),
+                drive.actionBuilder(takeSpecimenPos)
+                    .strafeToLinearHeading(secondSpecimenPos)
+                    .build()
+            ),
+            outtake.openClawAction(),
+        )
+
+        fun secondSpecimenCycle() = SequentialAction(
+            ParallelAction(
+                robot.armAndLiftToSpecimen().delayedBy(1.s),
+                drive.actionBuilder(secondSpecimenPos)
+                    .strafeToLinearHeading(takeSpecimenPos)
+                    .build()
+            ),
+            outtake.closeClawAction(),
+            lift.liftToBarAction(),
+            ParallelAction(
+                robot.armAndLiftToBar(),
+                outtake.wristToUpsideDownAction(),
+                drive.actionBuilder(takeSpecimenPos)
+                    .strafeToLinearHeading(thirdSpecimenPos)
+                    .build()
+            ),
+            outtake.openClawAction(),
+        )
+
+        fun thirdSpecimenCycle() = SequentialAction(
+            ParallelAction(
+                robot.armAndLiftToSpecimen().delayedBy(1.s),
+                drive.actionBuilder(thirdSpecimenPos)
+                    .strafeToLinearHeading(takeSpecimenPos)
+                    .build()
+            ),
+            outtake.closeClawAction(),
+            lift.liftToBarAction(),
+            ParallelAction(
+                robot.armAndLiftToBar(),
+                outtake.wristToUpsideDownAction(),
+                drive.actionBuilder(takeSpecimenPos)
+                    .strafeToLinearHeading(forthSpecimenPos)
+                    .build()
+            ),
+            outtake.openClawAction(),
         )
 
         val action = SequentialAction(
@@ -63,12 +174,12 @@ class RedRight : LinearOpMode() {
                 .strafeToLinearHeading(firstSpecimenPos)
                 .build(),
             outtake.openClawAction(),
-            ParallelAction(
-                robot.armAndLiftToNeutral().delayedBy(1.s),
-                drive.actionBuilder(firstSpecimenPos)
-                    .strafeToLinearHeading(firstSamplePos)
-                    .build()
-            )
+            firstSampleCycle(),
+            secondSampleCycle(),
+            thirdSampleCycle(),
+            firstSpecimenCycle(),
+            secondSpecimenCycle(),
+            thirdSpecimenCycle()
         )
 
         action.preview(previewCanvas)

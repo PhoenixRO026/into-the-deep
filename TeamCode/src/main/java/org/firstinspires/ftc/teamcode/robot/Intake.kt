@@ -50,6 +50,10 @@ class Intake(
 
         @JvmField var tiltTeleInit = tiltUp
         @JvmField var tiltAutoInit = tiltUp
+
+        @JvmField var extendoLeftRedSample = 600
+        @JvmField var extendoMiddleRedSample = 600
+        @JvmField var extendoRightRedSample = 600
     }
 
     enum class SensorColor {
@@ -173,6 +177,7 @@ class Intake(
 
     fun sweeperOnAction() = InstantAction{ sweeperMotor.power = 1.0 }
     fun sweeperOffAction() = InstantAction{ sweeperMotor.power = 0.0 }
+    fun sweeperSpewAction() = InstantAction{ sweeperMotor.power = -1.0 }
 
     fun extendoMaxInstant() {
         extendoTargetPosition = IntakeConfig.extendoMax
@@ -228,6 +233,14 @@ class Intake(
         sweeperOffAction()
     )
 
+    fun kickSample() = SequentialAction(
+        ParallelAction(
+            sweeperSpewAction(),
+            waitForColorAction(SensorColor.NONE)
+        ),
+        sweeperOffAction()
+    )
+
     fun waitFor2Colors(firstColor: SensorColor, secondColor: SensorColor) = RaceAction(
         waitForColorAction(firstColor),
         waitForColorAction(secondColor)
@@ -248,4 +261,8 @@ class Intake(
             extendoInAction()
         )
     )
+
+    fun extendoToLeftRedSampleAction() = extendoToPosAction(IntakeConfig.extendoLeftRedSample)
+    fun extendoToMiddleRedSampleAction() = extendoToPosAction(IntakeConfig.extendoMiddleRedSample)
+    fun extendoToRightRedSampleAction() = extendoToPosAction(IntakeConfig.extendoRightRedSample)
 }
