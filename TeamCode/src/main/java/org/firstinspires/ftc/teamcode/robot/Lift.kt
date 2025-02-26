@@ -97,6 +97,8 @@ class Lift(
         targetPosition = LiftConfig.barInitPos
     }
 
+    fun liftToBarAction() = liftToPosAction(LiftConfig.barInitPos)
+
     fun liftToBasketAction() = liftToPosAction(LiftConfig.basketPos)
     fun liftToIntakeAction() = liftToPosAction(LiftConfig.intakePos)
     fun liftToIntakeWaitingAction() = liftToPosAction(LiftConfig.intakeWaitingPos)

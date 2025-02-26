@@ -275,6 +275,12 @@ class Outtake(
         extendoPos = OuttakeConfig.extendoBarPos
     }
 
+    fun armToBarAction() = ParallelAction(
+        shoulderToBarAction(),
+        elbowToBarAction(),
+        extendoToBarAction()
+    )
+
     fun armToBasketAction() = ParallelAction(
         shoulderToBasketAction(),
         elbowToBasketAction(),
