@@ -11,6 +11,7 @@ import com.lib.roadrunner_ext.delayedBy
 import com.lib.units.Distance2d
 import com.lib.units.Pose
 import com.lib.units.SleepAction
+import com.lib.units.cm
 import com.lib.units.deg
 import com.lib.units.inch
 import com.lib.units.s
@@ -22,12 +23,12 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 
 @Autonomous
 class RedRight : LinearOpMode() {
-    private val startPose = Pose(4.inch, -60.inch, 90.deg)
+    private val startPose = Pose(20.cm, -61.5.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
-    private val firstSpecimenPos = Pose(4.inch, -36.inch, 90.deg)
-    private val secondSpecimenPos = Pose(5.inch, -36.inch, 90.deg)
-    private val thirdSpecimenPos = Pose(6.inch, -36.inch, 90.deg)
-    private val forthSpecimenPos = Pose(7.inch, -36.inch, 90.deg)
+    private val firstSpecimenPos = Pose(1.inch, -32.inch, 90.deg)
+    private val secondSpecimenPos = Pose(2.inch, -32.inch, 90.deg)
+    private val thirdSpecimenPos = Pose(3.inch, -32.inch, 90.deg)
+    private val forthSpecimenPos = Pose(4.inch, -32.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
@@ -125,11 +126,12 @@ class RedRight : LinearOpMode() {
                     .build()
             ),
             outtake.openClawAction(),
+            lift.liftToIntakeWaitingAction(),
         )
 
         fun secondSpecimenCycle() = SequentialAction(
             ParallelAction(
-                robot.armAndLiftToSpecimen().delayedBy(1.s),
+                robot.armAndLiftToSpecimen(),
                 drive.actionBuilder(secondSpecimenPos)
                     .strafeToLinearHeading(takeSpecimenPos)
                     .build()
@@ -144,11 +146,12 @@ class RedRight : LinearOpMode() {
                     .build()
             ),
             outtake.openClawAction(),
+            lift.liftToIntakeWaitingAction()
         )
 
         fun thirdSpecimenCycle() = SequentialAction(
             ParallelAction(
-                robot.armAndLiftToSpecimen().delayedBy(1.s),
+                robot.armAndLiftToSpecimen(),
                 drive.actionBuilder(thirdSpecimenPos)
                     .strafeToLinearHeading(takeSpecimenPos)
                     .build()
@@ -163,6 +166,7 @@ class RedRight : LinearOpMode() {
                     .build()
             ),
             outtake.openClawAction(),
+            lift.liftToIntakeWaitingAction()
         )
 
         val action = SequentialAction(
@@ -173,6 +177,7 @@ class RedRight : LinearOpMode() {
                     .build()
             ),
             outtake.openClawAction(),
+            lift.liftToIntakeWaitingAction(),
             firstSampleCycle(),
             secondSampleCycle(),
             thirdSampleCycle(),

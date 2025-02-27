@@ -66,7 +66,7 @@ class Robot(
         lift.liftToIntakeAction()
     )
 
-    fun armAndLiftToSpecimen() = ParallelAction(
+    fun armAndLiftToSpecimen() = SequentialAction(
         outtake.armToSpecimenAction(),
         lift.liftDownAction()
     )

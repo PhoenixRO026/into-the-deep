@@ -38,8 +38,8 @@ data object BlueBasket {
 }
 
 data object RedSpecimen {
-    val startPose = Pose(9.inch, -60.inch, 90.deg)
-    val firstSpecimenPos = Pose(4.inch, -36.inch, 90.deg)
+    val startPose = Pose(20.cm, -61.5.inch, 90.deg)
+    val firstSpecimenPos = Pose(4.inch, -35.inch, 90.deg)
     val red1Pos = Distance2d(48.inch, -25.5.inch)
     val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     val red3Pos = Distance2d(68.5.inch, -25.5.inch)
@@ -50,7 +50,7 @@ data object RedSpecimen {
     val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
-    val takeSpecimenPos = Pose(34.inch, -56.inch, 90.deg)
+    val takeSpecimenPos = Pose(40.inch, -56.inch, 90.deg)
 }
 
 fun main() {
