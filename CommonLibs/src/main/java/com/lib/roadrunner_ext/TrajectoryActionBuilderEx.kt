@@ -404,6 +404,13 @@ class TrajectoryActionBuilderEx(private var builder: TrajectoryActionBuilder) {
         accelConstraintOverride: AccelConstraint? = null
     ) = strafeToSplineHeading(pos.asInch, heading.asRad, velConstraintOverride, accelConstraintOverride)
 
+    @JvmOverloads
+    fun strafeToSplineHeading(
+        pose: Pose,
+        velConstraintOverride: VelConstraint? = null,
+        accelConstraintOverride: AccelConstraint? = null
+    ) = strafeToSplineHeading(pose.position, pose.heading, velConstraintOverride, accelConstraintOverride)
+
 
     @JvmOverloads
     fun splineTo(
