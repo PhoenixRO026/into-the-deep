@@ -39,10 +39,13 @@ class Robot(
     }
 
     fun update(deltaTime: Duration) {
-        drive.update()
         intake.update(deltaTime)
         lift.update(deltaTime)
         outtake.update(deltaTime)
+    }
+
+    fun updatePoseEstimate() {
+        drive.updatePoseEstimate()
     }
 
     fun sampleToBasket() = SequentialAction(

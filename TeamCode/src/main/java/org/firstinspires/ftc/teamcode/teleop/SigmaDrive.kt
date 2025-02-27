@@ -204,6 +204,8 @@ abstract class SigmaDrive: LinearOpMode() {
     }
 
     private fun movement(robot: Robot) {
+        robot.updatePoseEstimate()
+
         if (gamepad1.y)
             robot.drive.resetFieldCentric()
 

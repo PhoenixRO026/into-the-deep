@@ -28,7 +28,7 @@ class Drive(
         headingOffset = mecanumDrive.localizer.pose.heading.toDouble()
     }
 
-    fun update() {
+    fun updatePoseEstimate() {
         mecanumDrive.updatePoseEstimate()
     }
 
