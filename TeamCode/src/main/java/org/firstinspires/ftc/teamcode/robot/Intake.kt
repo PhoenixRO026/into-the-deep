@@ -33,7 +33,7 @@ class Intake(
     data object IntakeConfig {
         @JvmField
         var controller = PIDController(
-            kP = 0.02,
+            kP = 0.025,
             kD = 0.0006,
             kI = 0.00,
             stabilityThreshold = 0.2
