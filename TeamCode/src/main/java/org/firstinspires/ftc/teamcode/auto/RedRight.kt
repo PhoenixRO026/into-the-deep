@@ -52,6 +52,7 @@ class RedRight : LinearOpMode() {
         robot.initAuto()
 
         fun firstSampleCycle() = SequentialAction(
+            outtake.extendoToNeutralAction(),
             ParallelAction(
                 robot.armAndLiftToNeutral().delayedBy(1.s),
                 intake.extendoToLeftRedSampleAction().delayedBy(1.s),
@@ -108,6 +109,7 @@ class RedRight : LinearOpMode() {
 
         fun firstSpecimenCycle() = SequentialAction(
             ParallelAction(
+                outtake.openClawAction(),
                 robot.armAndLiftToSpecimen(),
                 drive.actionBuilder(thirdKickPos)
                     .strafeToLinearHeading(takeSpecimenPos)

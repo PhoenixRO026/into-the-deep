@@ -162,6 +162,7 @@ class Intake(
                 extendoTargetPosition = pos
                 extendoMode = Mode.ACTION
             }
+            p.addLine("waiting for extendo")
             return abs(extendoTargetPosition - extendoPosition) > IntakeConfig.targetPosTolerance
             /*return if (abs(extendoTargetPosition - extendoPosition) > IntakeConfig.targetPosTolerance) {
                 true
@@ -218,10 +219,14 @@ class Intake(
         tiltPosition = IntakeConfig.tiltDown
     }
 
-    fun waitForColorAction(waitColor: SensorColor) = Action {
-        updateHue()
-        sensorColor != waitColor
-    }
+    fun waitForColorAction(waitColor: SensorColor, maxTime: Duration = 1.s) = RaceAction(
+        Action {
+            updateHue()
+            it.addLine("Waiting for $waitColor")
+            sensorColor != waitColor
+        },
+        SleepAction(maxTime)
+    )
 
     fun extendReadyForSampling() = ParallelAction(
         extendoMaxAction(),

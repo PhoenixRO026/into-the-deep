@@ -91,6 +91,7 @@ class Lift(
                 init = false
                 targetPosition = pos
             }
+            p.addLine("waiting for lift")
             return abs(targetPosition - position) > LiftConfig.targetPosTolerance
         }
     }

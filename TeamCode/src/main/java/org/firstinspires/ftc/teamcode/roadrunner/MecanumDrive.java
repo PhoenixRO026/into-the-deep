@@ -82,9 +82,9 @@ public final class MecanumDrive {
         public double maxAngAccel = Math.PI * 2;
 
         // path controller gains
-        public double axialGain = 30.0;
-        public double lateralGain = 30.0;
-        public double headingGain = 30.0; // shared with turn
+        public double axialGain = 25.0;
+        public double lateralGain = 25.0;
+        public double headingGain = 25.0; // shared with turn
 
         public double axialVelGain = 1.0;
         public double lateralVelGain = 1.0;
@@ -315,6 +315,9 @@ public final class MecanumDrive {
 
                 return false;
             }
+
+            if (t > timeTrajectory.duration)
+                p.addLine("waiting for drive");
 
             PoseVelocity2dDual<Time> command = new HolonomicController(
                     PARAMS.axialGain, PARAMS.lateralGain, PARAMS.headingGain,

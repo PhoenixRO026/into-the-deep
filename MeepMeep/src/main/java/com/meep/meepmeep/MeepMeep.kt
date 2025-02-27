@@ -4,6 +4,7 @@ package com.meep.meepmeep
 import com.lib.roadrunner_ext.ex
 import com.lib.units.Distance2d
 import com.lib.units.Pose
+import com.lib.units.cm
 import com.lib.units.deg
 import com.lib.units.inch
 import com.lib.units.s
@@ -60,11 +61,13 @@ fun main() {
     val redBot =
         DefaultBotBuilder(meepMeep) // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
             .setConstraints(60.0, 60.0, Math.toRadians(180.0), Math.toRadians(180.0), 15.0)
+            .setDimensions(40.cm.asInch, 44.cm.asInch)
             .build()
 
     val blueBot =
         DefaultBotBuilder(meepMeep) // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
             .setConstraints(60.0, 60.0, Math.toRadians(180.0), Math.toRadians(180.0), 15.0)
+            .setDimensions(40.cm.asInch, 44.cm.asInch)
             .build()
 
     //basketAuto(redBot, blueBot)

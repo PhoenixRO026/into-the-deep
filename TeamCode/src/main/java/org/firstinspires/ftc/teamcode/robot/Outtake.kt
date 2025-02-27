@@ -99,7 +99,7 @@ class Outtake(
             wristServo.position = value
         }
 
-    var clawPos: Double = 0.0
+    var clawPos: Double = 0.5
         get() = clawServo.position
         set(value) {
             val clampedVal = value.coerceIn(0.0, 1.0)
