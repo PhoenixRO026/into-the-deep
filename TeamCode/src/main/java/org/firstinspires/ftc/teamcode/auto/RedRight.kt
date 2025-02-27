@@ -25,10 +25,10 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 class RedRight : LinearOpMode() {
     private val startPose = Pose(20.cm, -61.5.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
-    private val firstSpecimenPos = Pose(1.inch, -32.inch, 90.deg)
-    private val secondSpecimenPos = Pose(2.inch, -32.inch, 90.deg)
-    private val thirdSpecimenPos = Pose(3.inch, -32.inch, 90.deg)
-    private val forthSpecimenPos = Pose(4.inch, -32.inch, 90.deg)
+    private val firstSpecimenPos = Pose(1.inch, -30.5.inch, 90.deg)
+    private val secondSpecimenPos = Pose(2.inch, -30.5.inch, 90.deg)
+    private val thirdSpecimenPos = Pose(3.inch, -30.5.inch, 90.deg)
+    private val forthSpecimenPos = Pose(4.inch, -30.5.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
@@ -39,7 +39,7 @@ class RedRight : LinearOpMode() {
     private val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     private val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     private val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
-    private val takeSpecimenPos = Pose(34.inch, -56.inch, 90.deg)
+    private val takeSpecimenPos = Pose(34.inch, -53.inch, 90.deg)
 
     override fun runOpMode() {
         initMessage()
