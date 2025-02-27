@@ -11,6 +11,7 @@ import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
 import com.lib.units.SleepAction
+import com.lib.units.ms
 import com.lib.units.s
 import com.qualcomm.robotcore.hardware.ColorSensor
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -32,18 +33,18 @@ class Intake(
     data object IntakeConfig {
         @JvmField
         var controller = PIDController(
-            kP = 0.03,
-            kD = 0.001,
-            kI = 0.004,
+            kP = 0.02,
+            kD = 0.0006,
+            kI = 0.00,
             stabilityThreshold = 0.2
         )
-        @JvmField var targetPosTolerance = 20
+        @JvmField var targetPosTolerance = 10
         @JvmField var extendoLim = 600
 
         @JvmField var titlActionSleepDuration = 1.s
 
         @JvmField var extendoMax = 600
-        @JvmField var extendoIn = 0
+        @JvmField var extendoIn = 2
 
         @JvmField var tiltUp = 0.1567
         @JvmField var tiltDown = 0.595
@@ -55,7 +56,7 @@ class Intake(
         @JvmField var extendoMiddleRedSample = 600
         @JvmField var extendoRightRedSample = 600
 
-        @JvmField var sampleToBoxPower = 0.8
+        @JvmField var sampleToBoxPower = 1.0
     }
 
     enum class SensorColor {
@@ -111,7 +112,12 @@ class Intake(
         get() = _extendoPower
         set(value) {
             if (extendoMode != Mode.RAW_POWER && value == 0.0) return
-            _extendoPower = if (extendoPosition >= IntakeConfig.extendoLim) value.coerceAtMost(0.0) else value
+            if (value == 0.0 && extendoPosition < IntakeConfig.extendoIn + IntakeConfig.targetPosTolerance) {
+                extendoTargetPosition = IntakeConfig.extendoIn
+                return
+            } else {
+                _extendoPower = if (extendoPosition >= IntakeConfig.extendoLim) value.coerceAtMost(0.0) else value
+            }
             extendoMode = Mode.RAW_POWER
         }
 
@@ -119,7 +125,7 @@ class Intake(
         get() = sweeperMotor.power
         set(value) {
             val clampedVal = value.coerceIn(-1.0, 1.0)
-            if (clampedVal == field) return
+            if (clampedVal == field && clampedVal == 0.0) return
             field = clampedVal
             sweeperMotor.power = field
         }
@@ -139,10 +145,10 @@ class Intake(
     }
 
     fun update(deltaTime: Duration) {
-        if (extendoMode == Mode.PID && abs(extendoTargetPosition - extendoPosition) <= IntakeConfig.targetPosTolerance) {
+        /*if (extendoMode == Mode.PID && abs(extendoTargetPosition - extendoPosition) <= IntakeConfig.targetPosTolerance) {
             extendoMode = Mode.RAW_POWER
             extendoPower = 0.0
-        }
+        }*/
         if (extendoMode != Mode.RAW_POWER)
             _extendoPower = IntakeConfig.controller.calculate(extendoPosition.toDouble(), extendoTargetPosition.toDouble(), deltaTime)
     }
@@ -156,14 +162,14 @@ class Intake(
                 extendoTargetPosition = pos
                 extendoMode = Mode.ACTION
             }
-
-            return if (abs(extendoTargetPosition - extendoPosition) > IntakeConfig.targetPosTolerance) {
+            return abs(extendoTargetPosition - extendoPosition) > IntakeConfig.targetPosTolerance
+            /*return if (abs(extendoTargetPosition - extendoPosition) > IntakeConfig.targetPosTolerance) {
                 true
             } else {
                 extendoMode = Mode.RAW_POWER
                 extendoPower = 0.0
                 false
-            }
+            }*/
         }
 
     }
@@ -173,6 +179,7 @@ class Intake(
         telemetry.addData("sensor color", sensorColor)
         telemetry.addData("sweeper power", sweeperPower)
         telemetry.addData("extendo power", extendoPower)
+        telemetry.addData("extendoPos", extendoPosition)
         //telemetry.addData("sweeper current", sweeperMotor.getCurrent(CurrentUnit.AMPS))
         //telemetry.addData("extendo current", extendoMotor.getCurrent(CurrentUnit.AMPS))
     }

@@ -21,7 +21,9 @@ abstract class SigmaDrive: LinearOpMode() {
 
     abstract val color: Color
 
-    private var currentAction: Action? = null
+    private var driver1Action: Action? = null
+    private var driver2Action: Action? = null
+    private var actions = listOf(driver1Action, driver2Action)
 
     private val timeKeep = TimeKeep()
     private val movementTimekeep = TimeKeep()
@@ -40,6 +42,9 @@ abstract class SigmaDrive: LinearOpMode() {
         val robot = Robot(hardwareMap)
 
         val rightBumper2Button = ButtonReader { gamepad2.right_bumper }
+        val x1Button = ButtonReader { gamepad1.x }
+        val b1Button = ButtonReader { gamepad1.b }
+        val buttons = listOf(rightBumper2Button, x1Button, b1Button)
 
         telemetry.addLine("Ready")
         telemetry.update()
@@ -53,14 +58,14 @@ abstract class SigmaDrive: LinearOpMode() {
 
         while (isStarted && !isStopRequested) {
             betweenLoopTimeKeep.resetDeltaTime()
-            rightBumper2Button.readValue()
+            buttons.forEach { it.readValue() }
 
             movementTimekeep.resetDeltaTime()
             movement(robot)
             movementTimekeep.resetDeltaTime()
 
             systemsTimekeep.resetDeltaTime()
-            normalSystems(robot, rightBumper2Button)
+            normalSystems(robot, rightBumper2Button, x1Button, b1Button)
             systemsTimekeep.resetDeltaTime()
 
             actionsTimekeep.resetDeltaTime()
@@ -75,7 +80,8 @@ abstract class SigmaDrive: LinearOpMode() {
             val telemetryMs = telemetryTimkeep.deltaTime
             telemetryTimkeep.resetDeltaTime()
             robot.addTelemetry(telemetry, timeKeep.deltaTime)
-            telemetry.addData("current action", currentAction)
+            telemetry.addData("driver 1 action", driver1Action)
+            telemetry.addData("driver 2 action", driver2Action)
             telemetry.addData("movement ms", movementTimekeep.deltaTime.asMs)
             telemetry.addData("systems ms", systemsTimekeep.deltaTime.asMs)
             telemetry.addData("actions ms", actionsTimekeep.deltaTime.asMs)
@@ -88,7 +94,7 @@ abstract class SigmaDrive: LinearOpMode() {
         }
     }
 
-    private fun normalSystems(robot: Robot, actionButton: ButtonReader) {
+    private fun normalSystems(robot: Robot, armIntakeButton: ButtonReader, takeYellowsButton: ButtonReader, takeColoredButton: ButtonReader) {
         robot.outtake.clawPos = gamepad2.right_trigger.toDouble()
 
         robot.lift.power = -gamepad2.right_stick_y.toDouble()
@@ -97,27 +103,24 @@ abstract class SigmaDrive: LinearOpMode() {
             robot.outtake.armToBasketInstant()
         }
 
-        if (actionButton.wasJustPressed()) {
-            currentAction = ParallelAction(
-                SequentialAction(
-                    robot.lift.liftToIntakeWaitingAction(),
-                    InstantAction {
-                        robot.intake.extendoTargetPosition = Intake.IntakeConfig.extendoIn
-                        robot.intake.extendoMode = Intake.Mode.ACTION
-                    },
-                    robot.armAndLiftToIntake(),
-                    robot.outtake.closeClawAction(),
-                    InstantAction {
-                        robot.intake.extendoMode = Intake.Mode.RAW_POWER
-                        robot.intake.extendoPower = 0.0
-                    }
-                ),
-                currentAction ?: Action { false }
+        if (armIntakeButton.wasJustPressed()) {
+            driver2Action = SequentialAction(
+                robot.lift.liftToIntakeWaitingAction(),
+                InstantAction {
+                    robot.intake.extendoTargetPosition = Intake.IntakeConfig.extendoIn
+                    robot.intake.extendoMode = Intake.Mode.ACTION
+                },
+                robot.armAndLiftToIntake(),
+                robot.outtake.closeClawAction(),
+                InstantAction {
+                    robot.intake.extendoMode = Intake.Mode.RAW_POWER
+                    robot.intake.extendoPower = 0.0
+                }
             )
         }
 
         if (gamepad2.touchpad) {
-            currentAction = robot.turnOffAction()
+            driver2Action = robot.turnOffAction()
         }
 
         if (gamepad2.dpad_up) {
@@ -164,30 +167,24 @@ abstract class SigmaDrive: LinearOpMode() {
             robot.intake.tiltDownInstant()
         }
 
-        if (gamepad1.x) {
-            currentAction = ParallelAction(
-                SequentialAction(
-                    ParallelAction(
-                        SequentialAction(
-                            robot.lift.liftToIntakeWaitingAction(),
-                            robot.outtake.armToIntakeAction()
-                        ),
-                        robot.intake.takeSampleSequenceAction(Intake.SensorColor.YELLOW),
+        if (takeYellowsButton.wasJustPressed()) {
+            driver1Action = SequentialAction(
+                ParallelAction(
+                    SequentialAction(
+                        robot.lift.liftToIntakeWaitingAction(),
+                        robot.outtake.armToIntakeAction()
                     ),
-                    robot.intake.takeOutSample()
+                    robot.intake.takeSampleSequenceAction(Intake.SensorColor.YELLOW),
                 ),
-                currentAction ?: Action { false }
+                robot.intake.takeOutSample()
             )
         }
 
-        if (gamepad1.b) {
-            currentAction = ParallelAction(
-                robot.intake.takeSampleSequenceAction(when (color) {
-                    Color.RED -> Intake.SensorColor.RED
-                    Color.BLUE -> Intake.SensorColor.BLUE
-                }),
-                currentAction ?: Action { false }
-            )
+        if (takeColoredButton.wasJustPressed()) {
+            driver1Action = robot.intake.takeSampleSequenceAction(when (color) {
+                Color.RED -> Intake.SensorColor.RED
+                Color.BLUE -> Intake.SensorColor.BLUE
+            })
         }
 
         if (gamepad1.left_bumper) {
@@ -220,9 +217,14 @@ abstract class SigmaDrive: LinearOpMode() {
     }
 
     private fun runActions() {
-        currentAction?.let {
+        driver1Action?.let {
             if (!it.run(TelemetryPacket())) {
-                currentAction = null
+                driver1Action = null
+            }
+        }
+        driver2Action?.let {
+            if (!it.run(TelemetryPacket())) {
+                driver2Action = null
             }
         }
     }

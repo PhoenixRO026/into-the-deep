@@ -22,13 +22,13 @@ class Lift(
     data object LiftConfig {
         @JvmField
         var controller = PIDController(
-            kP = 0.02,
-            kD = 0.0005,
+            kP = 0.015,
+            kD = 0.0002,
             kI = 0.0,
             stabilityThreshold = 0.2
         )
         @JvmField
-        var kF: Double = 0.085
+        var kF: Double = 0.1
         @JvmField
         var targetPosTolerance = 20
 
@@ -81,7 +81,7 @@ class Lift(
                 position.toDouble(),
                 targetPosition.toDouble(),
                 deltaTime
-            )
+            ) + LiftConfig.kF
     }
 
     fun liftToPosAction(pos: Int) = object : Action {

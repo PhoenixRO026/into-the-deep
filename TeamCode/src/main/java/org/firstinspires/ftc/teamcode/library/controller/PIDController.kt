@@ -23,6 +23,7 @@ data class PIDController(
     @JvmField var kD: Double = 0.0,
     @JvmField var integralSumLimit: Double = 0.0,
     @JvmField var newTargetReset: Boolean = true,
+    @JvmField var zeroTargetReset: Boolean = true,
     @JvmField var derivativeFilter: LowPassFilter = LowPassFilter(),
     @JvmField var stabilityThreshold: Double = 0.0,
 ) {
@@ -60,6 +61,10 @@ data class PIDController(
         }
 
         if (newTargetReset && target != previousTarget) {
+            innerIntegralSum = 0.0
+        }
+
+        if (zeroTargetReset && error == 0.0) {
             innerIntegralSum = 0.0
         }
 
