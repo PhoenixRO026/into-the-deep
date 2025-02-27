@@ -255,6 +255,7 @@ class Intake(
             sweeperSpewAction(),
             waitForColorAction(SensorColor.NONE)
         ),
+        SleepAction(0.2.s),
         sweeperOffAction()
     )
 
