@@ -169,12 +169,9 @@ class RedRight : LinearOpMode() {
             ParallelAction(
                 robot.armAndLiftToBar(),
                 drive.actionBuilder(startPose)
-                    .strafeToLinearHeading(firstSpecimenBeforePos)
+                    .strafeToLinearHeading(firstSpecimenPos)
                     .build()
             ),
-            drive.actionBuilder(firstSpecimenBeforePos)
-                .strafeToLinearHeading(firstSpecimenPos)
-                .build(),
             outtake.openClawAction(),
             firstSampleCycle(),
             secondSampleCycle(),
