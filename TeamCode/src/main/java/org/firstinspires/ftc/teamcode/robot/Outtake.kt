@@ -24,7 +24,7 @@ class Outtake(
         @JvmField var shoulderActionSleepDuration = 2.s
         @JvmField var elbowActionSleepDuration = 2.s
         @JvmField var wristActionSleepDuration = 2.s
-        @JvmField var clawActionSleepDuration = 0.5.s
+        @JvmField var clawActionSleepDuration = 0.25.s
         @JvmField var extendoActionSleepDuration = 2.s
 
         @JvmField var shoulderNeutralPos = 0.6404
