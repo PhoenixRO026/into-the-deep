@@ -14,15 +14,15 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity
 
 data object RedBasket {
-    val startPose = Pose(-36.inch, -60.inch, 90.deg)
-    val basketPose = Pose(-54.inch, -54.inch, 45.deg)
-    val firstYellowSample = Distance2d(-48.inch, -25.5.inch)
-    val firstYellowPose = Distance2d(-48.inch, -50.inch).headingTowards(firstYellowSample)
-    val secondYellowSample = Distance2d(-58.5.inch, -25.5.inch)
-    val secondYellowPose = Distance2d(-52.inch, -50.inch).headingTowards(secondYellowSample)
-    val thirdYellowSample = Distance2d(-68.5.inch, -25.5.inch)
-    val thirdYellowPose = Distance2d(-56.inch, -50.inch).headingTowards(thirdYellowSample)
-    val parkPose = Pose(-24.inch, -12.inch, 0.deg)
+     val startPose = Pose(-36.inch, -60.inch, 90.deg)
+     val basketPose = Pose(-52.inch, -52.inch, 45.deg)
+     val firstYellowSample = Distance2d(-44.5.inch, -25.5.inch)
+     val firstYellowPose = Distance2d(-48.inch, -51.inch).headingTowards(firstYellowSample)
+     val secondYellowSample = Distance2d(-57.inch, -25.5.inch)
+     val secondYellowPose = Distance2d(-52.inch, -50.inch).headingTowards(secondYellowSample)
+     val thirdYellowSample = Distance2d(-64.5.inch, -25.5.inch)
+     val thirdYellowPose = Distance2d(-47.inch, -45.inch).headingTowards(thirdYellowSample)
+     val parkPose = Pose(-24.inch, -12.inch, 0.deg)
 }
 
 data object BlueBasket {
@@ -71,8 +71,8 @@ fun main() {
             .setDimensions(40.cm.asInch, 44.cm.asInch)
             .build()
 
-    //basketAuto(redBot, blueBot)
-    specimenAuto(redBot, blueBot)
+    basketAuto(redBot, blueBot)
+    //specimenAuto(redBot, blueBot)
 
     meepMeep.setBackground(Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
         .setDarkMode(true)
@@ -128,20 +128,15 @@ fun specimenAuto(redBot: RoadRunnerBotEntity, blueBot: RoadRunnerBotEntity) {
 fun basketAuto(redBot: RoadRunnerBotEntity, blueBot: RoadRunnerBotEntity) {
     redBot.runAction(redBot.drive.actionBuilder(RedBasket.startPose.pose2d).ex()
         .strafeToLinearHeading(RedBasket.basketPose)
-        .waitSeconds(1.s)
+
         .strafeToLinearHeading(RedBasket.firstYellowPose)
-        .waitSeconds(1.s)
         .strafeToLinearHeading(RedBasket.basketPose)
-        .waitSeconds(1.s)
+
         .strafeToLinearHeading(RedBasket.secondYellowPose)
-        .waitSeconds(1.s)
         .strafeToLinearHeading(RedBasket.basketPose)
-        .waitSeconds(1.s)
+
         .strafeToLinearHeading(RedBasket.thirdYellowPose)
-        .waitSeconds(1.s)
         .strafeToLinearHeading(RedBasket.basketPose)
-        .waitSeconds(1.s)
-        .strafeToLinearHeading(RedBasket.parkPose)
         .build()
     )
 
