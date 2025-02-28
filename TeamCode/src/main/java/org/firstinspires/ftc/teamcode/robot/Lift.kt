@@ -45,7 +45,7 @@ class Lift(
     }
 
     private var currentMode = Mode.RAW_POWER
-    private var offset = encoder.getPositionAndVelocity().position
+    private var offset = 0
 
     val position get() = encoder.getPositionAndVelocity().position - offset
 
@@ -112,5 +112,9 @@ class Lift(
     fun addTelemetry(telemetry: Telemetry) {
         telemetry.addData("lift power", power)
         //telemetry.addData("lift current", rightMotor.getCurrent(CurrentUnit.AMPS) + leftMotor.getCurrent(CurrentUnit.AMPS))
+    }
+
+    fun resetLiftPos() {
+        offset = encoder.getPositionAndVelocity().position
     }
 }

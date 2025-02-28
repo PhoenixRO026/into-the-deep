@@ -16,15 +16,13 @@ import com.lib.units.deg
 import com.lib.units.inch
 import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 
-@Disabled
 @Autonomous
-class BlueRightV2 : LinearOpMode() {
+class RedRightV3 : LinearOpMode() {
     private val startPose = Pose(20.cm, -61.5.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
     private val firstSpecimenPos = Pose(-1.inch, -30.5.inch, 90.deg)
@@ -56,15 +54,17 @@ class BlueRightV2 : LinearOpMode() {
         robot.initAuto()
 
         fun firstSampleCycle() = SequentialAction(
-            outtake.extendoToNeutralAction(),
             ParallelAction(
+                lift.liftToIntakeWaitingAction(),
+                outtake.extendoToNeutralAction(),
                 robot.armAndLiftToNeutral().delayedBy(1.s),
                 intake.extendoToLeftRedSampleAction().delayedBy(1.s),
-                drive.actionBuilder(firstSpecimenPos, 1.s)
-                    .strafeToLinearHeading(firstSamplePos)
-                    .build()
+                drive.actionBuilder(firstSpecimenPos, 1.5.s)
+                    .setTangent(-90.deg)
+                    .splineToLinearHeading(firstSamplePos, 0.deg)
+                    .build().delayedBy(0.1.s)
             ),
-            intake.takeSample(Intake.SensorColor.BLUE),
+            intake.takeSample(Intake.SensorColor.RED),
             ParallelAction(
                 intake.tiltUpAction(),
                 drive.actionBuilder(firstSamplePos)
@@ -76,12 +76,12 @@ class BlueRightV2 : LinearOpMode() {
 
         fun secondSampleCycle() = SequentialAction(
             ParallelAction(
-                intake.extendoToMiddleRedSampleAction().delayedBy(1.s),
+                intake.extendoToMiddleRedSampleAction(),
                 drive.actionBuilder(firstSamplePos, 1.s)
                     .strafeToLinearHeading(secondSamplePos)
                     .build()
             ),
-            intake.takeSample(Intake.SensorColor.BLUE),
+            intake.takeSample(Intake.SensorColor.RED),
             ParallelAction(
                 intake.tiltUpAction(),
                 drive.actionBuilder(secondSamplePos)
@@ -93,12 +93,12 @@ class BlueRightV2 : LinearOpMode() {
 
         fun thirdSampleCycle() = SequentialAction(
             ParallelAction(
-                intake.extendoToRightRedSampleAction().delayedBy(1.s),
+                intake.extendoToRightRedSampleAction(),
                 drive.actionBuilder(secondSamplePos, 1.s)
                     .strafeToLinearHeading(thirdSamplePos)
                     .build()
             ),
-            intake.takeSample(Intake.SensorColor.BLUE),
+            intake.takeSample(Intake.SensorColor.RED),
             ParallelAction(
                 intake.tiltUpAction(),
                 drive.actionBuilder(thirdSamplePos)
@@ -114,7 +114,7 @@ class BlueRightV2 : LinearOpMode() {
                 outtake.openClawAction(),
                 robot.armAndLiftToSpecimen(),
                 drive.actionBuilder(thirdSamplePos)
-                    .setTangent(225.deg)
+                    .setTangent(-90.deg)
                     .splineToSplineHeading(takeSpecimenPos + 10.cm.y, -90.deg)
                     .lineToY(takeSpecimenPos.position.y)
                     .build()
@@ -126,11 +126,11 @@ class BlueRightV2 : LinearOpMode() {
                     outtake.armToBarAction(),
                     outtake.wristToUpsideDownAction(),
                     drive.actionBuilder(takeSpecimenPos)
-                        .setTangent(90.deg)
-                        .strafeToLinearHeading(firstSpecimenPos)
+                        .setTangent(165.deg)
+                        .splineToLinearHeading(firstSpecimenPos, 90.deg)
                         //.splineToLinearHeading(secondSpecimenPos, 90.deg)
                         .build()
-                ).delayedBy(0.5.s), //SO THE LIFT HAS TIME TO RISE
+                ).delayedBy(0.25.s), //SO THE LIFT HAS TIME TO RISE
             ),
             outtake.openClawAction(),
         )
@@ -143,9 +143,9 @@ class BlueRightV2 : LinearOpMode() {
                 ),
                 drive.actionBuilder(firstSpecimenPos)
                     .setTangent(-90.deg)
-                    .strafeToLinearHeading(secondSpecimenPos)
+                    .splineToLinearHeading(takeSpecimenPos, -90.deg)
                     //.splineToLinearHeading(takeSpecimenPos, -90.deg)
-                    .build().delayedBy(0.5.s) //SO THE LIFT HAS TIME TO DESCEND
+                    .build().delayedBy(0.25.s) //SO THE LIFT HAS TIME TO DESCEND
             ),
             outtake.closeClawAction(),
             ParallelAction(
@@ -154,11 +154,11 @@ class BlueRightV2 : LinearOpMode() {
                     robot.armAndLiftToBar(),
                     outtake.wristToUpsideDownAction(),
                     drive.actionBuilder(takeSpecimenPos)
-                        .setTangent(90.deg)
-                        .strafeToLinearHeading(thirdSpecimenPos)
+                        .setTangent(165.deg)
+                        .splineToLinearHeading(thirdSpecimenPos, 90.deg)
                         //.splineToSplineHeading(thirdSpecimenPos, 90.deg)
                         .build()
-                ).delayedBy(0.5.s), //SO THE LIFT HAS TIME TO RISE
+                ).delayedBy(0.25.s), //SO THE LIFT HAS TIME TO RISE
             ),
             outtake.openClawAction(),
         )
@@ -172,7 +172,7 @@ class BlueRightV2 : LinearOpMode() {
                 drive.actionBuilder(thirdSpecimenPos)
                     .setTangent(-90.deg)
                     .splineToLinearHeading(takeSpecimenPos, -90.deg)
-                    .build().delayedBy(0.5.s) //SO THE LIFT HAS TIME TO DESCEND
+                    .build().delayedBy(0.25.s) //SO THE LIFT HAS TIME TO DESCEND
             ),
             outtake.closeClawAction(),
             ParallelAction(
@@ -181,10 +181,10 @@ class BlueRightV2 : LinearOpMode() {
                     robot.armAndLiftToBar(),
                     outtake.wristToUpsideDownAction(),
                     drive.actionBuilder(takeSpecimenPos)
-                        .setTangent(90.deg)
+                        .setTangent(165.deg)
                         .splineToLinearHeading(forthSpecimenPos, 90.deg)
                         .build()
-                ).delayedBy(0.5.s), //SO THE LIFT HAS TIME TO RISE
+                ).delayedBy(0.25.s), //SO THE LIFT HAS TIME TO RISE
             ),
             outtake.openClawAction(),
             lift.liftToIntakeWaitingAction()
@@ -198,7 +198,6 @@ class BlueRightV2 : LinearOpMode() {
                     .build()
             ),
             outtake.openClawAction(),
-            lift.liftToIntakeWaitingAction(),
             firstSampleCycle(),
             secondSampleCycle(),
             thirdSampleCycle(),

@@ -174,4 +174,10 @@ class Robot(
         telemetry.addData("delta time ms", deltaTime.asMs)
         telemetry.addData("fps", 1.s / deltaTime)
     }
+
+    fun resetLiftEncoder() {
+        val encMotor = drive.mecanumDrive.rightBack
+        encMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        encMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+    }
 }

@@ -16,11 +16,13 @@ import com.lib.units.deg
 import com.lib.units.inch
 import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
 import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 
+@Disabled
 @Autonomous
 class RedRight : LinearOpMode() {
     private val startPose = Pose(20.cm, -61.5.inch, 90.deg)
@@ -50,6 +52,7 @@ class RedRight : LinearOpMode() {
         val intake = robot.intake
         val lift = robot.lift
         val outtake = robot.outtake
+        robot.resetLiftEncoder()
         robot.initAuto()
 
         fun firstSampleCycle() = SequentialAction(

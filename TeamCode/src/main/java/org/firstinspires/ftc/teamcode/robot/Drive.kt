@@ -11,7 +11,7 @@ import com.lib.units.s
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
 
 class Drive(
-    private val mecanumDrive: MecanumDrive
+    val mecanumDrive: MecanumDrive
 ) {
     @Config
     data object DriveConfig {

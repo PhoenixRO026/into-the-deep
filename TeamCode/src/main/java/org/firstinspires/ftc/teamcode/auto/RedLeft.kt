@@ -41,6 +41,7 @@ class RedLeft : LinearOpMode() {
         val intake = robot.intake
         val lift = robot.lift
         val outtake = robot.outtake
+        robot.resetLiftEncoder()
         robot.initAuto()
 
         fun sampleCycle(samplePose: Pose) = SequentialAction(
