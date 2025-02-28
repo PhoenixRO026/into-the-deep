@@ -44,7 +44,7 @@ class Intake(
         @JvmField var titlActionSleepDuration = 1.s
 
         @JvmField var extendoMax = 600
-        @JvmField var extendoIn = 2
+        @JvmField var extendoIn = 8
 
         @JvmField var tiltUp = 0.1567
         @JvmField var tiltDown = 0.595
