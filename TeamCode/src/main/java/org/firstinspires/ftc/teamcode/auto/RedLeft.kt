@@ -10,6 +10,7 @@ import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.units.Distance2d
 import com.lib.units.Pose
 import com.lib.units.SleepAction
+import com.lib.units.cm
 import com.lib.units.deg
 import com.lib.units.inch
 import com.lib.units.s
@@ -21,14 +22,14 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 
 @Autonomous
 class RedLeft : LinearOpMode() {
-    private val startPose = Pose(-36.inch, -60.inch, 90.deg)
-    private val basketPose = Pose(-52.inch, -52.inch, 45.deg)
-    private val firstYellowSample = Distance2d(-44.5.inch, -25.5.inch)
-    private val firstYellowPose = Distance2d(-48.inch, -51.inch).headingTowards(firstYellowSample)
-    private val secondYellowSample = Distance2d(-57.inch, -25.5.inch)
-    private val secondYellowPose = Distance2d(-52.inch, -50.inch).headingTowards(secondYellowSample)
-    private val thirdYellowSample = Distance2d(-64.5.inch, -25.5.inch)
-    private val thirdYellowPose = Distance2d(-47.inch, -45.inch).headingTowards(thirdYellowSample)
+    private val startPose = Pose(-38.5.inch, -61.inch, 90.deg)
+    private val basketPose = Pose(-53.5.inch, -53.5.inch, 45.deg)
+    private val firstYellowSample = Distance2d(-48.5.inch, -25.4.inch)
+    private val firstYellowPose = Distance2d(-48.inch, -52.inch).headingTowards(firstYellowSample)
+    private val secondYellowSample = Distance2d(-57.5.inch, -27.inch)
+    private val secondYellowPose = Distance2d(-52.inch, -51.inch).headingTowards(secondYellowSample)
+    private val thirdYellowSample = Distance2d(-67.5.inch, -25.6.inch)
+    private val thirdYellowPose = Distance2d(-46.inch, -43.5 .inch).headingTowards(thirdYellowSample)
     private val parkPose = Pose(-24.inch, -12.inch, 0.deg)
 
     override fun runOpMode() {
@@ -46,7 +47,7 @@ class RedLeft : LinearOpMode() {
             ParallelAction(
                 robot.armAndLiftToIntakeWaiting(),
                 intake.extendReadyForSampling(),
-                drive.actionBuilder(basketPose)
+                drive.actionBuilder(basketPose,1.5.s)
                     .strafeToLinearHeading(samplePose)
                     .build()
             ),
@@ -59,7 +60,7 @@ class RedLeft : LinearOpMode() {
                     outtake.closeClawAction(),
                     lift.liftToBasketAction()
                 ),
-                drive.actionBuilder(samplePose)
+                drive.actionBuilder(samplePose,1.5.s)
                     .strafeToLinearHeading(basketPose)
                     .build()
             ),
@@ -81,7 +82,16 @@ class RedLeft : LinearOpMode() {
             sampleCycle(firstYellowPose),
             sampleCycle(secondYellowPose),
             sampleCycle(thirdYellowPose),
-            outtake.armToNeutralAction()
+            outtake.armToNeutralAction(),
+            ParallelAction(
+                lift.liftToParking(),
+                outtake.extendoToBarAction(),
+                drive.actionBuilder(thirdYellowPose)
+                    .setTangent(90.deg)
+                    .splineToSplineHeading(parkPose - 20.cm.x,0.0.deg)
+                    .lineToX(parkPose.position.x)
+                    .build()
+            )
         )
 
         action.preview(previewCanvas)
