@@ -22,12 +22,12 @@ import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 
 @Autonomous
-class RedRight : LinearOpMode() {
+class BlueRightV2 : LinearOpMode() {
     private val startPose = Pose(20.cm, -61.5.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
-    private val firstSpecimenPos = Pose(-2.inch, -30.5.inch, 90.deg)
-    private val secondSpecimenPos = Pose(-1.inch, -30.5.inch, 90.deg)
-    private val thirdSpecimenPos = Pose(0.inch, -30.5.inch, 90.deg)
+    private val firstSpecimenPos = Pose(-1.inch, -30.5.inch, 90.deg)
+    private val secondSpecimenPos = Pose(0.inch, -30.5.inch, 90.deg)
+    private val thirdSpecimenPos = Pose(0.5.inch, -30.5.inch, 90.deg)
     private val forthSpecimenPos = Pose(1.inch, -30.5.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
@@ -39,7 +39,7 @@ class RedRight : LinearOpMode() {
     private val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     private val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     private val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
-    val takeSpecimenPos = Pose(46.8.inch, -56.inch, 90.deg)
+    private val takeSpecimenPos = Pose(40.inch, -54.inch, 90.deg)
 
     override fun runOpMode() {
         initMessage()
@@ -61,12 +61,11 @@ class RedRight : LinearOpMode() {
                     .strafeToLinearHeading(firstSamplePos)
                     .build()
             ),
-            intake.takeSample(Intake.SensorColor.RED),
-            intake.tiltUpAction(),
+            intake.takeSample(Intake.SensorColor.BLUE),
             ParallelAction(
-                intake.extendoInAction(),
+                intake.tiltUpAction(),
                 drive.actionBuilder(firstSamplePos)
-                    .strafeToLinearHeading(firstKickPos)
+                    .turnTo(firstSamplePos.position.headingTowards(zonePos).heading)
                     .build()
             ),
             intake.kickSample()
@@ -75,16 +74,15 @@ class RedRight : LinearOpMode() {
         fun secondSampleCycle() = SequentialAction(
             ParallelAction(
                 intake.extendoToMiddleRedSampleAction().delayedBy(1.s),
-                drive.actionBuilder(firstKickPos, 1.s)
+                drive.actionBuilder(firstSamplePos, 1.s)
                     .strafeToLinearHeading(secondSamplePos)
                     .build()
             ),
-            intake.takeSample(Intake.SensorColor.RED),
-            intake.tiltUpAction(),
+            intake.takeSample(Intake.SensorColor.BLUE),
             ParallelAction(
-                intake.extendoInAction(),
+                intake.tiltUpAction(),
                 drive.actionBuilder(secondSamplePos)
-                    .strafeToLinearHeading(secondKickPos)
+                    .turnTo(secondSamplePos.position.headingTowards(zonePos).heading)
                     .build()
             ),
             intake.kickSample()
@@ -93,16 +91,15 @@ class RedRight : LinearOpMode() {
         fun thirdSampleCycle() = SequentialAction(
             ParallelAction(
                 intake.extendoToRightRedSampleAction().delayedBy(1.s),
-                drive.actionBuilder(secondKickPos, 1.s)
+                drive.actionBuilder(secondSamplePos, 1.s)
                     .strafeToLinearHeading(thirdSamplePos)
                     .build()
             ),
-            intake.takeSample(Intake.SensorColor.RED),
-            intake.tiltUpAction(),
+            intake.takeSample(Intake.SensorColor.BLUE),
             ParallelAction(
-                intake.extendoInAction(),
+                intake.tiltUpAction(),
                 drive.actionBuilder(thirdSamplePos)
-                    .strafeToLinearHeading(thirdKickPos)
+                    .turnTo(thirdSamplePos.position.headingTowards(zonePos).heading)
                     .build()
             ),
             intake.kickSample()
@@ -110,60 +107,81 @@ class RedRight : LinearOpMode() {
 
         fun firstSpecimenCycle() = SequentialAction(
             ParallelAction(
+                intake.extendoInAction(),
                 outtake.openClawAction(),
                 robot.armAndLiftToSpecimen(),
-                drive.actionBuilder(thirdKickPos)
-                    .strafeToLinearHeading(takeSpecimenPos)
+                drive.actionBuilder(thirdSamplePos)
+                    .setTangent(225.deg)
+                    .splineToSplineHeading(takeSpecimenPos + 10.cm.y, -90.deg)
+                    .lineToY(takeSpecimenPos.position.y)
                     .build()
             ),
             outtake.closeClawAction(),
-            lift.liftToBarAction(),
             ParallelAction(
-                robot.armAndLiftToBar(),
-                outtake.wristToUpsideDownAction(),
-                drive.actionBuilder(takeSpecimenPos)
-                    .strafeToLinearHeading(secondSpecimenPos)
-                    .build()
+                lift.liftToBarAction(),
+                ParallelAction(
+                    outtake.armToBarAction(),
+                    outtake.wristToUpsideDownAction(),
+                    drive.actionBuilder(takeSpecimenPos)
+                        .setTangent(90.deg)
+                        .strafeToLinearHeading(firstSpecimenPos)
+                        //.splineToLinearHeading(secondSpecimenPos, 90.deg)
+                        .build()
+                ).delayedBy(0.5.s), //SO THE LIFT HAS TIME TO RISE
             ),
             outtake.openClawAction(),
-            lift.liftToIntakeWaitingAction(),
         )
 
         fun secondSpecimenCycle() = SequentialAction(
             ParallelAction(
-                robot.armAndLiftToSpecimen(),
-                drive.actionBuilder(secondSpecimenPos)
-                    .strafeToLinearHeading(takeSpecimenPos)
-                    .build()
+                SequentialAction(
+                    lift.liftToIntakeWaitingAction(),
+                    robot.armAndLiftToSpecimen(),
+                ),
+                drive.actionBuilder(firstSpecimenPos)
+                    .setTangent(-90.deg)
+                    .strafeToLinearHeading(secondSpecimenPos)
+                    //.splineToLinearHeading(takeSpecimenPos, -90.deg)
+                    .build().delayedBy(0.5.s) //SO THE LIFT HAS TIME TO DESCEND
             ),
             outtake.closeClawAction(),
-            lift.liftToBarAction(),
             ParallelAction(
-                robot.armAndLiftToBar(),
-                outtake.wristToUpsideDownAction(),
-                drive.actionBuilder(takeSpecimenPos)
-                    .strafeToLinearHeading(thirdSpecimenPos)
-                    .build()
+                lift.liftToBarAction(),
+                ParallelAction(
+                    robot.armAndLiftToBar(),
+                    outtake.wristToUpsideDownAction(),
+                    drive.actionBuilder(takeSpecimenPos)
+                        .setTangent(90.deg)
+                        .strafeToLinearHeading(thirdSpecimenPos)
+                        //.splineToSplineHeading(thirdSpecimenPos, 90.deg)
+                        .build()
+                ).delayedBy(0.5.s), //SO THE LIFT HAS TIME TO RISE
             ),
             outtake.openClawAction(),
-            lift.liftToIntakeWaitingAction()
         )
 
         fun thirdSpecimenCycle() = SequentialAction(
             ParallelAction(
-                robot.armAndLiftToSpecimen(),
+                SequentialAction(
+                    lift.liftToIntakeWaitingAction(),
+                    robot.armAndLiftToSpecimen(),
+                ),
                 drive.actionBuilder(thirdSpecimenPos)
-                    .strafeToLinearHeading(takeSpecimenPos)
-                    .build()
+                    .setTangent(-90.deg)
+                    .splineToLinearHeading(takeSpecimenPos, -90.deg)
+                    .build().delayedBy(0.5.s) //SO THE LIFT HAS TIME TO DESCEND
             ),
             outtake.closeClawAction(),
-            lift.liftToBarAction(),
             ParallelAction(
-                robot.armAndLiftToBar(),
-                outtake.wristToUpsideDownAction(),
-                drive.actionBuilder(takeSpecimenPos)
-                    .strafeToLinearHeading(forthSpecimenPos)
-                    .build()
+                lift.liftToBarAction(),
+                ParallelAction(
+                    robot.armAndLiftToBar(),
+                    outtake.wristToUpsideDownAction(),
+                    drive.actionBuilder(takeSpecimenPos)
+                        .setTangent(90.deg)
+                        .splineToLinearHeading(forthSpecimenPos, 90.deg)
+                        .build()
+                ).delayedBy(0.5.s), //SO THE LIFT HAS TIME TO RISE
             ),
             outtake.openClawAction(),
             lift.liftToIntakeWaitingAction()

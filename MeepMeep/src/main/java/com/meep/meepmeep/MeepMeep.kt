@@ -14,13 +14,13 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity
 
 data object RedBasket {
-     val startPose = Pose(-36.inch, -60.inch, 90.deg)
+     val startPose = Pose(-38.inch, -61.inch, 90.deg)
      val basketPose = Pose(-52.inch, -52.inch, 45.deg)
-     val firstYellowSample = Distance2d(-44.5.inch, -25.5.inch)
+     val firstYellowSample = Distance2d(-48.2.inch, -25.4.inch)
      val firstYellowPose = Distance2d(-48.inch, -51.inch).headingTowards(firstYellowSample)
-     val secondYellowSample = Distance2d(-57.inch, -25.5.inch)
+     val secondYellowSample = Distance2d(-58.3.inch, -26.1.inch)
      val secondYellowPose = Distance2d(-52.inch, -50.inch).headingTowards(secondYellowSample)
-     val thirdYellowSample = Distance2d(-64.5.inch, -25.5.inch)
+     val thirdYellowSample = Distance2d(-68.9.inch, -25.6.inch)
      val thirdYellowPose = Distance2d(-47.inch, -45.inch).headingTowards(thirdYellowSample)
      val parkPose = Pose(-24.inch, -12.inch, 0.deg)
 }
@@ -50,7 +50,7 @@ data object RedSpecimen {
     /*val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)*/
-    val takeSpecimenPos = Pose(40.inch, -56.inch, 90.deg)
+    val takeSpecimenPos = Pose(46.8.inch, -56.inch, 90.deg)
     val takeSpecimenBeforePos = takeSpecimenPos + 9.cm.y
 }
 
@@ -71,8 +71,8 @@ fun main() {
             .setDimensions(40.cm.asInch, 44.cm.asInch)
             .build()
 
-    basketAuto(redBot, blueBot)
-    //specimenAuto(redBot, blueBot)
+    //basketAuto(redBot, blueBot)
+    specimenAuto(redBot, blueBot)
 
     meepMeep.setBackground(Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
         .setDarkMode(true)
@@ -102,20 +102,20 @@ fun specimenAuto(redBot: RoadRunnerBotEntity, blueBot: RoadRunnerBotEntity) {
         .splineToSplineHeading(RedSpecimen.takeSpecimenPos + 10.cm.y, -90.deg)
         .lineToY(RedSpecimen.takeSpecimenPos.position.y)
         .waitSeconds(1.s)
-        .setTangent(135.deg)
-        .splineToLinearHeading(RedSpecimen.firstSpecimenPos, 90.deg)
+        .setTangent(90.deg)
+        .strafeToLinearHeading(RedSpecimen.firstSpecimenPos)
         .waitSeconds(1.s)
-        .setTangent(-90.deg)
+        .setTangent(-45.deg)
         .splineToLinearHeading(RedSpecimen.takeSpecimenPos, -90.deg)
         .waitSeconds(1.s)
-        .setTangent(135.deg)
-        .splineToLinearHeading(RedSpecimen.firstSpecimenPos, 90.deg)
-        .waitSeconds(1.s)
         .setTangent(-90.deg)
+        .strafeToLinearHeading(RedSpecimen.firstSpecimenPos)
+        .waitSeconds(1.s)
+        .setTangent(-45.deg)
         .splineToLinearHeading(RedSpecimen.takeSpecimenPos, -90.deg)
         .waitSeconds(1.s)
-        .setTangent(135.deg)
-        .splineToLinearHeading(RedSpecimen.firstSpecimenPos, 90.deg)
+        .setTangent(-90.deg)
+        .strafeToLinearHeading(RedSpecimen.firstSpecimenPos)
         .waitSeconds(1.s)
         .build()
     )
@@ -137,6 +137,10 @@ fun basketAuto(redBot: RoadRunnerBotEntity, blueBot: RoadRunnerBotEntity) {
 
         .strafeToLinearHeading(RedBasket.thirdYellowPose)
         .strafeToLinearHeading(RedBasket.basketPose)
+
+        .setTangent(90.deg)
+        .splineToSplineHeading(RedBasket.parkPose - 20.cm.x,0.0.deg)
+        .lineToX(RedBasket.parkPose.position.x)
         .build()
     )
 

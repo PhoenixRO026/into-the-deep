@@ -24,13 +24,13 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 class RedLeft : LinearOpMode() {
     private val startPose = Pose(-38.5.inch, -61.inch, 90.deg)
     private val basketPose = Pose(-53.5.inch, -53.5.inch, 45.deg)
-    private val firstYellowSample = Distance2d(-48.5.inch, -25.4.inch)
-    private val firstYellowPose = Distance2d(-48.inch, -52.inch).headingTowards(firstYellowSample)
+    private val firstYellowSample = Distance2d(-48.inch, -25.4.inch)
+    private val firstYellowPose = Distance2d(-47.inch, -52.inch).headingTowards(firstYellowSample)
     private val secondYellowSample = Distance2d(-57.5.inch, -27.inch)
     private val secondYellowPose = Distance2d(-52.inch, -51.inch).headingTowards(secondYellowSample)
     private val thirdYellowSample = Distance2d(-67.5.inch, -25.6.inch)
-    private val thirdYellowPose = Distance2d(-46.inch, -43.5 .inch).headingTowards(thirdYellowSample)
-    private val parkPose = Pose(-24.inch, -12.inch, 0.deg)
+    private val thirdYellowPose = Distance2d(-46.inch, -42.inch).headingTowards(thirdYellowSample)
+    private val parkPose = Pose(-24.inch, -11.inch, 0.deg)
 
     override fun runOpMode() {
         initMessage()
@@ -51,7 +51,7 @@ class RedLeft : LinearOpMode() {
                     .strafeToLinearHeading(samplePose)
                     .build()
             ),
-            intake.takeSample(Intake.SensorColor.YELLOW),
+            intake.takeSample(Intake.SensorColor.YELLOW,2.s),
             ParallelAction(
                 SequentialAction(
                     intake.bringSampleToIntake(),
