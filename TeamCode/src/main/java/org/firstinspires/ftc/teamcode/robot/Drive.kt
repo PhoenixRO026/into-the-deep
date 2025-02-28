@@ -4,8 +4,10 @@ import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Vector2d
 import com.lib.roadrunner_ext.ex
+import com.lib.units.Duration
 import com.lib.units.Pose
 import com.lib.units.rotate
+import com.lib.units.s
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
 
 class Drive(
@@ -22,7 +24,7 @@ class Drive(
 
     var isSlowMode = false
 
-    fun actionBuilder(beginPose: Pose) = mecanumDrive.actionBuilder(beginPose.pose2d).ex()
+    fun actionBuilder(beginPose: Pose, correctionTime: Duration = 0.s) = mecanumDrive.actionBuilder(beginPose.pose2d, correctionTime.asS).ex()
     
     fun resetFieldCentric() {
         headingOffset = mecanumDrive.localizer.pose.heading.toDouble()

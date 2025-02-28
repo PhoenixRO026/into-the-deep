@@ -47,10 +47,16 @@ data object RedSpecimen {
     val firstSamplePos = Distance2d(23.5.inch, -46.inch).headingTowards(red1Pos)
     val secondSamplePos = Distance2d(33.5.inch, -46.inch).headingTowards(red2Pos)
     val thirdSamplePos = Distance2d(43.5.inch, -46.inch).headingTowards(red3Pos)
-    val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
+    /*val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
+<<<<<<< HEAD
     val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
     val takeSpecimenPos = Pose(40.inch, -54.inch, 90.deg)
+=======
+    val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)*/
+    val takeSpecimenPos = Pose(40.inch, -56.inch, 90.deg)
+    val takeSpecimenBeforePos = takeSpecimenPos + 10.cm.y
+>>>>>>> origin/dragos-rewrite
 }
 
 fun main() {
@@ -60,7 +66,7 @@ fun main() {
 
     val redBot =
         DefaultBotBuilder(meepMeep) // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-            .setConstraints(60.0, 60.0, Math.toRadians(180.0), Math.toRadians(180.0), 15.0)
+            .setConstraints(60.0, 100.0, Math.PI * 3.0 / 2.0 , Math.PI * 2, 14.5)
             .setDimensions(40.cm.asInch, 44.cm.asInch)
             .build()
 
@@ -87,29 +93,34 @@ fun specimenAuto(redBot: RoadRunnerBotEntity, blueBot: RoadRunnerBotEntity) {
         .waitSeconds(1.s)
         .strafeToLinearHeading(RedSpecimen.firstSamplePos)
         .waitSeconds(1.s)
-        .strafeToLinearHeading(RedSpecimen.firstKickPos)
+        .turnTo(RedSpecimen.firstSamplePos.position.headingTowards(RedSpecimen.zonePos).heading)
         .waitSeconds(1.s)
         .strafeToLinearHeading(RedSpecimen.secondSamplePos)
         .waitSeconds(1.s)
-        .strafeToLinearHeading(RedSpecimen.secondKickPos)
+        .turnTo(RedSpecimen.secondSamplePos.position.headingTowards(RedSpecimen.zonePos).heading)
         .waitSeconds(1.s)
         .strafeToLinearHeading(RedSpecimen.thirdSamplePos)
         .waitSeconds(1.s)
-        .strafeToLinearHeading(RedSpecimen.thirdKickPos)
+        .turnTo(RedSpecimen.thirdSamplePos.position.headingTowards(RedSpecimen.zonePos).heading)
         .waitSeconds(1.s)
         .setTangent(225.deg)
         .splineToSplineHeading(RedSpecimen.takeSpecimenPos + 10.cm.y, -90.deg)
         .lineToY(RedSpecimen.takeSpecimenPos.position.y)
         .waitSeconds(1.s)
-        .strafeToLinearHeading(RedSpecimen.firstSpecimenPos)
+        .setTangent(135.deg)
+        .splineToLinearHeading(RedSpecimen.firstSpecimenPos, 90.deg)
         .waitSeconds(1.s)
-        .strafeToLinearHeading(RedSpecimen.takeSpecimenPos)
+        .setTangent(-90.deg)
+        .splineToLinearHeading(RedSpecimen.takeSpecimenPos, -90.deg)
         .waitSeconds(1.s)
-        .strafeToLinearHeading(RedSpecimen.firstSpecimenPos)
+        .setTangent(135.deg)
+        .splineToLinearHeading(RedSpecimen.firstSpecimenPos, 90.deg)
         .waitSeconds(1.s)
-        .strafeToLinearHeading(RedSpecimen.takeSpecimenPos)
+        .setTangent(-90.deg)
+        .splineToLinearHeading(RedSpecimen.takeSpecimenPos, -90.deg)
         .waitSeconds(1.s)
-        .strafeToLinearHeading(RedSpecimen.firstSpecimenPos)
+        .setTangent(135.deg)
+        .splineToLinearHeading(RedSpecimen.firstSpecimenPos, 90.deg)
         .waitSeconds(1.s)
         .build()
     )

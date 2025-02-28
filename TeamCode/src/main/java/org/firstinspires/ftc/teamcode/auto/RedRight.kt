@@ -57,7 +57,7 @@ class RedRight : LinearOpMode() {
             ParallelAction(
                 robot.armAndLiftToNeutral().delayedBy(1.s),
                 intake.extendoToLeftRedSampleAction().delayedBy(1.s),
-                drive.actionBuilder(firstSpecimenPos)
+                drive.actionBuilder(firstSpecimenPos, 1.s)
                     .strafeToLinearHeading(firstSamplePos)
                     .build()
             ),
@@ -75,7 +75,7 @@ class RedRight : LinearOpMode() {
         fun secondSampleCycle() = SequentialAction(
             ParallelAction(
                 intake.extendoToMiddleRedSampleAction().delayedBy(1.s),
-                drive.actionBuilder(firstKickPos)
+                drive.actionBuilder(firstKickPos, 1.s)
                     .strafeToLinearHeading(secondSamplePos)
                     .build()
             ),
@@ -93,7 +93,7 @@ class RedRight : LinearOpMode() {
         fun thirdSampleCycle() = SequentialAction(
             ParallelAction(
                 intake.extendoToRightRedSampleAction().delayedBy(1.s),
-                drive.actionBuilder(secondKickPos)
+                drive.actionBuilder(secondKickPos, 1.s)
                     .strafeToLinearHeading(thirdSamplePos)
                     .build()
             ),
