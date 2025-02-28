@@ -23,9 +23,9 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 class RedLeft : LinearOpMode() {
     private val startPose = Pose(-36.inch, -60.inch, 90.deg)
     private val basketPose = Pose(-52.inch, -52.inch, 45.deg)
-    private val firstYellowSample = Distance2d(-48.inch, -25.5.inch)
+    private val firstYellowSample = Distance2d(-47.inch, -25.5.inch)
     private val firstYellowPose = Distance2d(-48.inch, -50.inch).headingTowards(firstYellowSample)
-    private val secondYellowSample = Distance2d(-56.5.inch, -25.5.inch)
+    private val secondYellowSample = Distance2d(-55.5.inch, -25.5.inch)
     private val secondYellowPose = Distance2d(-52.inch, -50.inch).headingTowards(secondYellowSample)
     private val thirdYellowSample = Distance2d(-64.5.inch, -25.5.inch)
     private val thirdYellowPose = Distance2d(-48.inch, -46.inch).headingTowards(thirdYellowSample)
