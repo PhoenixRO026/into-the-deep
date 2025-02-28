@@ -49,14 +49,9 @@ data object RedSpecimen {
     val thirdSamplePos = Distance2d(43.5.inch, -46.inch).headingTowards(red3Pos)
     /*val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
-<<<<<<< HEAD
-    val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
-    val takeSpecimenPos = Pose(40.inch, -54.inch, 90.deg)
-=======
     val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)*/
     val takeSpecimenPos = Pose(40.inch, -56.inch, 90.deg)
-    val takeSpecimenBeforePos = takeSpecimenPos + 10.cm.y
->>>>>>> origin/dragos-rewrite
+    val takeSpecimenBeforePos = takeSpecimenPos + 9.cm.y
 }
 
 fun main() {
