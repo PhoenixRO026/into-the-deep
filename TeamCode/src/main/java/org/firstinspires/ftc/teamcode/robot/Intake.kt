@@ -48,6 +48,7 @@ class Intake(
 
         @JvmField var tiltUp = 0.1567
         @JvmField var tiltDown = 0.595
+        @JvmField var tiltGround = 0.7
 
         @JvmField var tiltTeleInit = tiltUp
         @JvmField var tiltAutoInit = tiltUp
@@ -211,6 +212,7 @@ class Intake(
 
     fun tiltUpAction() = tiltToPosAction(IntakeConfig.tiltUp)
     fun tiltDownAction() = tiltToPosAction(IntakeConfig.tiltDown)
+    fun tiltGroundActon() = tiltToPosAction(IntakeConfig.tiltGround)
 
     fun tiltUpInstant() {
         tiltPosition = IntakeConfig.tiltUp

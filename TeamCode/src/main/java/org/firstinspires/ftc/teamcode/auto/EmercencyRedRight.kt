@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 
 @Autonomous
-class RedRightV4 : LinearOpMode() {
+class EmercencyRedRight : LinearOpMode() {
     private val startPose = Pose(20.cm, -61.5.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
     private val firstSpecimenPos = Pose(-1.5.inch, -30.5.inch, 90.deg)
@@ -51,6 +51,7 @@ class RedRightV4 : LinearOpMode() {
         val intake = robot.intake
         val lift = robot.lift
         val outtake = robot.outtake
+        robot.resetLiftEncoder()
         robot.initAuto()
 
         fun firstSampleCycle() = SequentialAction(
@@ -64,16 +65,13 @@ class RedRightV4 : LinearOpMode() {
                     .splineToLinearHeading(firstSamplePos, 0.deg)
                     .build().delayedBy(0.1.s)
             ),
-            intake.tiltGroundActon(),
-            //intake.takeSample(Intake.SensorColor.RED),
+            intake.takeSample(Intake.SensorColor.RED),
             ParallelAction(
-                //intake.tiltUpAction(),
                 drive.actionBuilder(firstSamplePos)
                     .turnTo(firstSamplePos.position.headingTowards(zonePos).heading)
                     .build()
             ),
-            intake.tiltUpAction()
-            //intake.kickSample()
+            intake.kickSample()
         )
 
         fun secondSampleCycle() = SequentialAction(
@@ -83,8 +81,7 @@ class RedRightV4 : LinearOpMode() {
                     .strafeToLinearHeading(secondSamplePos)
                     .build()
             ),
-            intake.tiltGroundActon(),
-            //intake.takeSample(Intake.SensorColor.RED),
+            intake.takeSample(Intake.SensorColor.RED),
             ParallelAction(
                 intake.tiltUpAction(),
                 drive.actionBuilder(secondSamplePos)

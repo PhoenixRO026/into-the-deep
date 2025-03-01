@@ -98,11 +98,6 @@ class Robot(
     init {
         val mecanumDrive = MecanumDrive(hardwareMap, pose.pose2d)
 
-        if (resetEncoders) {
-            resetLiftEncoder()
-            resetExtendoEncoder()
-        }
-
         val liftEncoder = RawEncoder(mecanumDrive.rightBack)
         val intakeExtendoEncoder = RawEncoder(mecanumDrive.leftFront)
 
@@ -153,6 +148,12 @@ class Robot(
         val intakeColorSensor = hardwareMap.get(NormalizedColorSensor::class.java, "intakeColorSensor")
 
         drive = Drive(mecanumDrive)
+
+        if (resetEncoders) {
+            resetLiftEncoder()
+            resetExtendoEncoder()
+        }
+
         intake = Intake(
             extendoMotor = intakeExtendoMotor,
             sweeperMotor = intakeSweeperMotor,
