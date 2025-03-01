@@ -35,7 +35,7 @@ class RedRightV4 : LinearOpMode() {
     private val zonePos = Distance2d(45.1.inch, -67.2.inch)
     private val zonePoze3 = Distance2d(50.inch, -67.2.inch)
     private val firstSamplePos = Distance2d(26.5.inch, -41.inch).headingTowards(red1Pos)
-    private val secondSamplePos = Distance2d(33.inch, -38.5.inch).headingTowards(red2Pos)
+    private val secondSamplePos = Distance2d(33.inch, -37.5.inch).headingTowards(red2Pos)
     private val thirdSamplePos = Distance2d(41.inch, -37.inch).headingTowards(red3Pos)
     private val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     private val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
