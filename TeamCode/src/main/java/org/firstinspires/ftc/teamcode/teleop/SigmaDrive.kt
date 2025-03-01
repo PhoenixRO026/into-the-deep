@@ -122,6 +122,10 @@ abstract class SigmaDrive: LinearOpMode() {
             )
         }
 
+        if (gamepad2.start) {
+            robot.lift.resetLiftPos()
+        }
+
         if (gamepad2.touchpad) {
             driver2Action = robot.turnOffAction()
         }

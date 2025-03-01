@@ -98,6 +98,15 @@ class Robot(
     init {
         val mecanumDrive = MecanumDrive(hardwareMap, pose.pose2d)
 
+        if (resetEncoders) {
+            val liftEncMotor = mecanumDrive.rightBack
+            liftEncMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+            liftEncMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+            val extendoEncMotor = mecanumDrive.leftFront
+            extendoEncMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+            extendoEncMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        }
+
         val liftEncoder = RawEncoder(mecanumDrive.rightBack)
         val intakeExtendoEncoder = RawEncoder(mecanumDrive.leftFront)
 
@@ -148,12 +157,6 @@ class Robot(
         val intakeColorSensor = hardwareMap.get(NormalizedColorSensor::class.java, "intakeColorSensor")
 
         drive = Drive(mecanumDrive)
-
-        if (resetEncoders) {
-            resetLiftEncoder()
-            resetExtendoEncoder()
-        }
-
         intake = Intake(
             extendoMotor = intakeExtendoMotor,
             sweeperMotor = intakeSweeperMotor,
@@ -180,17 +183,5 @@ class Robot(
         lift.addTelemetry(telemetry)
         telemetry.addData("delta time ms", deltaTime.asMs)
         telemetry.addData("fps", 1.s / deltaTime)
-    }
-
-    fun resetLiftEncoder() {
-        val encMotor = drive.mecanumDrive.rightBack
-        encMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        encMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-    }
-
-    fun resetExtendoEncoder() {
-        val encMotor = drive.mecanumDrive.leftFront
-        encMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        encMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
     }
 }
