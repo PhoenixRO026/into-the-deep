@@ -39,7 +39,10 @@ abstract class SigmaDrive: LinearOpMode() {
         telemetry.update()
 
         timeKeep.resetDeltaTime()
-        val robot = Robot(hardwareMap)
+        val robot = Robot(
+            hardwareMap = hardwareMap,
+            resetEncoders = false
+        )
 
         val rightBumper2Button = ButtonReader { gamepad2.right_bumper }
         val x1Button = ButtonReader { gamepad1.x }

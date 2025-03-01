@@ -21,7 +21,8 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
 
 class Robot(
     hardwareMap: HardwareMap,
-    pose: Pose = Pose(0.0.cm, 0.0.cm, 0.0.deg)
+    pose: Pose = Pose(0.0.cm, 0.0.cm, 0.0.deg),
+    resetEncoders: Boolean = true
 ) {
     val drive: Drive
     val intake: Intake
@@ -96,6 +97,11 @@ class Robot(
 
     init {
         val mecanumDrive = MecanumDrive(hardwareMap, pose.pose2d)
+
+        if (resetEncoders) {
+            resetLiftEncoder()
+            resetExtendoEncoder()
+        }
 
         val liftEncoder = RawEncoder(mecanumDrive.rightBack)
         val intakeExtendoEncoder = RawEncoder(mecanumDrive.leftFront)
@@ -177,6 +183,12 @@ class Robot(
 
     fun resetLiftEncoder() {
         val encMotor = drive.mecanumDrive.rightBack
+        encMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        encMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+    }
+
+    fun resetExtendoEncoder() {
+        val encMotor = drive.mecanumDrive.leftFront
         encMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         encMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
     }

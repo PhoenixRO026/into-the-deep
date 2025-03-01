@@ -94,7 +94,7 @@ class Intake(
         sensorHue = hsv[0]
     }
 
-    private var extendoOffset = extendoEncoder.getPositionAndVelocity().position
+    private var extendoOffset = 0
 
     var extendoMode = Mode.RAW_POWER
 

@@ -51,7 +51,6 @@ class RedRightV4 : LinearOpMode() {
         val intake = robot.intake
         val lift = robot.lift
         val outtake = robot.outtake
-        robot.resetLiftEncoder()
         robot.initAuto()
 
         fun firstSampleCycle() = SequentialAction(
