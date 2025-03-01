@@ -64,16 +64,15 @@ class RedRightV4 : LinearOpMode() {
                     .splineToLinearHeading(firstSamplePos, 0.deg)
                     .build().delayedBy(0.1.s)
             ),
-            intake.tiltGroundActon(),
-            //intake.takeSample(Intake.SensorColor.RED),
+            intake.takeSample(Intake.SensorColor.RED),
             ParallelAction(
-                //intake.tiltUpAction(),
+                intake.tiltUpAction(),
                 drive.actionBuilder(firstSamplePos)
                     .turnTo(firstSamplePos.position.headingTowards(zonePos).heading)
                     .build()
             ),
-            intake.tiltUpAction()
-            //intake.kickSample()
+            intake.tiltUpAction(),
+            intake.kickSample()
         )
 
         fun secondSampleCycle() = SequentialAction(
@@ -83,8 +82,7 @@ class RedRightV4 : LinearOpMode() {
                     .strafeToLinearHeading(secondSamplePos)
                     .build()
             ),
-            intake.tiltGroundActon(),
-            //intake.takeSample(Intake.SensorColor.RED),
+            intake.takeSample(Intake.SensorColor.RED),
             ParallelAction(
                 intake.tiltUpAction(),
                 drive.actionBuilder(secondSamplePos)

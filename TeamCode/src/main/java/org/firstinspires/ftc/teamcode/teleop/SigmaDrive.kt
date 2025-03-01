@@ -122,7 +122,7 @@ abstract class SigmaDrive: LinearOpMode() {
             )
         }
 
-        if (gamepad2.start) {
+        if (gamepad2.back) {
             robot.lift.resetLiftPos()
         }
 

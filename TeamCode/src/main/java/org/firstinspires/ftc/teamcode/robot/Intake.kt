@@ -243,11 +243,11 @@ class Intake(
 
     fun takeSample(color: SensorColor, maxTime: Duration = 1.s) = SequentialAction(
         ParallelAction(
-            waitForColorAction(color, maxTime),
             sweeperOnAction(),
             InstantAction {
                 tiltDownInstant()
-            }
+            },
+            waitForColorAction(color, maxTime),
         ),
         sweeperOffAction()
     )
