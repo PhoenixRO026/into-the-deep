@@ -44,6 +44,8 @@ class Lift(
         RAW_POWER
     }
 
+    private var offsetGearShift = 0
+
     private var currentMode = Mode.RAW_POWER
     private var offset = 0
 

@@ -13,8 +13,8 @@ class OuttakePositions: LinearOpMode() {
         val servoClaw = hardwareMap.get(Servo::class.java, "servoClaw")
         val servoWrist = hardwareMap.get(Servo::class.java, "servoWrist")
         val servoElbow = hardwareMap.get(Servo::class.java, "servoElbow")
-        val servoShoulder = hardwareMap.get(Servo::class.java, "servoTilt")
-        val servoExtendo = hardwareMap.get(Servo::class.java, "servoExtendo")
+        val servoShoulder = hardwareMap.get(Servo::class.java, "servoShoulder")
+        val servoExtendo = hardwareMap.get(Servo::class.java, "servoExtendoOuttake")
 
         var previousTime: Double
         var deltaTime : Double
@@ -49,7 +49,7 @@ class OuttakePositions: LinearOpMode() {
             if(gamepad1.dpad_up){
                 servoWrist.position += 0.1 * deltaTime
             }
-            else if(gamepad1.b){
+            else if(gamepad1.dpad_down){
                 servoWrist.position -= 0.1 * deltaTime
             }
             if(gamepad1.dpad_left){
@@ -58,7 +58,12 @@ class OuttakePositions: LinearOpMode() {
             else if(gamepad1.dpad_right){
                 servoExtendo.position -= 0.1 * deltaTime
             }
-
+            if(gamepad1.left_bumper){
+                servoClaw.position += 0.1 * deltaTime
+            }
+            else if(gamepad1.right_bumper){
+                servoClaw.position -= 0.1 * deltaTime
+            }
             telemetry.addData("a Pressed", gamepad1.a)
             telemetry.addData("y Pressed", gamepad1.y)
             telemetry.addData("x Pressed", gamepad1.x)
