@@ -75,6 +75,7 @@ public final class MecanumDrive {
         // path profile parameters (in inches)
         public double maxWheelVel = 60;
         public double minProfileAccel = -30;
+        public double minProfileAccelQuick = -60;
         public double maxProfileAccel = 100;
 
         // turn profile parameters (in radians)
@@ -105,6 +106,9 @@ public final class MecanumDrive {
             ));
     public final AccelConstraint defaultAccelConstraint =
             new ProfileAccelConstraint(PARAMS.minProfileAccel, PARAMS.maxProfileAccel);
+
+    public final AccelConstraint quickAccelConstraint =
+            new ProfileAccelConstraint(PARAMS.minProfileAccelQuick, PARAMS.maxProfileAccel);
 
     public final DcMotorEx leftFront, leftBack, rightBack, rightFront;
 
