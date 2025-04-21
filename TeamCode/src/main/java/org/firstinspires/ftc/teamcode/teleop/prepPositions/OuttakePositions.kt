@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.prepPositions
 
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.now
-import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Servo
@@ -18,7 +16,6 @@ class OuttakePositions: LinearOpMode() {
         val servoShoulder = hardwareMap.get(Servo::class.java, "servoTilt")
         val servoExtendo = hardwareMap.get(Servo::class.java, "servoExtendo")
 
-        var wait = 10.0.s
         var previousTime: Double
         var deltaTime : Double
         var now : Double
@@ -31,9 +28,6 @@ class OuttakePositions: LinearOpMode() {
         servoWrist.position = 0.5
         servoElbow.position = 0.5
         servoShoulder.position = 0.5
-
-        val p = TelemetryPacket()
-        var ok : Boolean = false
 
         while (opModeIsActive()){
             now = now()
