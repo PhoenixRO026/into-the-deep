@@ -64,6 +64,15 @@ class OuttakePositions: LinearOpMode() {
             else if(gamepad1.right_bumper){
                 servoClaw.position -= 0.1 * deltaTime
             }
+            if (gamepad1.left_trigger > 0.2 ) {
+                servoExtendo.position = 0.0
+            }
+            else if (gamepad1.right_trigger > 0.2 ){
+                servoExtendo.position = 0.4361
+            }
+
+
+
             telemetry.addData("a Pressed", gamepad1.a)
             telemetry.addData("y Pressed", gamepad1.y)
             telemetry.addData("x Pressed", gamepad1.x)

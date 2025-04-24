@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
 import com.qualcomm.robotcore.hardware.DcMotorEx
+import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
@@ -16,7 +17,9 @@ import kotlin.math.abs
 class Lift(
     val leftMotor: DcMotorEx,
     val rightMotor: DcMotorEx,
-    val encoder: Encoder
+    val encoder: Encoder,
+    val servoGearShiftLeft: Servo,
+    val servoGearShiftRight: Servo
 ) {
     @Config
     data object LiftConfig {
@@ -37,6 +40,11 @@ class Lift(
         @JvmField var intakeWaitingPos = 600
         @JvmField var barInitPos = 936
         @JvmField var parkPose = 1500
+
+        @JvmField var gearShiftLeftUp = 0.5
+        @JvmField var gearShiftLeftDown = 0.5
+        @JvmField var gearShiftRightUp = 0.5
+        @JvmField var gearShiftRightDown = 0.5
     }
 
     enum class Mode {
@@ -45,6 +53,32 @@ class Lift(
     }
 
     private var offsetGearShift = 0
+
+    var gearShiftLeftPos
+        get() = servoGearShiftLeft.position
+        set(value) {
+            servoGearShiftLeft.position = value
+        }
+
+    var gearShiftRightPos
+        get() = servoGearShiftRight.position
+        set(value) {
+            servoGearShiftRight.position = value
+        }
+
+    fun gearShiftDrive() {
+        gearShiftLeftPos = LiftConfig.gearShiftLeftUp
+        gearShiftRightPos = LiftConfig.gearShiftRightUp
+    }
+
+    fun gearShiftHang() {
+        gearShiftLeftPos = LiftConfig.gearShiftLeftDown
+        gearShiftRightPos = LiftConfig.gearShiftRightDown
+    }
+
+    fun initLift() {
+        gearShiftDrive()
+    }
 
     private var currentMode = Mode.RAW_POWER
     private var offset = 0

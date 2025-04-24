@@ -32,6 +32,7 @@ class Robot(
     fun initTeleop() {
         intake.initTeleop()
         outtake.initTeleop()
+        lift.initLift()
     }
 
     fun initAuto() {
@@ -115,6 +116,8 @@ class Robot(
 
         val liftLeftMotor = hardwareMap.get(DcMotorEx::class.java, "motorLiftLeft")
         val liftRightMotor = hardwareMap.get(DcMotorEx::class.java, "motorLiftRight")
+        val servoGearShiftLeft = hardwareMap.get(Servo::class.java, "servoGearShiftLeft")
+        val servoGearShiftRight = hardwareMap.get(Servo::class.java, "servoGearShiftRight")
         val intakeExtendoMotor = hardwareMap.get(DcMotorEx::class.java, "motorExtendoIntake")
         val intakeSweeperMotor = hardwareMap.get(DcMotorEx::class.java, "motorSweeper")
 
@@ -125,6 +128,8 @@ class Robot(
 
         liftLeftMotor.direction = DcMotorSimple.Direction.FORWARD
         liftRightMotor.direction = DcMotorSimple.Direction.REVERSE
+        servoGearShiftLeft.direction = Servo.Direction.FORWARD
+        servoGearShiftRight.direction= Servo.Direction.FORWARD
         intakeExtendoMotor.direction = DcMotorSimple.Direction.FORWARD
         intakeSweeperMotor.direction = DcMotorSimple.Direction.FORWARD
 
@@ -132,6 +137,9 @@ class Robot(
         liftRightMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         intakeExtendoMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         intakeSweeperMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+
+        servoGearShiftLeft.scaleRange(0.0, 1.0)
+        servoGearShiftRight.scaleRange(0.0, 1.0)
 
         val intakeTiltServo = hardwareMap.get(Servo::class.java, "servoIntakeTilt")
         val outtakeExtendoServo = hardwareMap.get(Servo::class.java, "servoExtendoOuttake")
@@ -167,7 +175,10 @@ class Robot(
         lift = Lift(
             leftMotor = liftLeftMotor,
             rightMotor = liftRightMotor,
-            encoder = liftEncoder
+            encoder = liftEncoder,
+            servoGearShiftLeft = servoGearShiftLeft,
+            servoGearShiftRight = servoGearShiftRight
+
         )
         outtake = Outtake(
             extendoServo = outtakeExtendoServo,
