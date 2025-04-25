@@ -23,6 +23,9 @@ class LiftTuning : LinearOpMode() {
 
         waitForStart()
 
+        lift.gearShiftLeftPos = 0.5244
+        lift.gearShiftRightPos = 0.5061
+
         while (opModeIsActive()) {
             timeKeep.resetDeltaTime()
 

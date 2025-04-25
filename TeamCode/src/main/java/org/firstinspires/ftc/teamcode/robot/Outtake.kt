@@ -102,7 +102,7 @@ class Outtake(
     var clawPos: Double = 0.5
         get() = clawServo.position
         set(value) {
-            val clampedVal = value.coerceIn(0.0, 1.0)
+            val clampedVal = value.coerceIn(0.3039, 1.0)
             if (clampedVal == field) return
             field = clampedVal
             clawServo.position = field

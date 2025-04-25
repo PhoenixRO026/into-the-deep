@@ -127,7 +127,7 @@ class Robot(
         intakeSweeperMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
         liftLeftMotor.direction = DcMotorSimple.Direction.FORWARD
-        liftRightMotor.direction = DcMotorSimple.Direction.REVERSE
+        liftRightMotor.direction = DcMotorSimple.Direction.FORWARD
         servoGearShiftLeft.direction = Servo.Direction.FORWARD
         servoGearShiftRight.direction= Servo.Direction.FORWARD
         intakeExtendoMotor.direction = DcMotorSimple.Direction.FORWARD

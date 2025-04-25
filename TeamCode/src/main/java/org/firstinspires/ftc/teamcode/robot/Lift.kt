@@ -41,9 +41,9 @@ class Lift(
         @JvmField var barInitPos = 936
         @JvmField var parkPose = 1500
 
-        @JvmField var gearShiftLeftUp = 0.5
-        @JvmField var gearShiftLeftDown = 0.5
-        @JvmField var gearShiftRightUp = 0.5
+        @JvmField var gearShiftLeftUp = 0.5244
+        @JvmField var gearShiftLeftDown = 0.4328
+        @JvmField var gearShiftRightUp = 0.5061
         @JvmField var gearShiftRightDown = 0.5
     }
 
