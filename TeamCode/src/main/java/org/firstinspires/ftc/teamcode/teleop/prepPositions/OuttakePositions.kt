@@ -65,10 +65,10 @@ class OuttakePositions: LinearOpMode() {
                 servoClaw.position -= 0.1 * deltaTime
             }
             if (gamepad1.left_trigger > 0.2 ) {
-                servoExtendo.position = 0.0
+                servoExtendo.position += 0.1 * deltaTime
             }
             else if (gamepad1.right_trigger > 0.2 ){
-                servoExtendo.position = 0.4361
+                servoExtendo.position -= 0.1 * deltaTime
             }
 
 

@@ -33,18 +33,18 @@ class Intake(
     data object IntakeConfig {
         @JvmField
         var controller = PIDController(
-            kP = 0.025,
-            kD = 0.0006,
-            kI = 0.00,
+            kP = 0.03,
+            kD = 0.00117,
+            kI = 0.001,
             stabilityThreshold = 0.2
         )
         @JvmField var targetPosTolerance = 10
-        @JvmField var extendoLim = 600
+        @JvmField var extendoLim = 560
 
         @JvmField var titlActionSleepDuration = 1.s
 
-        @JvmField var extendoMax = 600
-        @JvmField var extendoIn = 8
+        @JvmField var extendoMax = 560
+        @JvmField var extendoIn = -50
 
         @JvmField var tiltUp = 0.1406
         @JvmField var tiltDown = 0.6139
@@ -53,9 +53,9 @@ class Intake(
         @JvmField var tiltTeleInit = tiltUp
         @JvmField var tiltAutoInit = tiltUp
 
-        @JvmField var extendoLeftRedSample = 600
-        @JvmField var extendoMiddleRedSample = 600
-        @JvmField var extendoRightRedSample = 600
+        @JvmField var extendoLeftRedSample = 560
+        @JvmField var extendoMiddleRedSample = 560
+        @JvmField var extendoRightRedSample = 560
 
         @JvmField var sampleToBoxPower = 1.0
     }

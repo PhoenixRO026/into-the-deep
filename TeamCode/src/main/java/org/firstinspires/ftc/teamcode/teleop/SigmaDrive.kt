@@ -201,7 +201,7 @@ abstract class SigmaDrive: LinearOpMode() {
         } else if (gamepad1.right_bumper) {
             robot.intake.extendoPower = 1.0
         } else {
-            robot.intake.extendoPower = -0.0
+            robot.intake.extendoPower = 0.0
         }
 
         if (gamepad2.left_trigger != 0f) {

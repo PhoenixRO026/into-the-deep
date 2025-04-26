@@ -25,8 +25,8 @@ class Lift(
     data object LiftConfig {
         @JvmField
         var controller = PIDController(
-            kP = 0.015,
-            kD = 0.0002,
+            kP = 0.03,
+            kD = 0.00025,
             kI = 0.0,
             stabilityThreshold = 0.2
         )
@@ -35,11 +35,11 @@ class Lift(
         @JvmField
         var targetPosTolerance = 20
 
-        @JvmField var basketPos = 2850
-        @JvmField var intakePos = 422
-        @JvmField var intakeWaitingPos = 600
-        @JvmField var barInitPos = 936
-        @JvmField var parkPose = 1500
+        @JvmField var basketPos = 2557
+        @JvmField var intakePos = 400
+        @JvmField var intakeWaitingPos = 400
+        @JvmField var barInitPos = 500
+        @JvmField var parkPose = 1000
 
         @JvmField var gearShiftLeftUp = 0.5244
         @JvmField var gearShiftLeftDown = 0.4328

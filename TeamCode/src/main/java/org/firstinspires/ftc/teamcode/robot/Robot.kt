@@ -111,7 +111,7 @@ class Robot(
         val liftEncoder = RawEncoder(mecanumDrive.rightBack)
         val intakeExtendoEncoder = RawEncoder(mecanumDrive.leftFront)
 
-        liftEncoder.direction = DcMotorSimple.Direction.REVERSE
+        liftEncoder.direction = DcMotorSimple.Direction.FORWARD
         intakeExtendoEncoder.direction = DcMotorSimple.Direction.FORWARD
 
         val liftLeftMotor = hardwareMap.get(DcMotorEx::class.java, "motorLiftLeft")
@@ -126,8 +126,8 @@ class Robot(
         intakeExtendoMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         intakeSweeperMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
-        liftLeftMotor.direction = DcMotorSimple.Direction.FORWARD
-        liftRightMotor.direction = DcMotorSimple.Direction.REVERSE
+        liftLeftMotor.direction = DcMotorSimple.Direction.REVERSE
+        liftRightMotor.direction = DcMotorSimple.Direction.FORWARD
 
         servoGearShiftLeft.direction = Servo.Direction.FORWARD
         servoGearShiftRight.direction= Servo.Direction.FORWARD
