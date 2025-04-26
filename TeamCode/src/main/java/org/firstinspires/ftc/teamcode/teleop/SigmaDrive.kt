@@ -85,6 +85,8 @@ abstract class SigmaDrive: LinearOpMode() {
             robot.addTelemetry(telemetry, timeKeep.deltaTime)
             telemetry.addData("driver 1 action", driver1Action)
             telemetry.addData("driver 2 action", driver2Action)
+            telemetry.addData("right bumper", gamepad1.right_bumper)
+            telemetry.addData("left bumper", gamepad1.left_bumper)
             telemetry.addData("movement ms", movementTimekeep.deltaTime.asMs)
             telemetry.addData("systems ms", systemsTimekeep.deltaTime.asMs)
             telemetry.addData("actions ms", actionsTimekeep.deltaTime.asMs)
@@ -199,7 +201,7 @@ abstract class SigmaDrive: LinearOpMode() {
         } else if (gamepad1.right_bumper) {
             robot.intake.extendoPower = 1.0
         } else {
-            robot.intake.extendoPower = 0.0
+            robot.intake.extendoPower = -0.0
         }
 
         if (gamepad2.left_trigger != 0f) {
