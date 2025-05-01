@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode.robot
 import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
+import com.acmerobotics.roadrunner.SleepAction
 import com.acmerobotics.roadrunner.ftc.RawEncoder
 import com.lib.units.Duration
 import com.lib.units.Pose
+import com.lib.units.SleepAction
 import com.lib.units.cm
 import com.lib.units.deg
 import com.lib.units.s
@@ -56,8 +58,8 @@ class Robot(
     )
 
     fun armAndLiftToIntakeWaiting() = SequentialAction(
+        lift.liftToIntakeWaitingAction(),
         outtake.armToIntakeAction(),
-        lift.liftToIntakeWaitingAction()
     )
 
     fun armAndLiftToIntake() = SequentialAction(
@@ -87,6 +89,12 @@ class Robot(
         lift.liftToBarInitInstant()
         outtake.armToBarInstant()
     }
+
+    fun armAndLiftTakeSample() = SequentialAction(
+        armAndLiftToIntakeWaiting(),
+        SleepAction(1.0.s),
+        armAndLiftToIntake()
+    )
 
     fun turnOffAction() = ParallelAction(
         outtake.armToNeutralAction(),
