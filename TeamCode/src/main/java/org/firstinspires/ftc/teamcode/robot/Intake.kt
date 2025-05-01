@@ -46,9 +46,9 @@ class Intake(
         @JvmField var extendoMax = 560
         @JvmField var extendoIn = -50
 
-        @JvmField var tiltUp = 0.1406
-        @JvmField var tiltDown = 0.6139
-        @JvmField var tiltGround = 0.6206
+        @JvmField var tiltUp = 0.1933
+        @JvmField var tiltDown = 0.62
+        @JvmField var tiltGround = 0.6728
 
         @JvmField var tiltTeleInit = tiltUp
         @JvmField var tiltAutoInit = tiltUp
