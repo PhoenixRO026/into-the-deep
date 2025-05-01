@@ -23,20 +23,20 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 
 @Autonomous
 class RedRightV4 : LinearOpMode() {
-    private val startPose = Pose(20.cm, -61.5.inch, 90.deg)
+    private val startPose = Pose(20.cm, -59.5.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
     private val firstSpecimenPos = Pose(-1.5.inch, -30.5.inch, 90.deg)
     private val secondSpecimenPos = Pose(0.inch, -30.5.inch, 90.deg)
     private val thirdSpecimenPos = Pose(1.5.inch, -30.5.inch, 90.deg)
-    private val forthSpecimenPos = Pose(3.inch, -30.5.inch, 90.deg)
+    private val forthSpecimenPos = Pose(3.inch, -27.5.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
     private val zonePos = Distance2d(45.1.inch, -67.2.inch)
     private val zonePoze3 = Distance2d(50.inch, -67.2.inch)
-    private val firstSamplePos = Distance2d(26.5.inch, -41.inch).headingTowards(red1Pos)
-    private val secondSamplePos = Distance2d(33.inch, -37.5.inch).headingTowards(red2Pos)
-    private val thirdSamplePos = Distance2d(41.inch, -37.inch).headingTowards(red3Pos)
+    private val firstSamplePos = Distance2d(28.5.inch, -39.inch).headingTowards(red1Pos)
+    private val secondSamplePos = Distance2d(35.inch, -35.5.inch).headingTowards(red2Pos)
+    private val thirdSamplePos = Distance2d(43.inch, -35.inch).headingTowards(red3Pos)
     private val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     private val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     private val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
@@ -142,7 +142,7 @@ class RedRightV4 : LinearOpMode() {
                     lift.liftToIntakeWaitingAction(),
                     robot.armAndLiftToSpecimen(),
                 ),
-                drive.actionBuilder(firstSpecimenPos)
+                drive.actionBuilder(secondSpecimenPos)
                     .setTangent(-90.deg)
                     .splineToLinearHeading(takeSpecimenPos, -90.deg)
                     //.splineToLinearHeading(takeSpecimenPos, -90.deg)
@@ -195,7 +195,7 @@ class RedRightV4 : LinearOpMode() {
             ParallelAction(
                 robot.armAndLiftToBar(),
                 drive.actionBuilder(startPose)
-                    .strafeToLinearHeading(firstSpecimenPos, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
+                    .strafeToLinearHeading(forthSpecimenPos, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
                     .build()
             ),
             outtake.openClawAction(),

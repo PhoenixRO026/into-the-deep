@@ -53,8 +53,6 @@ class RedRightRebuild : LinearOpMode() {
         val outtake = robot.outtake
         robot.initAuto()
 
-
-
         fun firstSampleCycle() = SequentialAction(
             ParallelAction(
                 lift.liftToIntakeWaitingAction(),
