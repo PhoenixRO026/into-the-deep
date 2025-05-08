@@ -38,7 +38,7 @@ class Lift(
         @JvmField var basketPos = 2557
         @JvmField var intakePos = 400
         @JvmField var intakeWaitingPos = 400
-        @JvmField var barInitPos = 500
+        @JvmField var barInitPos = 535
         @JvmField var parkPose = 1000
 
         @JvmField var gearShiftLeftUp = 0.5244

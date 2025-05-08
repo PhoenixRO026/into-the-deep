@@ -19,7 +19,7 @@ class Outtake(
 ) {
     @Config
     data object OuttakeConfig {
-        @JvmField var extendoSpeed = 3.s
+        @JvmField var extendoSpeed = 1.s
 
         @JvmField var shoulderActionSleepDuration = 2.s
         @JvmField var elbowActionSleepDuration = 2.s
@@ -29,7 +29,7 @@ class Outtake(
 
         @JvmField var shoulderNeutralPos = 0.5478
         @JvmField var elbowNeutralPos = 0.9733
-        @JvmField var extendoNeutralPos = 0.2917
+        @JvmField var extendoNeutralPos = 0.3106
         @JvmField var wristMidPos = 0.5239
         @JvmField var wristUpsideDown = 0.0
         @JvmField var clawOpenPos = 0.8544
@@ -41,8 +41,8 @@ class Outtake(
         @JvmField var wristTeleInit = wristMidPos
         @JvmField var clawTeleInit = clawClosedPos
 
-        @JvmField var shoulderAutoInit = shoulderNeutralPos
-        @JvmField var elbowAutoInit = elbowNeutralPos
+        @JvmField var shoulderAutoInit = 0.4528
+        @JvmField var elbowAutoInit = 0.8444
         @JvmField var wristAutoInit = wristMidPos
         @JvmField var extendoAutoInit = extendoNeutralPos
         @JvmField var clawAutoInit = clawClosedPos
@@ -55,13 +55,13 @@ class Outtake(
         @JvmField var elbowBasketPos = 0.2472
         @JvmField var extendoBasketPos = extendoNeutralPos
 
-        @JvmField var shoulderSpecimenPickupPos = 0.0056
-        @JvmField var elbowSpecimenPickupPos = 0.7117
+        @JvmField var shoulderSpecimenPickupPos = 0.0306
+        @JvmField var elbowSpecimenPickupPos = 0.478
         @JvmField var extendoSpecimenPickupPos = extendoNeutralPos
 
-        @JvmField var shoulderBarPos = 0.6028
-        @JvmField var elbowBarPos = 0.0
-        @JvmField var extendoBarPos = 0.0
+        @JvmField var shoulderBarPos = 0.5261
+        @JvmField var elbowBarPos = 0.0539
+        @JvmField var extendoBarPos = 0.0161
 
         @JvmField var shoulderOldBarPos = 0.8694
         @JvmField var elbowOldBarPos = 0.894
