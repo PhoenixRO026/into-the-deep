@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
+import com.acmerobotics.roadrunner.RaceAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.roadrunner_ext.delayedBy
 import com.lib.units.Distance2d
@@ -28,7 +29,7 @@ class RedRightV4 : LinearOpMode() {
     private val firstSpecimenPos = Pose(-1.5.inch, -30.5.inch, 90.deg)
     private val secondSpecimenPos = Pose(0.inch, -30.5.inch, 90.deg)
     private val thirdSpecimenPos = Pose(1.5.inch, -30.5.inch, 90.deg)
-    private val forthSpecimenPos = Pose(3.inch, -27.5.inch, 90.deg)
+    private val forthSpecimenPos = Pose(3.inch, -25.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
@@ -110,15 +111,18 @@ class RedRightV4 : LinearOpMode() {
         )
 
         fun firstSpecimenCycle() = SequentialAction(
-            ParallelAction(
-                intake.extendoInAction(),
-                outtake.openClawAction(),
-                robot.armAndLiftToSpecimen(),
-                drive.actionBuilder(thirdSamplePos)
-                    .setTangent(-90.deg)
-                    .splineToSplineHeading(takeSpecimenPos + 10.cm.y, -90.deg)
-                    .lineToY(takeSpecimenPos.position.y)
-                    .build()
+            RaceAction(
+                ParallelAction(
+                    intake.extendoInAction(),
+                    outtake.openClawAction(),
+                    robot.armAndLiftToSpecimen(),
+                    drive.actionBuilder(thirdSamplePos)
+                        .setTangent(-90.deg)
+                        .splineToSplineHeading(takeSpecimenPos + 10.cm.y, -90.deg)
+                        .lineToY(takeSpecimenPos.position.y)
+                        .build()
+                ),
+                SleepAction(3.s)
             ),
             outtake.closeClawAction(),
             ParallelAction(
@@ -135,6 +139,7 @@ class RedRightV4 : LinearOpMode() {
             ),
             outtake.openClawAction(),
         )
+
 
         fun secondSpecimenCycle() = SequentialAction(
             ParallelAction(

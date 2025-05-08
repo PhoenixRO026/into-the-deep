@@ -67,7 +67,7 @@ fun main() {
     val redBot =
         DefaultBotBuilder(meepMeep) // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
             .setConstraints(60.0, 100.0, Math.PI * 3.0 / 2.0 , Math.PI * 2, 14.5)
-            .setDimensions(40.cm.asInch, 44.cm.asInch)
+            .setDimensions(32.5.cm.asInch, 33.cm.asInch)
             .build()
 
     val blueBot =
