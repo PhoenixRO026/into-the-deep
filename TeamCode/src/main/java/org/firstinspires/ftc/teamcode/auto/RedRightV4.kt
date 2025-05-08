@@ -29,7 +29,7 @@ class RedRightV4 : LinearOpMode() {
     private val firstSpecimenPos = Pose(-1.5.inch, -30.5.inch, 90.deg)
     private val secondSpecimenPos = Pose(0.inch, -30.5.inch, 90.deg)
     private val thirdSpecimenPos = Pose(1.5.inch, -30.5.inch, 90.deg)
-    private val forthSpecimenPos = Pose(3.inch, -25.inch, 90.deg)
+    private val forthSpecimenPos = Pose(3.inch, -23.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
@@ -41,7 +41,7 @@ class RedRightV4 : LinearOpMode() {
     private val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     private val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     private val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
-    private val takeSpecimenPos = Pose(40.inch, -54.inch, 90.deg)
+    private val takeSpecimenPos = Pose(40.inch, -56.inch, 90.deg)
 
     override fun runOpMode() {
         initMessage()

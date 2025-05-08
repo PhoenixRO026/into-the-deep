@@ -142,7 +142,7 @@ class Lift(
     fun liftToBasketAction() = liftToPosAction(LiftConfig.basketPos)
     fun liftToIntakeAction() = liftToPosAction(LiftConfig.intakePos)
     fun liftToIntakeWaitingAction() = liftToPosAction(LiftConfig.intakeWaitingPos)
-    fun liftDownAction() = liftToPosAction(5)
+    fun liftDownAction() = liftToPosAction(20)
     fun liftToParking() = liftToPosAction(LiftConfig.parkPose)
 
     fun addTelemetry(telemetry: Telemetry) {
