@@ -70,19 +70,16 @@ class RedRightV4 : LinearOpMode() {
             intake.takeSample(Intake.SensorColor.RED),
             ParallelAction(
                 intake.tiltUpAction(),
-                robot.armAndLiftToSpecimen(),
                 drive.actionBuilder(firstSamplePos)
                     .turnTo(firstSamplePos.position.headingTowards(zonePos).heading)
-                    .build(),
+                    .build()
             ),
             intake.tiltUpAction(),
-            intake.kickSample(),
-            robot.armAndLiftToSpecimen(),
+            intake.kickSample()
         )
 
         fun secondSampleCycle() = SequentialAction(
             ParallelAction(
-                robot.armAndLiftToSpecimen(),
                 intake.extendoToMiddleRedSampleAction(),
                 drive.actionBuilder(firstSamplePos, 1.s)
                     .strafeToLinearHeading(secondSamplePos)
@@ -202,6 +199,7 @@ class RedRightV4 : LinearOpMode() {
         )
 
         val action = SequentialAction(
+            robot.armAndLiftToNeutral(),
             ParallelAction(
                 robot.armAndLiftToBar(),
                 drive.actionBuilder(startPose)

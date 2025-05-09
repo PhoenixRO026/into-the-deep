@@ -118,11 +118,11 @@ class Outtake(
     }
 
     fun initAuto() {
+        extendoPos = OuttakeConfig.extendoAutoInit
         shoulderPos = OuttakeConfig.shoulderAutoInit
         elbowPos = OuttakeConfig.elbowAutoInit
         clawPos =  OuttakeConfig.clawAutoInit
         wristPos = OuttakeConfig.wristAutoInit
-        extendoPos = OuttakeConfig.extendoAutoInit
     }
 
     fun update(deltaTime: Duration) {
