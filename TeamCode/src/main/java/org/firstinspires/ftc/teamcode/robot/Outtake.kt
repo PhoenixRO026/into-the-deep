@@ -32,7 +32,7 @@ class Outtake(
         @JvmField var extendoNeutralPos = 0.3106
         @JvmField var wristMidPos = 0.5239
         @JvmField var wristUpsideDown = 0.0
-        @JvmField var clawOpenPos = 0.8544
+        @JvmField var clawOpenPos = 0.6594//0.8544
         @JvmField var clawClosedPos = 0.4228
 
         @JvmField var shoulderTeleInit = shoulderNeutralPos
@@ -55,13 +55,13 @@ class Outtake(
         @JvmField var elbowBasketPos = 0.2472
         @JvmField var extendoBasketPos = extendoNeutralPos
 
-        @JvmField var shoulderSpecimenPickupPos = 0.0306
-        @JvmField var elbowSpecimenPickupPos = 0.478
+        @JvmField var shoulderSpecimenPickupPos = 0.0639//0.0306
+        @JvmField var elbowSpecimenPickupPos = 0.5439//0.478
         @JvmField var extendoSpecimenPickupPos = extendoNeutralPos
 
         @JvmField var shoulderBarPos = 0.5261
         @JvmField var elbowBarPos = 0.0539
-        @JvmField var extendoBarPos = 0.0161
+        @JvmField var extendoBarPos = 0.003//0.0161
 
         @JvmField var shoulderOldBarPos = 0.8694
         @JvmField var elbowOldBarPos = 0.894
@@ -237,7 +237,9 @@ class Outtake(
 
     fun shoulderToSpecimenPickupAction() = shoulderToPosAction(OuttakeConfig.shoulderSpecimenPickupPos)
     fun elbowToSpecimenPickupAction() = elbowToPosAction(OuttakeConfig.elbowSpecimenPickupPos)
+    fun wristToSpecimenPickupAction() = extendoToPosAction(OuttakeConfig.wristUpsideDown)
     fun extendoToSpecimenPickupAction() = extendoToPosAction(OuttakeConfig.extendoSpecimenPickupPos)
+
 
     fun armToSpecimenInstant() {
         shoulderPos = OuttakeConfig.shoulderSpecimenPickupPos
@@ -249,7 +251,8 @@ class Outtake(
         shoulderToSpecimenPickupAction(),
         elbowToSpecimenPickupAction(),
         extendoToSpecimenPickupAction(),
-        wristToMidAction(),
+        wristToSpecimenPickupAction(),
+        //wristToMidAction(),
         openClawAction()
     )
 

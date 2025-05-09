@@ -83,6 +83,11 @@ abstract class SigmaDrive: LinearOpMode() {
             val telemetryMs = telemetryTimkeep.deltaTime
             telemetryTimkeep.resetDeltaTime()
             robot.addTelemetry(telemetry, timeKeep.deltaTime)
+            telemetry.addData("lift pos", robot.lift.position)
+
+            telemetry.addData("extendo", robot.outtake.extendoPos)
+            telemetry.addData("shoulder", robot.outtake.shoulderPos)
+
             telemetry.addData("driver 1 action", driver1Action)
             telemetry.addData("driver 2 action", driver2Action)
             telemetry.addData("right bumper", gamepad1.right_bumper)

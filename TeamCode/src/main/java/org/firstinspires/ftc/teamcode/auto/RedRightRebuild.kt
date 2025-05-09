@@ -23,14 +23,14 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 
 @Autonomous
 class RedRightRebuild : LinearOpMode() {
-    private val startPose = Pose(20.cm, -61.5.inch, 90.deg)
+    private val startPose = Pose(14.cm, -63.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
     private val firstSpecimenPos = Pose(-1.5.inch, -30.5.inch, 90.deg)
     private val secondSpecimenPos = Pose(0.inch, -30.5.inch, 90.deg)
     private val thirdSpecimenPos = Pose(1.5.inch, -30.5.inch, 90.deg)
     private val forthSpecimenPos = Pose(3.inch, -30.5.inch, 90.deg)
-    private val red1Pos = Distance2d(48.inch, -25.5.inch)
-    private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
+    private val red1Pos = Distance2d(48.inch, -27.inch)
+    private val red2Pos = Distance2d(58.5.inch, -26.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
     private val zonePos = Distance2d(45.1.inch, -67.2.inch)
     private val zonePoze3 = Distance2d(50.inch, -67.2.inch)
@@ -40,7 +40,7 @@ class RedRightRebuild : LinearOpMode() {
     private val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     private val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     private val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
-    private val takeSpecimenPos = Pose(40.inch, -54.inch, 90.deg)
+    private val takeSpecimenPos = Pose(40.inch, -60.inch, 90.deg)
 
     override fun runOpMode() {
         initMessage()
