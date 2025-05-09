@@ -70,7 +70,7 @@ class Outtake(
         @JvmField var extendoMax = extendoBarPos
     }
 
-    var extendoSpeed = 0.0
+    var extendoSpeed = 1.0
         set(value) {
             field = value.coerceIn(-1.0, 1.0)
         }
@@ -79,7 +79,7 @@ class Outtake(
         get() = extendoServo.position
         set(value) {
             extendoServo.position = value
-            extendoSpeed = 0.0
+            extendoSpeed = 1.0
         }
 
     var shoulderPos
@@ -126,7 +126,7 @@ class Outtake(
     }
 
     fun update(deltaTime: Duration) {
-        extendoPos += extendoSpeed * (deltaTime / OuttakeConfig.extendoSpeed)
+        extendoPos += 0.0 * (deltaTime / OuttakeConfig.extendoSpeed)
     }
 
     fun extendoToPosAction(pos: Double) = object : Action {
@@ -238,7 +238,7 @@ class Outtake(
 
     fun shoulderToSpecimenPickupAction() = shoulderToPosAction(OuttakeConfig.shoulderSpecimenPickupPos)
     fun elbowToSpecimenPickupAction() = elbowToPosAction(OuttakeConfig.elbowSpecimenPickupPos)
-    fun wristToSpecimenPickupAction() = extendoToPosAction(OuttakeConfig.wristUpsideDown)
+    fun wristToSpecimenPickupAction() = wristToPosAction(OuttakeConfig.wristUpsideDown)
     fun extendoToSpecimenPickupAction() = extendoToPosAction(OuttakeConfig.extendoSpecimenPickupPos)
 
 
@@ -248,16 +248,13 @@ class Outtake(
         extendoPos = OuttakeConfig.extendoSpecimenPickupPos
     }
 
-    fun armToSpecimenAction() = SequentialAction(
+    fun armToSpecimenAction() = ParallelAction(
         extendoToSpecimenPickupAction(),
-        SleepAction(1.s),
-        ParallelAction(
-            shoulderToSpecimenPickupAction(),
-            elbowToSpecimenPickupAction(),
-            wristToSpecimenPickupAction(),
-            //wristToMidAction(),
-            openClawAction()
-        ),
+        shoulderToSpecimenPickupAction(),
+        elbowToSpecimenPickupAction(),
+        wristToSpecimenPickupAction(),
+        //wristToMidAction(),
+        openClawAction()
     )
 
     fun armToNeutralAction() = ParallelAction(
@@ -293,9 +290,10 @@ class Outtake(
     }
 
     fun armToBarAction() = ParallelAction(
+        wristToMidAction(),
+        extendoToBarAction(),
         shoulderToBarAction(),
         elbowToBarAction(),
-        extendoToBarAction()
     )
 
     fun armToBasketAction() = ParallelAction(

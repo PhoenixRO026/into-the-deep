@@ -18,6 +18,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
 
@@ -44,7 +45,7 @@ class Robot(
     fun update(deltaTime: Duration) {
         intake.update(deltaTime)
         lift.update(deltaTime)
-        outtake.update(deltaTime)
+        //outtake.update(deltaTime)
     }
 
     fun updatePoseEstimate() {
@@ -70,8 +71,8 @@ class Robot(
     )
 
     fun armAndLiftToSpecimen() = SequentialAction(
+        lift.liftDownAction(),
         outtake.armToSpecimenAction(),
-        lift.liftDownAction()
     )
 
     fun armAndLiftToNeutral() = ParallelAction(

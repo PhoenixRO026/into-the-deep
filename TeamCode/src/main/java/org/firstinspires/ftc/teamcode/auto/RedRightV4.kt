@@ -26,10 +26,10 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 class RedRightV4 : LinearOpMode() {
     private val startPose = Pose(20.cm, -59.5.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
-    private val firstSpecimenPos = Pose(-1.5.inch, -30.5.inch, 90.deg)
-    private val secondSpecimenPos = Pose(0.inch, -30.5.inch, 90.deg)
-    private val thirdSpecimenPos = Pose(1.5.inch, -30.5.inch, 90.deg)
-    private val forthSpecimenPos = Pose(3.inch, -23.inch, 90.deg)
+    private val firstSpecimenPos = Pose(1.5.inch, -30.5.inch, 90.deg)
+    private val secondSpecimenPos = Pose(3.inch, -30.5.inch, 90.deg)
+    private val thirdSpecimenPos = Pose(4.5.inch, -30.5.inch, 90.deg)
+    private val forthSpecimenPos = Pose(6.inch, -23.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
@@ -41,7 +41,7 @@ class RedRightV4 : LinearOpMode() {
     private val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     private val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     private val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
-    private val takeSpecimenPos = Pose(40.inch, -56.inch, 90.deg)
+    private val takeSpecimenPos = Pose(40.inch, -55.inch, 90.deg)
 
     override fun runOpMode() {
         initMessage()
@@ -124,7 +124,7 @@ class RedRightV4 : LinearOpMode() {
                         .lineToY(takeSpecimenPos.position.y)
                         .build()
                 ),
-                SleepAction(5.s)
+                SleepAction(3.s)
             ),
             outtake.closeClawAction(),
             ParallelAction(
@@ -231,7 +231,9 @@ class RedRightV4 : LinearOpMode() {
             robot.update(timeKeep.deltaTime)
 
             running = runAction(action)
-
+            telemetry.addData("extendo Pos", robot.outtake.extendoPos)
+            telemetry.addData("extendo Pos", robot.outtake.extendoPos)
+            telemetry.addData("extendo Pos", robot.outtake.extendoPos)
             robot.addTelemetry(telemetry, timeKeep.deltaTime)
             telemetry.update()
         }
