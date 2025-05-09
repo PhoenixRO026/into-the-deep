@@ -18,16 +18,14 @@ class Lift(
     val leftMotor: DcMotorEx,
     val rightMotor: DcMotorEx,
     val encoder: Encoder,
-    val servoGearShiftLeft: Servo,
-    val servoGearShiftRight: Servo
 ) {
     @Config
     data object LiftConfig {
         @JvmField
         var controller = PIDController(
-            kP = 0.03,
+            kP = 0.01,
             kD = 0.00025,
-            kI = 0.0,
+            kI = 0.005,
             stabilityThreshold = 0.2
         )
         @JvmField
@@ -38,7 +36,7 @@ class Lift(
         @JvmField var basketPos = 2557
         @JvmField var intakePos = 400
         @JvmField var intakeWaitingPos = 400
-        @JvmField var barInitPos = 495
+        @JvmField var barInitPos = 691
         @JvmField var parkPose = 1000
 
         @JvmField var gearShiftLeftUp = 0.5244
@@ -50,34 +48,6 @@ class Lift(
     enum class Mode {
         PID,
         RAW_POWER
-    }
-
-    private var offsetGearShift = 0
-
-    var gearShiftLeftPos
-        get() = servoGearShiftLeft.position
-        set(value) {
-            servoGearShiftLeft.position = value
-        }
-
-    var gearShiftRightPos
-        get() = servoGearShiftRight.position
-        set(value) {
-            servoGearShiftRight.position = value
-        }
-
-    fun gearShiftDrive() {
-        gearShiftLeftPos = LiftConfig.gearShiftLeftUp
-        gearShiftRightPos = LiftConfig.gearShiftRightUp
-    }
-
-    fun gearShiftHang() {
-        gearShiftLeftPos = LiftConfig.gearShiftLeftDown
-        gearShiftRightPos = LiftConfig.gearShiftRightDown
-    }
-
-    fun initLift() {
-        gearShiftDrive()
     }
 
     private var currentMode = Mode.RAW_POWER
@@ -142,7 +112,7 @@ class Lift(
     fun liftToBasketAction() = liftToPosAction(LiftConfig.basketPos)
     fun liftToIntakeAction() = liftToPosAction(LiftConfig.intakePos)
     fun liftToIntakeWaitingAction() = liftToPosAction(LiftConfig.intakeWaitingPos)
-    fun liftDownAction() = liftToPosAction(20)
+    fun liftDownAction() = liftToPosAction(40)
     fun liftToParking() = liftToPosAction(LiftConfig.parkPose)
 
     fun addTelemetry(telemetry: Telemetry) {

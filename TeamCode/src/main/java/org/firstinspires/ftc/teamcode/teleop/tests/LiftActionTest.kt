@@ -42,7 +42,6 @@ class LiftActionTest: LinearOpMode() {
         val b1Button = ButtonReader { gamepad1.b }
         val buttons = listOf(rightBumper2Button, x1Button, b1Button)
 
-        robot.lift.initLift()
 
         telemetry.addLine("Ready")
         telemetry.update()

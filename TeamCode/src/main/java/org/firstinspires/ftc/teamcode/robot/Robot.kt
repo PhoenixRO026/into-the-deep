@@ -34,7 +34,6 @@ class Robot(
     fun initTeleop() {
         intake.initTeleop()
         outtake.initTeleop()
-        lift.initLift()
     }
 
     fun initAuto() {
@@ -185,8 +184,6 @@ class Robot(
             leftMotor = liftLeftMotor,
             rightMotor = liftRightMotor,
             encoder = liftEncoder,
-            servoGearShiftLeft = servoGearShiftLeft,
-            servoGearShiftRight = servoGearShiftRight
 
         )
         outtake = Outtake(

@@ -37,7 +37,7 @@ class RedRightV4 : LinearOpMode() {
     private val zonePoze3 = Distance2d(50.inch, -67.2.inch)
     private val firstSamplePos = Distance2d(28.5.inch, -39.inch).headingTowards(red1Pos)
     private val secondSamplePos = Distance2d(35.inch, -35.5.inch).headingTowards(red2Pos)
-    private val thirdSamplePos = Distance2d(43.inch, -35.inch).headingTowards(red3Pos)
+    private val thirdSamplePos = Distance2d(47.inch, -35.inch).headingTowards(red3Pos)
     private val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     private val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     private val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
@@ -53,6 +53,8 @@ class RedRightV4 : LinearOpMode() {
         val lift = robot.lift
         val outtake = robot.outtake
         robot.initAuto()
+
+        telemetry.addData("claw", robot.outtake.clawPos)
 
         fun firstSampleCycle() = SequentialAction(
             ParallelAction(
@@ -122,7 +124,7 @@ class RedRightV4 : LinearOpMode() {
                         .lineToY(takeSpecimenPos.position.y)
                         .build()
                 ),
-                SleepAction(3.s)
+                SleepAction(5.s)
             ),
             outtake.closeClawAction(),
             ParallelAction(
@@ -250,6 +252,7 @@ class RedRightV4 : LinearOpMode() {
     private fun initMessage() {
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
         telemetry.addLine("INITIALIZING")
+
         telemetry.update()
     }
 

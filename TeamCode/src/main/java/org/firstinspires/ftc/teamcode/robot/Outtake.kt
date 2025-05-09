@@ -27,13 +27,13 @@ class Outtake(
         @JvmField var clawActionSleepDuration = 0.1.s
         @JvmField var extendoActionSleepDuration = 2.s
 
-        @JvmField var shoulderNeutralPos = 0.5478
-        @JvmField var elbowNeutralPos = 0.9733
+        @JvmField var shoulderNeutralPos = 0.5233
+        @JvmField var elbowNeutralPos = 1.0
         @JvmField var extendoNeutralPos = 0.3106
         @JvmField var wristMidPos = 0.5239
         @JvmField var wristUpsideDown = 0.0
-        @JvmField var clawOpenPos = 0.6594//0.8544
-        @JvmField var clawClosedPos = 0.4228
+        @JvmField var clawOpenPos = 1.0
+        @JvmField var clawClosedPos = 0.0
 
         @JvmField var shoulderTeleInit = shoulderNeutralPos
         @JvmField var elbowTeleInit = elbowNeutralPos
@@ -41,8 +41,8 @@ class Outtake(
         @JvmField var wristTeleInit = wristMidPos
         @JvmField var clawTeleInit = clawClosedPos
 
-        @JvmField var shoulderAutoInit = 0.4528
-        @JvmField var elbowAutoInit = 0.8444
+        @JvmField var shoulderAutoInit = 0.5228
+        @JvmField var elbowAutoInit = 0.939
         @JvmField var wristAutoInit = wristMidPos
         @JvmField var extendoAutoInit = extendoNeutralPos
         @JvmField var clawAutoInit = clawClosedPos
@@ -55,13 +55,13 @@ class Outtake(
         @JvmField var elbowBasketPos = 0.2472
         @JvmField var extendoBasketPos = extendoNeutralPos
 
-        @JvmField var shoulderSpecimenPickupPos = 0.0639//0.0306
-        @JvmField var elbowSpecimenPickupPos = 0.5439//0.478
+        @JvmField var shoulderSpecimenPickupPos = 0.0889
+        @JvmField var elbowSpecimenPickupPos = 0.7239
         @JvmField var extendoSpecimenPickupPos = extendoNeutralPos
 
-        @JvmField var shoulderBarPos = 0.5261
-        @JvmField var elbowBarPos = 0.0539
-        @JvmField var extendoBarPos = 0.003//0.0161
+        @JvmField var shoulderBarPos = 0.7011
+        @JvmField var elbowBarPos = 0.0356
+        @JvmField var extendoBarPos = 0.0517
 
         @JvmField var shoulderOldBarPos = 0.8694
         @JvmField var elbowOldBarPos = 0.894
@@ -102,7 +102,7 @@ class Outtake(
     var clawPos: Double = 0.5
         get() = clawServo.position
         set(value) {
-            val clampedVal = value.coerceIn(0.3039, 1.0)
+            val clampedVal = value.coerceIn(0.0, 1.0)
             if (clampedVal == field) return
             field = clampedVal
             clawServo.position = field
@@ -248,9 +248,9 @@ class Outtake(
     }
 
     fun armToSpecimenAction() = ParallelAction(
+        extendoToSpecimenPickupAction(),
         shoulderToSpecimenPickupAction(),
         elbowToSpecimenPickupAction(),
-        extendoToSpecimenPickupAction(),
         wristToSpecimenPickupAction(),
         //wristToMidAction(),
         openClawAction()

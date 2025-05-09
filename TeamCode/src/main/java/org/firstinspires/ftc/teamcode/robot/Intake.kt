@@ -33,9 +33,9 @@ class Intake(
     data object IntakeConfig {
         @JvmField
         var controller = PIDController(
-            kP = 0.03,
-            kD = 0.00117,
-            kI = 0.001,
+            kP = 0.009,
+            kD = 0.0005,
+            kI = 0.01,
             stabilityThreshold = 0.2
         )
         @JvmField var targetPosTolerance = 10

@@ -99,6 +99,7 @@ abstract class SigmaDrive: LinearOpMode() {
             telemetry.addData("telemetry ms", telemetryMs)
             telemetry.addData("between loop ms", betweenLoopTimeKeep.deltaTime.asMs)
             telemetry.addData("lift pos",robot.lift.position)
+            telemetry.addData("claw", robot.outtake.clawPos)
             telemetry.update()
             telemetryTimkeep.resetDeltaTime()
             betweenLoopTimeKeep.resetDeltaTime()
