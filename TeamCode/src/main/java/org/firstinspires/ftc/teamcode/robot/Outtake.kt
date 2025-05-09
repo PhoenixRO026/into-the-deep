@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
+import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.units.Duration
 import com.lib.units.SleepAction
 import com.lib.units.s
@@ -29,7 +30,7 @@ class Outtake(
 
         @JvmField var shoulderNeutralPos = 0.5233
         @JvmField var elbowNeutralPos = 1.0
-        @JvmField var extendoNeutralPos = 0.3106
+        @JvmField var extendoNeutralPos = 0.27
         @JvmField var wristMidPos = 0.5239
         @JvmField var wristUpsideDown = 0.0
         @JvmField var clawOpenPos = 1.0
@@ -247,13 +248,16 @@ class Outtake(
         extendoPos = OuttakeConfig.extendoSpecimenPickupPos
     }
 
-    fun armToSpecimenAction() = ParallelAction(
+    fun armToSpecimenAction() = SequentialAction(
         extendoToSpecimenPickupAction(),
-        shoulderToSpecimenPickupAction(),
-        elbowToSpecimenPickupAction(),
-        wristToSpecimenPickupAction(),
-        //wristToMidAction(),
-        openClawAction()
+        SleepAction(1.s),
+        ParallelAction(
+            shoulderToSpecimenPickupAction(),
+            elbowToSpecimenPickupAction(),
+            wristToSpecimenPickupAction(),
+            //wristToMidAction(),
+            openClawAction()
+        ),
     )
 
     fun armToNeutralAction() = ParallelAction(
