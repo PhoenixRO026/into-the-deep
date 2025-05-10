@@ -26,10 +26,10 @@ import org.firstinspires.ftc.teamcode.robot.Robot
 class RedRightV4 : LinearOpMode() {
     private val startPose = Pose(20.cm, -59.5.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
-    private val firstSpecimenPos = Pose(1.5.inch, -30.5.inch, 90.deg)
-    private val secondSpecimenPos = Pose(3.inch, -30.5.inch, 90.deg)
-    private val thirdSpecimenPos = Pose(4.5.inch, -30.5.inch, 90.deg)
-    private val forthSpecimenPos = Pose(6.inch, -23.inch, 90.deg)
+    private val firstSpecimenPos = Pose(0.inch, -26.inch, 90.deg)
+    private val secondSpecimenPos = Pose(1.5.inch, -26.inch, 90.deg)
+    private val thirdSpecimenPos = Pose(3.inch, -26.inch, 90.deg)
+    private val forthSpecimenPos = Pose(4.5.inch, -23.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
@@ -58,7 +58,7 @@ class RedRightV4 : LinearOpMode() {
 
         fun firstSampleCycle() = SequentialAction(
             ParallelAction(
-                lift.liftToIntakeWaitingAction(),
+                lift.liftDownAction(),
                 outtake.extendoToNeutralAction(),
                 robot.armAndLiftToNeutral().delayedBy(1.s),
                 intake.extendoToLeftRedSampleAction().delayedBy(1.s),
@@ -134,15 +134,14 @@ class RedRightV4 : LinearOpMode() {
                         outtake.armToBasketAction(),
                         outtake.armToBarAction(),
                     ),
-                    outtake.wristToUpsideDownAction(),
                     drive.actionBuilder(takeSpecimenPos)
                         .setTangent(165.deg)
-                        .splineToLinearHeading(secondSpecimenPos + 10.cm.y, 90.deg, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
+                        .splineToLinearHeading(firstSpecimenPos, 90.deg, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
                         //.splineToLinearHeading(secondSpecimenPos, 90.deg)
                         .build()
                 ).delayedBy(0.25.s), //SO THE LIFT HAS TIME TO RISE
             ),
-            outtake.openClawAction(),
+            outtake.openClawAction().delayedBy(0.5.s),
         )
 
 
@@ -151,11 +150,13 @@ class RedRightV4 : LinearOpMode() {
                 SequentialAction(
                     SleepAction(0.5.s),
                     lift.liftToIntakeWaitingAction(),
+                    lift.liftDownAction(),
                     robot.armAndLiftToSpecimen(),
                 ),
-                drive.actionBuilder(secondSpecimenPos)
-                    .setTangent(-90.deg)
+                drive.actionBuilder(firstSpecimenPos)
+                    .setTangent(-60.deg)
                     .splineToLinearHeading(takeSpecimenPos + 10.cm.y, -90.deg)
+                    .lineToY(takeSpecimenPos.position.y - 3.cm)
                     //.splineToLinearHeading(takeSpecimenPos, -90.deg)
                     .build().delayedBy(0.25.s) //SO THE LIFT HAS TIME TO DESCEND
             ),
@@ -164,27 +165,27 @@ class RedRightV4 : LinearOpMode() {
                 lift.liftToBarAction(),
                 ParallelAction(
                     robot.armAndLiftToBar(),
-                    outtake.wristToUpsideDownAction(),
                     drive.actionBuilder(takeSpecimenPos)
                         .setTangent(165.deg)
-                        .splineToLinearHeading(thirdSpecimenPos, 90.deg, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
+                        .splineToLinearHeading(secondSpecimenPos, 90.deg, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
                         //.splineToSplineHeading(thirdSpecimenPos, 90.deg)
                         .build()
                 ).delayedBy(0.25.s), //SO THE LIFT HAS TIME TO RISE
             ),
-            outtake.openClawAction(),
+            outtake.openClawAction().delayedBy(0.5.s),
         )
 
         fun thirdSpecimenCycle() = SequentialAction(
             ParallelAction(
                 SequentialAction(
                     SleepAction(0.5.s),
-                    lift.liftToIntakeWaitingAction(),
+                    lift.liftToIntakeAction(),
                     robot.armAndLiftToSpecimen(),
                 ),
-                drive.actionBuilder(thirdSpecimenPos)
-                    .setTangent(-90.deg)
+                drive.actionBuilder(secondSpecimenPos)
+                    .setTangent(-60.deg)
                     .splineToLinearHeading(takeSpecimenPos + 10.cm.y, -90.deg)
+                    .lineToY(takeSpecimenPos.position.y - 3.cm)
                     .build().delayedBy(0.25.s) //SO THE LIFT HAS TIME TO DESCEND
             ),
             outtake.closeClawAction(),
@@ -192,10 +193,9 @@ class RedRightV4 : LinearOpMode() {
                 lift.liftToBarAction(),
                 ParallelAction(
                     robot.armAndLiftToBar(),
-                    outtake.wristToUpsideDownAction(),
                     drive.actionBuilder(takeSpecimenPos)
                         .setTangent(165.deg)
-                        .splineToLinearHeading(forthSpecimenPos, 90.deg, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
+                        .splineToLinearHeading(thirdSpecimenPos, 90.deg, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
                         .build()
                 ).delayedBy(0.25.s), //SO THE LIFT HAS TIME TO RISE
             ),
@@ -236,9 +236,7 @@ class RedRightV4 : LinearOpMode() {
             robot.update(timeKeep.deltaTime)
 
             running = runAction(action)
-            telemetry.addData("extendo Pos", robot.outtake.extendoPos)
-            telemetry.addData("extendo Pos", robot.outtake.extendoPos)
-            telemetry.addData("extendo Pos", robot.outtake.extendoPos)
+            telemetry.addData("wrist Pos", robot.outtake.wristPos)
             robot.addTelemetry(telemetry, timeKeep.deltaTime)
             telemetry.update()
         }
