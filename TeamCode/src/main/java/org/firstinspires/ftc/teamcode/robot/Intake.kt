@@ -241,7 +241,7 @@ class Intake(
         sweeperOffAction()
     )
 
-    fun takeSample(color: SensorColor, maxTime: Duration = 1.s) = SequentialAction(
+    fun takeSample(color: SensorColor, maxTime: Duration = 0.5.s) = SequentialAction(
         ParallelAction(
             sweeperOnAction(),
             InstantAction {

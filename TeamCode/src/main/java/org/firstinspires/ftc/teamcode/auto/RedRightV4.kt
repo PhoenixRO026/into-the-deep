@@ -219,7 +219,7 @@ class RedRightV4 : LinearOpMode() {
                     ),
                     outtake.openClawAction(),
                 ),
-                SleepAction(2.s)
+                SleepAction(1.8.s)
             ),
             firstSampleCycle(),
             secondSampleCycle(),
