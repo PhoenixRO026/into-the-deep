@@ -111,13 +111,13 @@ fun specimenAuto(redBot: RoadRunnerBotEntity, blueBot: RoadRunnerBotEntity) {
         .setTangent(165.deg)
         .splineToLinearHeading(RedSpecimen.secondSpecimenPos, 90.deg)
 
-        .setTangent(-90.deg)
+        .setTangent(-45.deg)
         .splineToLinearHeading(RedSpecimen.takeSpecimenPos, -90.deg)
 
         .setTangent(165.deg)
         .splineToLinearHeading(RedSpecimen.thirdSpecimenPos, 90.deg)
 
-        .setTangent(-90.deg)
+        .setTangent(-45.deg)
         .splineToLinearHeading(RedSpecimen.takeSpecimenPos, -90.deg)
 
         .setTangent(165.deg)

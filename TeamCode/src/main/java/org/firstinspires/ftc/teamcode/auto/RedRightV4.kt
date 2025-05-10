@@ -27,9 +27,9 @@ class RedRightV4 : LinearOpMode() {
     private val startPose = Pose(20.cm, -59.5.inch, 90.deg)
     private val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
     private val firstSpecimenPos = Pose(0.inch, -26.inch, 90.deg)
-    private val secondSpecimenPos = Pose(1.5.inch, -26.inch, 90.deg)
-    private val thirdSpecimenPos = Pose(3.inch, -26.inch, 90.deg)
-    private val forthSpecimenPos = Pose(4.5.inch, -23.inch, 90.deg)
+    private val secondSpecimenPos = Pose(2.inch, -26.inch, 90.deg)
+    private val thirdSpecimenPos = Pose(4.inch, -26.inch, 90.deg)
+    private val forthSpecimenPos = Pose(-2.inch, -23.inch, 90.deg)
     private val red1Pos = Distance2d(48.inch, -25.5.inch)
     private val red2Pos = Distance2d(58.5.inch, -25.5.inch)
     private val red3Pos = Distance2d(68.5.inch, -25.5.inch)
@@ -41,7 +41,7 @@ class RedRightV4 : LinearOpMode() {
     private val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     private val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     private val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
-    private val takeSpecimenPos = Pose(40.inch, -55.inch, 90.deg)
+    private val takeSpecimenPos = Pose(40.inch, -54.inch, 90.deg)
 
     override fun runOpMode() {
         initMessage()
@@ -58,7 +58,7 @@ class RedRightV4 : LinearOpMode() {
 
         fun firstSampleCycle() = SequentialAction(
             ParallelAction(
-                lift.liftDownAction(),
+                lift.liftToIntakeWaitingAction(),
                 outtake.extendoToNeutralAction(),
                 robot.armAndLiftToNeutral().delayedBy(1.s),
                 intake.extendoToLeftRedSampleAction().delayedBy(1.s),
@@ -69,6 +69,7 @@ class RedRightV4 : LinearOpMode() {
             ),
             intake.takeSample(Intake.SensorColor.RED),
             ParallelAction(
+                lift.liftDownAction(),
                 intake.tiltUpAction(),
                 drive.actionBuilder(firstSamplePos)
                     .turnTo(firstSamplePos.position.headingTowards(zonePos).heading)
@@ -124,7 +125,7 @@ class RedRightV4 : LinearOpMode() {
                         .lineToY(takeSpecimenPos.position.y)
                         .build()
                 ),
-                SleepAction(2.5.s)
+                SleepAction(2.s)
             ),
             outtake.closeClawAction(),
             ParallelAction(
@@ -150,11 +151,12 @@ class RedRightV4 : LinearOpMode() {
                 SequentialAction(
                     SleepAction(0.5.s),
                     lift.liftToIntakeWaitingAction(),
-                    lift.liftDownAction(),
+                    SleepAction(0.5.s),
+                    lift.liftToIntakeAction(),
                     robot.armAndLiftToSpecimen(),
                 ),
                 drive.actionBuilder(firstSpecimenPos)
-                    .setTangent(-60.deg)
+                    .setTangent(-90.deg)
                     .splineToLinearHeading(takeSpecimenPos + 10.cm.y, -90.deg)
                     .lineToY(takeSpecimenPos.position.y - 3.cm)
                     //.splineToLinearHeading(takeSpecimenPos, -90.deg)
@@ -179,11 +181,13 @@ class RedRightV4 : LinearOpMode() {
             ParallelAction(
                 SequentialAction(
                     SleepAction(0.5.s),
+                    lift.liftToIntakeWaitingAction(),
+                    SleepAction(0.5.s),
                     lift.liftToIntakeAction(),
                     robot.armAndLiftToSpecimen(),
                 ),
                 drive.actionBuilder(secondSpecimenPos)
-                    .setTangent(-60.deg)
+                    .setTangent(-90.deg)
                     .splineToLinearHeading(takeSpecimenPos + 10.cm.y, -90.deg)
                     .lineToY(takeSpecimenPos.position.y - 3.cm)
                     .build().delayedBy(0.25.s) //SO THE LIFT HAS TIME TO DESCEND
@@ -204,14 +208,19 @@ class RedRightV4 : LinearOpMode() {
         )
 
         val action = SequentialAction(
-            robot.armAndLiftToNeutral(),
-            ParallelAction(
-                robot.armAndLiftToBar(),
-                drive.actionBuilder(startPose)
-                    .strafeToLinearHeading(forthSpecimenPos, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
-                    .build()
+            RaceAction(
+                SequentialAction(
+                    robot.armAndLiftToNeutral(),
+                    ParallelAction(
+                        robot.armAndLiftToBar(),
+                        drive.actionBuilder(startPose)
+                            .strafeToLinearHeading(forthSpecimenPos, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
+                            .build()
+                    ),
+                    outtake.openClawAction(),
+                ),
+                SleepAction(2.s)
             ),
-            outtake.openClawAction(),
             firstSampleCycle(),
             secondSampleCycle(),
             thirdSampleCycle(),
