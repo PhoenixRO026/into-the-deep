@@ -130,7 +130,10 @@ class RedRightV4 : LinearOpMode() {
             ParallelAction(
                 lift.liftToBarAction(),
                 ParallelAction(
-                    outtake.armToBarAction(),
+                    SequentialAction(
+                        outtake.armToBasketAction(),
+                        outtake.armToBarAction(),
+                    ),
                     outtake.wristToUpsideDownAction(),
                     drive.actionBuilder(takeSpecimenPos)
                         .setTangent(165.deg)
