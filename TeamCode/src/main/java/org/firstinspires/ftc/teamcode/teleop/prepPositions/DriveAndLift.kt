@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
+import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
 import org.firstinspires.ftc.teamcode.robot.Drive
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.teamcode.robot.Lift
 class DriveAndLift: LinearOpMode() {
 
     override fun runOpMode() {
+        val hardwareMap : HardwareMap = hardwareMap
         val mecanumDrive = MecanumDrive(hardwareMap, Pose(0.0.cm,0.0.cm,0.0.deg).pose2d)
         val liftEncoder = RawEncoder(mecanumDrive.rightBack)
         val liftLeftMotor = hardwareMap.get(DcMotorEx::class.java, "motorLiftLeft")
