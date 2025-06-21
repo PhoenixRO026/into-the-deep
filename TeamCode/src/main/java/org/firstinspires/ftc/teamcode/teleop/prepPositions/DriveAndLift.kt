@@ -65,9 +65,10 @@ class DriveAndLift: LinearOpMode() {
                 -gamepad1.right_stick_x.toDouble()
             )
 
-            lift.power= -gamepad2.left_stick_x.toDouble()
+            lift.power= -gamepad2.left_stick_y.toDouble()
 
-
+            telemetry.addLine("controler albastru miscare")
+            telemetry.addLine("controler rosu left stick vertical power la lift")
             telemetry.addData("a Pressed", gamepad1.a)
             telemetry.addData("y Pressed", gamepad1.y)
             telemetry.addData("x Pressed", gamepad1.x)
