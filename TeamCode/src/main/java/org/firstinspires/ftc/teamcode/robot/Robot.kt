@@ -124,8 +124,6 @@ class Robot(
 
         val liftLeftMotor = hardwareMap.get(DcMotorEx::class.java, "motorLiftLeft")
         val liftRightMotor = hardwareMap.get(DcMotorEx::class.java, "motorLiftRight")
-        val servoGearShiftLeft = hardwareMap.get(Servo::class.java, "servoGearShiftLeft")
-        val servoGearShiftRight = hardwareMap.get(Servo::class.java, "servoGearShiftRight")
         val intakeExtendoMotor = hardwareMap.get(DcMotorEx::class.java, "motorExtendoIntake")
         val intakeSweeperMotor = hardwareMap.get(DcMotorEx::class.java, "motorSweeper")
 
@@ -137,8 +135,6 @@ class Robot(
         liftLeftMotor.direction = DcMotorSimple.Direction.REVERSE
         liftRightMotor.direction = DcMotorSimple.Direction.FORWARD
 
-        servoGearShiftLeft.direction = Servo.Direction.FORWARD
-        servoGearShiftRight.direction= Servo.Direction.FORWARD
         intakeExtendoMotor.direction = DcMotorSimple.Direction.FORWARD
         intakeSweeperMotor.direction = DcMotorSimple.Direction.FORWARD
 
@@ -147,26 +143,27 @@ class Robot(
         intakeExtendoMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         intakeSweeperMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
-        servoGearShiftLeft.scaleRange(0.0, 1.0)
-        servoGearShiftRight.scaleRange(0.0, 1.0)
 
         val intakeTiltServo = hardwareMap.get(Servo::class.java, "servoIntakeTilt")
-        val outtakeExtendoServo = hardwareMap.get(Servo::class.java, "servoExtendoOuttake")
-        val outtakeShoulderServo = hardwareMap.get(Servo::class.java, "servoShoulder")
+        val intakeBoxServo = hardwareMap.get(Servo::class.java, "servoIntakeBox")
+        val outtakeShoulderLeftServo = hardwareMap.get(Servo::class.java, "servoShoulderLeft")
+        val outtakeShoulderRightServo = hardwareMap.get(Servo::class.java, "servoShoulderRight")
         val outtakeElbowServo = hardwareMap.get(Servo::class.java, "servoElbow")
         val outtakeWristServo = hardwareMap.get(Servo::class.java, "servoWrist")
         val outtakeClawServo = hardwareMap.get(Servo::class.java, "servoClaw")
 
         intakeTiltServo.direction = Servo.Direction.FORWARD
-        outtakeExtendoServo.direction = Servo.Direction.FORWARD
-        outtakeShoulderServo.direction = Servo.Direction.FORWARD
+        intakeBoxServo.direction = Servo.Direction.FORWARD
+        outtakeShoulderLeftServo.direction = Servo.Direction.FORWARD
+        outtakeShoulderRightServo.direction = Servo.Direction.REVERSE
         outtakeElbowServo.direction = Servo.Direction.FORWARD
         outtakeWristServo.direction = Servo.Direction.FORWARD
         outtakeClawServo.direction = Servo.Direction.FORWARD
 
         intakeTiltServo.scaleRange(0.0, 1.0)
-        outtakeExtendoServo.scaleRange(0.0, 1.0)
-        outtakeShoulderServo.scaleRange(0.0, 1.0)
+        intakeBoxServo.scaleRange(0.0, 1.0)
+        outtakeShoulderLeftServo.scaleRange(0.0, 1.0)
+        outtakeShoulderRightServo.scaleRange(0.0, 1.0)
         outtakeElbowServo.scaleRange(0.0, 1.0)
         outtakeWristServo.scaleRange(0.0, 1.0)
         outtakeClawServo.scaleRange(0.31, 0.6)
@@ -179,6 +176,7 @@ class Robot(
             sweeperMotor = intakeSweeperMotor,
             extendoEncoder = intakeExtendoEncoder,
             tiltServo = intakeTiltServo,
+            boxServo = intakeBoxServo,
             colorSensor = intakeColorSensor
         )
         lift = Lift(
@@ -188,8 +186,8 @@ class Robot(
 
         )
         outtake = Outtake(
-            extendoServo = outtakeExtendoServo,
-            shoulderServo = outtakeShoulderServo,
+            shoulderLeftServo = outtakeShoulderLeftServo,
+            shoulderRightServo = outtakeShoulderRightServo,
             elbowServo = outtakeElbowServo,
             wristServo = outtakeWristServo,
             clawServo = outtakeClawServo

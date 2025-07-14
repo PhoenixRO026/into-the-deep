@@ -27,6 +27,7 @@ class Intake(
     val sweeperMotor: DcMotorEx,
     val extendoEncoder: Encoder,
     val tiltServo: Servo,
+    val boxServo: Servo,
     val colorSensor: NormalizedColorSensor
 ) {
     @Config
@@ -49,6 +50,9 @@ class Intake(
         @JvmField var tiltUp = 0.1933
         @JvmField var tiltDown = 0.62
         @JvmField var tiltGround = 0.6728
+
+        @JvmField var boxOpen = 0.0
+        @JvmField var boxClose = 0.6
 
         @JvmField var tiltTeleInit = tiltUp
         @JvmField var tiltAutoInit = tiltUp
