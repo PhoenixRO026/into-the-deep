@@ -5,11 +5,8 @@ import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
-import com.acmerobotics.roadrunner.ParallelAction
-import com.acmerobotics.roadrunner.RaceAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.roadrunner_ext.delayedBy
-import com.lib.units.Distance2d
 import com.lib.units.Pose
 import com.lib.units.SleepAction
 import com.lib.units.cm
@@ -19,7 +16,6 @@ import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
-import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 
 @Autonomous
@@ -39,16 +35,16 @@ class  AutoForDebug : LinearOpMode() {
 
         val action = SequentialAction(
             robot.armAndLiftToBar(),
-            robot.armAndLiftToSpecimen().delayedBy(2.s),
+            robot.armAndLiftToWall().delayedBy(2.s),
             SleepAction(2.s),
             robot.armAndLiftToBar(),
-            robot.armAndLiftToSpecimen().delayedBy(1.s),
+            robot.armAndLiftToWall().delayedBy(1.s),
             SleepAction(2.s),
             robot.armAndLiftToBar(),
-            robot.armAndLiftToSpecimen().delayedBy(0.5.s),
+            robot.armAndLiftToWall().delayedBy(0.5.s),
             SleepAction(2.s),
             robot.armAndLiftToBar(),
-            robot.armAndLiftToSpecimen(),
+            robot.armAndLiftToWall(),
         )
 
         action.preview(previewCanvas)

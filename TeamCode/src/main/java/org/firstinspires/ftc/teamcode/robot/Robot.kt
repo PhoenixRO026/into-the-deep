@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.robot
 import com.acmerobotics.roadrunner.InstantAction
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
-import com.acmerobotics.roadrunner.SleepAction
 import com.acmerobotics.roadrunner.ftc.RawEncoder
 import com.lib.units.Duration
 import com.lib.units.Pose
@@ -11,14 +10,12 @@ import com.lib.units.SleepAction
 import com.lib.units.cm
 import com.lib.units.deg
 import com.lib.units.s
-import com.qualcomm.robotcore.hardware.ColorSensor
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.Servo
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive
 
@@ -70,9 +67,9 @@ class Robot(
         lift.liftToIntakeAction()
     )
 
-    fun armAndLiftToSpecimen() = SequentialAction(
+    fun armAndLiftToWall() = SequentialAction(
         lift.liftDownAction(),
-        outtake.armToSpecimenAction(),
+        outtake.armToWallAction(),
     )
 
     fun armAndLiftToNeutral() = ParallelAction(

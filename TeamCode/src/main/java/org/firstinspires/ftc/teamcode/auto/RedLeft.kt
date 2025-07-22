@@ -54,8 +54,7 @@ class RedLeft : LinearOpMode() {
             intake.takeSample(Intake.SensorColor.YELLOW,2.s),
             ParallelAction(
                 SequentialAction(
-                    intake.bringSampleToIntake(),
-                    intake.takeOutSample(),
+                    intake.sampleToBox(),
                     robot.armAndLiftToIntake(),
                     outtake.closeClawAction(),
                     lift.liftToBasketAction()
@@ -85,7 +84,6 @@ class RedLeft : LinearOpMode() {
             outtake.armToNeutralAction(),
             ParallelAction(
                 lift.liftToParking(),
-                outtake.extendoToBarAction(),
                 drive.actionBuilder(thirdYellowPose)
                     .setTangent(90.deg)
                     .splineToSplineHeading(parkPose - 20.cm.x,0.0.deg)

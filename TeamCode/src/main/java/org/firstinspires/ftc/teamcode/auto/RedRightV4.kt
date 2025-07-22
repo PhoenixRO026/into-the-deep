@@ -59,7 +59,6 @@ class RedRightV4 : LinearOpMode() {
         fun firstSampleCycle() = SequentialAction(
             ParallelAction(
                 lift.liftToIntakeWaitingAction(),
-                outtake.extendoToNeutralAction(),
                 robot.armAndLiftToNeutral().delayedBy(1.s),
                 intake.extendoToLeftRedSampleAction().delayedBy(1.s),
                 drive.actionBuilder(firstSpecimenPos, 1.s)
@@ -75,8 +74,7 @@ class RedRightV4 : LinearOpMode() {
                     .turnTo(firstSamplePos.position.headingTowards(zonePos).heading)
                     .build()
             ),
-            intake.tiltUpAction(),
-            intake.kickSample()
+            intake.tiltUpAction()
         )
 
         fun secondSampleCycle() = SequentialAction(
@@ -93,7 +91,6 @@ class RedRightV4 : LinearOpMode() {
                     .turnTo(secondSamplePos.position.headingTowards(zonePos).heading)
                     .build()
             ),
-            intake.kickSample()
         )
 
         fun thirdSampleCycle() = SequentialAction(
@@ -110,7 +107,6 @@ class RedRightV4 : LinearOpMode() {
                     .turnTo(thirdSamplePos.position.headingTowards(zonePoze3).heading)
                     .build()
             ),
-            intake.kickSample()
         )
 
         fun firstSpecimenCycle() = SequentialAction(
@@ -118,7 +114,7 @@ class RedRightV4 : LinearOpMode() {
                 ParallelAction(
                     intake.extendoInAction(),
                     outtake.openClawAction(),
-                    robot.armAndLiftToSpecimen(),
+                    robot.armAndLiftToWall(),
                     drive.actionBuilder(thirdSamplePos)
                         .setTangent(-90.deg)
                         .splineToSplineHeading(takeSpecimenPos + 10.cm.y, -90.deg)
@@ -153,7 +149,7 @@ class RedRightV4 : LinearOpMode() {
                     lift.liftToIntakeWaitingAction(),
                     SleepAction(0.5.s),
                     lift.liftToIntakeAction(),
-                    robot.armAndLiftToSpecimen(),
+                    robot.armAndLiftToWall(),
                 ),
                 drive.actionBuilder(firstSpecimenPos)
                     .setTangent(-90.deg)
@@ -184,7 +180,7 @@ class RedRightV4 : LinearOpMode() {
                     lift.liftToIntakeWaitingAction(),
                     SleepAction(0.5.s),
                     lift.liftToIntakeAction(),
-                    robot.armAndLiftToSpecimen(),
+                    robot.armAndLiftToWall(),
                 ),
                 drive.actionBuilder(secondSpecimenPos)
                     .setTangent(-90.deg)

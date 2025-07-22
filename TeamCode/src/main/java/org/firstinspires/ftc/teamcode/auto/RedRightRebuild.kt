@@ -10,7 +10,6 @@ import com.acmerobotics.roadrunner.SequentialAction
 import com.lib.roadrunner_ext.delayedBy
 import com.lib.units.Distance2d
 import com.lib.units.Pose
-import com.lib.units.SleepAction
 import com.lib.units.cm
 import com.lib.units.deg
 import com.lib.units.inch
@@ -56,7 +55,6 @@ class RedRightRebuild : LinearOpMode() {
         fun firstSampleCycle() = SequentialAction(
             ParallelAction(
                 lift.liftToIntakeWaitingAction(),
-                outtake.extendoToNeutralAction(),
                 robot.armAndLiftToNeutral().delayedBy(1.s),
                 intake.extendoToLeftRedSampleAction().delayedBy(1.s),
                 drive.actionBuilder(firstSpecimenPos, 1.s)
@@ -71,8 +69,7 @@ class RedRightRebuild : LinearOpMode() {
                     .turnTo(firstSamplePos.position.headingTowards(zonePos).heading)
                     .build()
             ),
-            intake.tiltUpAction(),
-            intake.kickSample()
+            intake.tiltUpAction()
         )
 
         fun secondSampleCycle() = SequentialAction(
@@ -89,7 +86,6 @@ class RedRightRebuild : LinearOpMode() {
                     .turnTo(secondSamplePos.position.headingTowards(zonePos).heading)
                     .build()
             ),
-            intake.kickSample()
         )
 
         fun thirdSampleCycle() = SequentialAction(
@@ -106,14 +102,13 @@ class RedRightRebuild : LinearOpMode() {
                     .turnTo(thirdSamplePos.position.headingTowards(zonePoze3).heading)
                     .build()
             ),
-            intake.kickSample()
         )
 
         fun firstSpecimenCycle() = SequentialAction(
             ParallelAction(
                 intake.extendoInAction(),
                 outtake.openClawAction(),
-                robot.armAndLiftToSpecimen(),
+                robot.armAndLiftToWall(),
                 drive.actionBuilder(thirdSamplePos)
                     .setTangent(-90.deg)
                     .splineToSplineHeading(takeSpecimenPos + 10.cm.y, -90.deg)
@@ -125,7 +120,7 @@ class RedRightRebuild : LinearOpMode() {
                 lift.liftToBarAction(),
                 ParallelAction(
                     outtake.armToBarAction(),
-                    outtake.wristToUpsideDownAction(),
+                    outtake.wristToReverseAction(),
                     drive.actionBuilder(takeSpecimenPos)
                         .setTangent(165.deg)
                         .splineToLinearHeading(secondSpecimenPos, 90.deg, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
@@ -140,7 +135,7 @@ class RedRightRebuild : LinearOpMode() {
             ParallelAction(
                 SequentialAction(
                     lift.liftToIntakeWaitingAction(),
-                    robot.armAndLiftToSpecimen(),
+                    robot.armAndLiftToWall(),
                 ),
                 drive.actionBuilder(firstSpecimenPos)
                     .setTangent(-90.deg)
@@ -153,7 +148,7 @@ class RedRightRebuild : LinearOpMode() {
                 lift.liftToBarAction(),
                 ParallelAction(
                     robot.armAndLiftToBar(),
-                    outtake.wristToUpsideDownAction(),
+                    outtake.wristToReverseAction(),
                     drive.actionBuilder(takeSpecimenPos)
                         .setTangent(165.deg)
                         .splineToLinearHeading(thirdSpecimenPos, 90.deg, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)
@@ -168,7 +163,7 @@ class RedRightRebuild : LinearOpMode() {
             ParallelAction(
                 SequentialAction(
                     lift.liftToIntakeWaitingAction(),
-                    robot.armAndLiftToSpecimen(),
+                    robot.armAndLiftToWall(),
                 ),
                 drive.actionBuilder(thirdSpecimenPos)
                     .setTangent(-90.deg)
@@ -180,7 +175,7 @@ class RedRightRebuild : LinearOpMode() {
                 lift.liftToBarAction(),
                 ParallelAction(
                     robot.armAndLiftToBar(),
-                    outtake.wristToUpsideDownAction(),
+                    outtake.wristToReverseAction(),
                     drive.actionBuilder(takeSpecimenPos)
                         .setTangent(165.deg)
                         .splineToLinearHeading(forthSpecimenPos, 90.deg, accelConstraintOverride = drive.mecanumDrive.quickAccelConstraint)

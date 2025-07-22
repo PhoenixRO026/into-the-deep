@@ -85,7 +85,6 @@ abstract class SigmaDrive: LinearOpMode() {
             robot.addTelemetry(telemetry, timeKeep.deltaTime)
             telemetry.addData("lift pos", robot.lift.position)
 
-            telemetry.addData("extendo", robot.outtake.extendoPos)
             telemetry.addData("shoulder", robot.outtake.shoulderPos)
 
             telemetry.addData("driver 1 action", driver1Action)
@@ -139,16 +138,8 @@ abstract class SigmaDrive: LinearOpMode() {
             driver2Action = robot.turnOffAction()
         }
 
-        if (gamepad2.dpad_up) {
-            robot.outtake.extendoToMaxInstant()
-        }
-
-        if (gamepad2.dpad_down) {
-            robot.outtake.extendoInInstant()
-        }
-
         if (gamepad2.dpad_right) {
-            robot.outtake.wristToMidInstant()
+            robot.outtake.wristToNormalInstant()
         }
 
         if (gamepad2.dpad_left) {
@@ -156,7 +147,7 @@ abstract class SigmaDrive: LinearOpMode() {
         }
 
         if (gamepad2.a) {
-            robot.outtake.armToSpecimenInstant()
+            robot.outtake.armToWallInstant()
         }
 
         if (gamepad2.b) {
@@ -168,7 +159,7 @@ abstract class SigmaDrive: LinearOpMode() {
         }
 
         if (gamepad2.y) {
-            robot.outtake.armToOldBarInstant()
+            robot.outtake.armToBarInstant()
         }
 
         if (gamepad1.a) {
@@ -192,7 +183,7 @@ abstract class SigmaDrive: LinearOpMode() {
                     ),
                     robot.intake.takeSampleSequenceAction(Intake.SensorColor.YELLOW),
                 ),
-                robot.intake.takeOutSample()
+                robot.intake.sampleToBox()
             )
         }
 

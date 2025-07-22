@@ -11,14 +11,11 @@ import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.Encoder
 import com.lib.units.Duration
 import com.lib.units.SleepAction
-import com.lib.units.ms
 import com.lib.units.s
-import com.qualcomm.robotcore.hardware.ColorSensor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.library.controller.PIDController
 import kotlin.math.abs
 
@@ -43,6 +40,7 @@ class Intake(
         @JvmField var extendoLim = 560
 
         @JvmField var titlActionSleepDuration = 1.s
+        @JvmField var boxActionSleepDuration = 1.s
 
         @JvmField var extendoMax = 560
         @JvmField var extendoIn = -50
@@ -137,15 +135,19 @@ class Intake(
 
     var tiltPosition by tiltServo::position
 
+    var boxPosition by boxServo::position
+
     fun resetExtendoPosition() {
         extendoOffset = extendoEncoder.getPositionAndVelocity().position
     }
 
     fun initTeleop() {
+        boxPosition = IntakeConfig. boxClose
         tiltPosition = IntakeConfig.tiltTeleInit
     }
 
     fun initAuto() {
+        boxPosition = IntakeConfig.boxClose
         tiltPosition = IntakeConfig.tiltAutoInit
     }
 
@@ -214,6 +216,17 @@ class Intake(
         )
     }
 
+    fun boxToPosAction(pos: Double): Action {
+        val sleepDuration = IntakeConfig.boxActionSleepDuration
+        return SequentialAction(
+            InstantAction { boxPosition = pos },
+            SleepAction(sleepDuration)
+        )
+    }
+
+    fun boxOpenAction() = boxToPosAction(IntakeConfig.boxOpen)
+    fun boxCloseAction() = boxToPosAction(IntakeConfig.boxClose)
+
     fun tiltUpAction() = tiltToPosAction(IntakeConfig.tiltUp)
     fun tiltDownAction() = tiltToPosAction(IntakeConfig.tiltDown)
     fun tiltGroundActon() = tiltToPosAction(IntakeConfig.tiltGround)
@@ -239,7 +252,12 @@ class Intake(
         tiltUpAction()
     )
 
-    fun takeOutSample() = SequentialAction(
+    fun sampleToBox() = SequentialAction(
+        ParallelAction(
+            tiltUpAction(),
+            extendoInAction(),
+            boxCloseAction(),
+        ),
         sweeperBoxAction(),
         waitForColorAction(SensorColor.NONE),
         sweeperOffAction()
@@ -256,26 +274,9 @@ class Intake(
         sweeperOffAction()
     )
 
-    fun kickSample() = SequentialAction(
-        ParallelAction(
-            sweeperSpewAction(),
-            waitForColorAction(SensorColor.NONE)
-        ),
-        SleepAction(0.2.s),
-        sweeperOffAction()
-    )
-
     fun waitFor2Colors(firstColor: SensorColor, secondColor: SensorColor) = RaceAction(
         waitForColorAction(firstColor),
         waitForColorAction(secondColor)
-    )
-
-    fun bringSampleToIntake() = SequentialAction(
-        ParallelAction(
-            tiltUpAction(),
-            extendoInAction()
-        ),
-        takeOutSample()
     )
 
     fun takeSampleSequenceAction(color: SensorColor) = SequentialAction(

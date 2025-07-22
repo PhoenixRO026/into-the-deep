@@ -19,7 +19,6 @@ import com.lib.units.s
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.library.TimeKeep
-import org.firstinspires.ftc.teamcode.robot.Intake
 import org.firstinspires.ftc.teamcode.robot.Robot
 
 @Autonomous
@@ -59,7 +58,6 @@ class RedRightV4_tarat : LinearOpMode() {
         fun firstSampleCycle() = SequentialAction(
             ParallelAction(
                 lift.liftToIntakeWaitingAction(),
-                outtake.extendoToNeutralAction(),
                 robot.armAndLiftToNeutral().delayedBy(1.s),
                 intake.extendoToLeftRedSampleAction().delayedBy(1.s),
                 drive.actionBuilder(firstSpecimenPos, 1.s)
@@ -114,7 +112,7 @@ class RedRightV4_tarat : LinearOpMode() {
                 ParallelAction(
                     intake.extendoInAction(),
                     outtake.openClawAction(),
-                    robot.armAndLiftToSpecimen(),
+                    robot.armAndLiftToWall(),
                     drive.actionBuilder(thirdSamplePos)
                         .setTangent(-90.deg)
                         .splineToSplineHeading(takeSpecimenPos  + 10.cm.y, -90.deg)
@@ -149,7 +147,7 @@ class RedRightV4_tarat : LinearOpMode() {
                     lift.liftToIntakeWaitingAction(),
                     SleepAction(0.5.s),
                     lift.liftToIntakeAction(),
-                    robot.armAndLiftToSpecimen(),
+                    robot.armAndLiftToWall(),
                 ),
                 drive.actionBuilder(firstSpecimenPos)
                     .setTangent(-90.deg)
@@ -180,7 +178,7 @@ class RedRightV4_tarat : LinearOpMode() {
                     lift.liftToIntakeWaitingAction(),
                     SleepAction(0.5.s),
                     lift.liftToIntakeAction(),
-                    robot.armAndLiftToSpecimen(),
+                    robot.armAndLiftToWall(),
                 ),
                 drive.actionBuilder(secondSpecimenPos)
                     .setTangent(-90.deg)

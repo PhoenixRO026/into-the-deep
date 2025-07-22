@@ -1,7 +1,6 @@
 @file:JvmName("MeepMeep")
 package com.meep.meepmeep
 
-import com.lib.roadrunner_ext.delayedBy
 import com.lib.roadrunner_ext.ex
 import com.lib.units.Distance2d
 import com.lib.units.Pose
@@ -40,19 +39,20 @@ data object BlueBasket {
 
 data object RedSpecimen {
     val startPose = Pose(14.cm, -63.inch, 90.deg)
-    val firstSpecimenBeforePos = Pose(4.inch, -40.inch, 90.deg)
-    val firstSpecimenPos = Pose(-1.5.inch, -30.5.inch, 90.deg)
-    val secondSpecimenPos = Pose(0.inch, -30.5.inch, 90.deg)
-    val thirdSpecimenPos = Pose(1.5.inch, -30.5.inch, 90.deg)
-    val forthSpecimenPos = Pose(3.inch, -30.5.inch, 90.deg)
-    val red1Pos = Distance2d(48.inch, -27.inch)
-    val red2Pos = Distance2d(58.5.inch, -26.inch)
-    val red3Pos = Distance2d(68.5.inch, -25.5.inch)
+    val preloadSpecimenPos = Pose(14.cm, -30.5.inch, 90.deg)
+    val firstSpecimenPos = Pose(2.inch, -30.5.inch, 90.deg)
+    val secondSpecimenPos =Pose(0.inch, -30.5.inch, 90.deg)
+    val thirdSpecimenPos =Pose(-1.inch, -30.5.inch, 90.deg)
+
+    val sample3Heading = Distance2d(68.inch, -25.inch)
+
+    val sample1 = Pose(48.inch, -49.inch, 90.deg)
+    val sample2 = Pose(58.5.inch, -49.inch, 90.deg)
+    val sample3 = Distance2d(61.inch, -49.inch).headingTowards(sample3Heading)
+
     val zonePos = Distance2d(45.1.inch, -67.2.inch)
     val zonePoze3 = Distance2d(50.inch, -67.2.inch)
-    val firstSamplePos = Distance2d(26.5.inch, -41.inch).headingTowards(red1Pos)
-    val secondSamplePos = Distance2d(33.inch, -37.5.inch).headingTowards(red2Pos)
-    val thirdSamplePos = Distance2d(41.inch, -37.inch).headingTowards(red3Pos)
+
     val firstKickPos = Distance2d(30.inch, -50.inch).headingTowards(zonePos)
     val secondKickPos = Distance2d(34.inch, -50.inch).headingTowards(zonePos)
     val thirdKickPos = Distance2d(38.inch, -50.inch).headingTowards(zonePos)
@@ -89,24 +89,31 @@ fun main() {
 
 fun specimenAuto(redBot: RoadRunnerBotEntity, blueBot: RoadRunnerBotEntity) {
     redBot.runAction(redBot.drive.actionBuilder(RedSpecimen.startPose.pose2d).ex()
-        .strafeToLinearHeading(RedSpecimen.forthSpecimenPos)
+        .lineToY(RedSpecimen.preloadSpecimenPos.position.y)
 
         .setTangent(-90.deg)
-        .splineToLinearHeading(RedSpecimen.firstSamplePos, 0.deg)
+        .splineToLinearHeading(RedSpecimen.sample1, 0.deg)
+        .waitSeconds(2.s)
 
-        .turnTo(RedSpecimen.firstSamplePos.position.headingTowards(RedSpecimen.zonePos).heading)
+        .setTangent(0.deg)
+        .lineToX(RedSpecimen.sample2.position.x)
+        .waitSeconds(2.s)
 
-        .strafeToLinearHeading(RedSpecimen.secondSamplePos)
+        .setTangent(0.deg)
+        .lineToXLinearHeading(RedSpecimen.sample3.position.x, RedSpecimen.sample3.heading)
+        .waitSeconds(2.s)
+        .turnTo(90.deg)
 
-        .turnTo(RedSpecimen.secondSamplePos.position.headingTowards(RedSpecimen.zonePos).heading)
-
-        .strafeToLinearHeading(RedSpecimen.thirdSamplePos)
-
-        .turnTo(RedSpecimen.thirdSamplePos.position.headingTowards(RedSpecimen.zonePoze3).heading)
 
         //start to specimen
-        .setTangent(-90.deg)
-        .splineToSplineHeading(RedSpecimen.takeSpecimenPos, -90.deg)
+        .setTangent(135.deg)
+        .splineToLinearHeading(RedSpecimen.takeSpecimenPos, -90.deg)
+
+        .setTangent(165.deg)
+        .splineToLinearHeading(RedSpecimen.firstSpecimenPos, 90.deg)
+
+        .setTangent(-45.deg)
+        .splineToLinearHeading(RedSpecimen.takeSpecimenPos, -90.deg)
 
         .setTangent(165.deg)
         .splineToLinearHeading(RedSpecimen.secondSpecimenPos, 90.deg)
@@ -116,12 +123,6 @@ fun specimenAuto(redBot: RoadRunnerBotEntity, blueBot: RoadRunnerBotEntity) {
 
         .setTangent(165.deg)
         .splineToLinearHeading(RedSpecimen.thirdSpecimenPos, 90.deg)
-
-        .setTangent(-45.deg)
-        .splineToLinearHeading(RedSpecimen.takeSpecimenPos, -90.deg)
-
-        .setTangent(165.deg)
-        .splineToLinearHeading(RedSpecimen.forthSpecimenPos, 90.deg)
         .build()
     )
 

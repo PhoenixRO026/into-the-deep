@@ -4,8 +4,6 @@ import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
-import com.acmerobotics.roadrunner.SequentialAction
-import com.lib.units.Duration
 import com.lib.units.SleepAction
 import com.lib.units.s
 import com.qualcomm.robotcore.hardware.Servo
@@ -20,53 +18,43 @@ class Outtake(
 ) {
     @Config
     data object OuttakeConfig {
-
+        //SLEEP
         @JvmField var shoulderActionSleepDuration = 2.s
         @JvmField var elbowActionSleepDuration = 2.s
         @JvmField var wristActionSleepDuration = 2.s
         @JvmField var clawActionSleepDuration = 0.1.s
-        @JvmField var extendoActionSleepDuration = 2.s
-
+        //NEUTRAL
         @JvmField var shoulderNeutralPos = 0.5233
         @JvmField var elbowNeutralPos = 1.0
         @JvmField var extendoNeutralPos = 0.27
-        @JvmField var wristMidPos = 0.5239
-        @JvmField var wristUpsideDown = 0.0
+        //WRIST
+        @JvmField var wristNormalPos = 0.5239
+        @JvmField var wristReversePos = 0.0
+        //CLAW
         @JvmField var clawOpenPos = 1.0
         @JvmField var clawClosedPos = 0.0
-
+        //INIT TELE
         @JvmField var shoulderTeleInit = shoulderNeutralPos
         @JvmField var elbowTeleInit = elbowNeutralPos
-        @JvmField var extendoTeleInit = extendoNeutralPos
-        @JvmField var wristTeleInit = wristMidPos
+        @JvmField var wristTeleInit = wristNormalPos
         @JvmField var clawTeleInit = clawClosedPos
-
+        //INIT AUTO
         @JvmField var shoulderAutoInit = 0.5228
         @JvmField var elbowAutoInit = 0.939
-        @JvmField var wristAutoInit = wristMidPos
-        @JvmField var extendoAutoInit = extendoNeutralPos
+        @JvmField var wristAutoInit = wristNormalPos
         @JvmField var clawAutoInit = clawClosedPos
-
+        //INTAKE POS
         @JvmField var shoulderIntakePos = 0.7933
         @JvmField var elbowIntakePos = 0.7256
-        @JvmField var extendoIntakePos = extendoNeutralPos
-
+        //BASKET POS
         @JvmField var shoulderBasketPos = 0.3678
         @JvmField var elbowBasketPos = 0.2472
-        @JvmField var extendoBasketPos = extendoNeutralPos
-
-        @JvmField var shoulderSpecimenPickupPos = 0.0889
-        @JvmField var elbowSpecimenPickupPos = 0.7239
-        @JvmField var extendoSpecimenPickupPos = extendoNeutralPos
-
+        //WALL POS
+        @JvmField var shoulderWallPos = 0.0889
+        @JvmField var elbowWallPos = 0.7239
+        //BAR POS
         @JvmField var shoulderBarPos = 0.7011
         @JvmField var elbowBarPos = 0.0356
-        @JvmField var extendoBarPos = 0.0517
-
-        @JvmField var shoulderOldBarPos = 0.8694
-        @JvmField var elbowOldBarPos = 0.894
-
-        @JvmField var extendoMax = extendoBarPos
     }
 
     var shoulderPos
@@ -166,20 +154,22 @@ class Outtake(
             return sleepAction.run(p)
         }
     }
-
+    // CLAW
     fun openClawAction() = clawToPosAction(OuttakeConfig.clawOpenPos)
     fun closeClawAction() = clawToPosAction(OuttakeConfig.clawClosedPos)
 
-    fun wristToMidAction() = wristToPosAction(OuttakeConfig.wristMidPos)
-    fun wristToMidInstant() {
-        wristPos = OuttakeConfig.wristMidPos
+    // WRIST
+    fun wristToNormalAction() = wristToPosAction(OuttakeConfig.wristNormalPos)
+    fun wristToNormalInstant() {
+        wristPos = OuttakeConfig.wristNormalPos
     }
     fun wristToUpsideDownInstant() {
-        wristPos = OuttakeConfig.wristUpsideDown
+        wristPos = OuttakeConfig.wristReversePos
     }
 
-    fun wristToUpsideDownAction() = wristToPosAction(OuttakeConfig.wristUpsideDown)
+    fun wristToReverseAction() = wristToPosAction(OuttakeConfig.wristReversePos)
 
+    // ARM
     fun shoulderToNeutralAction() = shoulderToPosAction(OuttakeConfig.shoulderNeutralPos)
     fun elbowToNeutralAction() = elbowToPosAction(OuttakeConfig.elbowNeutralPos)
 
@@ -192,27 +182,27 @@ class Outtake(
     fun shoulderToBasketAction() = shoulderToPosAction(OuttakeConfig.shoulderBasketPos)
     fun elbowToBasketAction() = elbowToPosAction(OuttakeConfig.elbowBasketPos)
 
-    fun shoulderToSpecimenPickupAction() = shoulderToPosAction(OuttakeConfig.shoulderSpecimenPickupPos)
-    fun elbowToSpecimenPickupAction() = elbowToPosAction(OuttakeConfig.elbowSpecimenPickupPos)
-    fun wristToSpecimenPickupAction() = wristToPosAction(OuttakeConfig.wristUpsideDown)
+    fun shoulderToWallAction() = shoulderToPosAction(OuttakeConfig.shoulderWallPos)
+    fun elbowToWallAction() = elbowToPosAction(OuttakeConfig.elbowWallPos)
+    fun wristToWallAction() = wristToPosAction(OuttakeConfig.wristReversePos)
 
 
-    fun armToSpecimenInstant() {
-        shoulderPos = OuttakeConfig.shoulderSpecimenPickupPos
-        elbowPos = OuttakeConfig.elbowSpecimenPickupPos
+    fun armToWallInstant() {
+        shoulderPos = OuttakeConfig.shoulderWallPos
+        elbowPos = OuttakeConfig.elbowWallPos
     }
 
-    fun armToSpecimenAction() = ParallelAction(
-        shoulderToSpecimenPickupAction(),
-        elbowToSpecimenPickupAction(),
-        wristToSpecimenPickupAction(),
+    fun armToWallAction() = ParallelAction(
+        shoulderToWallAction(),
+        elbowToWallAction(),
+        wristToWallAction(),
         openClawAction()
     )
 
     fun armToNeutralAction() = ParallelAction(
         shoulderToNeutralAction(),
         elbowToNeutralAction(),
-        wristToMidAction()
+        wristToNormalAction()
     )
 
     fun armToNeutralInstant() {
@@ -223,13 +213,13 @@ class Outtake(
     fun armToIntakeAction() = ParallelAction(
         shoulderToIntakeAction(),
         elbowToIntakeAction(),
-        wristToMidAction()
+        wristToNormalAction()
     )
 
     fun armToBasketInstant() {
         shoulderPos = OuttakeConfig.shoulderBasketPos
         elbowPos = OuttakeConfig.elbowBasketPos
-        wristPos = OuttakeConfig.wristMidPos
+        wristPos = OuttakeConfig.wristNormalPos
     }
 
     fun armToBarInstant() {
@@ -238,7 +228,7 @@ class Outtake(
     }
 
     fun armToBarAction() = ParallelAction(
-        wristToMidAction(),
+        wristToNormalAction(),
         shoulderToBarAction(),
         elbowToBarAction(),
     )
@@ -246,11 +236,6 @@ class Outtake(
     fun armToBasketAction() = ParallelAction(
         shoulderToBasketAction(),
         elbowToBasketAction(),
-        wristToMidAction()
+        wristToNormalAction()
     )
-
-    fun armToOldBarInstant() {
-        shoulderPos = OuttakeConfig.shoulderOldBarPos
-        elbowPos = OuttakeConfig.elbowOldBarPos
-    }
 }
